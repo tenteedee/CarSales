@@ -3,9 +3,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
-// import multer from "multer";
-import authRoutes from "./routes/auth.js";
 import db from "./config/Database.js";
+import managementRoutes from './routes/management/index.js';
 
 dotenv.config();
 const app = express();
@@ -42,8 +41,8 @@ app.use(cors(
 // /* ROUTES WITH FILES */
 // app.post("/auth/register", upload.single("picture"), register);
 
-app.use("/auth", authRoutes);
-
+//app.use("/auth", authRoutes);
+app.use('/api/management', managementRoutes);
 app.use((req, res) => {
     res.status(404).json({ success: false, status: 404, message: "Not found" });
 });
