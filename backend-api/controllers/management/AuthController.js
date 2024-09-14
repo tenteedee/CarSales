@@ -6,7 +6,7 @@ import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
 
 export const register = async (req, res) => {
-
+    res.status(200).json({"ok" : "ok"});
 };
 export const verify_token = async (req, res) => {
     let errors = {};

@@ -11,7 +11,7 @@
  Target Server Version : 100703 (10.7.3-MariaDB-log)
  File Encoding         : 65001
 
- Date: 13/09/2024 15:49:02
+ Date: 14/09/2024 08:58:09
 */
 
 SET NAMES utf8mb4;
@@ -127,7 +127,7 @@ COMMIT;
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `fullname` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `email` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp,
@@ -135,12 +135,13 @@ CREATE TABLE `customers`  (
   `phone_number` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
 
 -- ----------------------------
 -- Records of customers
 -- ----------------------------
 BEGIN;
+INSERT INTO `customers` (`id`, `fullname`, `password`, `email`, `created_at`, `updated_at`, `phone_number`, `address`) VALUES (1, 'Tran Duc', '123456', 'duc@gmail.com', '2024-09-13 16:10:32', '2024-09-13 16:10:32', '0987654321', 'hanoi'), (2, 'admin', 'admin123', 'admin@gmail.com', '2024-09-13 16:11:14', '2024-09-13 18:28:01', '0987654321', 'hanoi');
 COMMIT;
 
 -- ----------------------------
@@ -396,12 +397,13 @@ CREATE TABLE `showrooms`  (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
 
 -- ----------------------------
 -- Records of showrooms
 -- ----------------------------
 BEGIN;
+INSERT INTO `showrooms` (`id`, `name`, `address`, `phone_number`, `email`, `created_at`, `updated_at`) VALUES (1, '1S', '94-96 Phạm Đình Hổ, P2, Q6, HCM', '0987654321', 'hyundai@gmail.com', '2024-09-13 18:34:18', '2024-09-13 18:34:18');
 COMMIT;
 
 -- ----------------------------
@@ -410,24 +412,27 @@ COMMIT;
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE `staff`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `fullname` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `phone_number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `email` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `role_id` int NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
   `showroom_id` int NULL DEFAULT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   INDEX `showroom_id`(`showroom_id` ASC) USING BTREE,
   CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `staff_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `staff_ibfk_2` FOREIGN KEY (`showroom_id`) REFERENCES `showrooms` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
 
 -- ----------------------------
 -- Records of staff
 -- ----------------------------
 BEGIN;
+INSERT INTO `staff` (`id`, `fullname`, `password`, `phone_number`, `email`, `role_id`, `created_at`, `updated_at`, `showroom_id`, `address`) VALUES (1, 'staff1', '123456', NULL, 'staff1@gmail.com', 1, '2024-09-13 18:34:26', '2024-09-13 18:34:32', 1, NULL), (3, 'admin', '$2a$12$rDsZc.jpyJw1LCm31DvKROeRtyifFxPQHD3DHNPcCEvZ1mjP0RB6y', NULL, 'admin@demo.com', 4, '2024-09-14 07:35:25', '2024-09-14 07:44:07', 1, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -436,14 +441,15 @@ COMMIT;
 DROP TABLE IF EXISTS `staff_roles`;
 CREATE TABLE `staff_roles`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
 
 -- ----------------------------
 -- Records of staff_roles
 -- ----------------------------
 BEGIN;
+INSERT INTO `staff_roles` (`id`, `name`) VALUES (1, 'Technical'), (2, 'Sale'), (3, 'Insurance'), (4, 'Administrator');
 COMMIT;
 
 -- ----------------------------

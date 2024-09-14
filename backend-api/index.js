@@ -10,13 +10,13 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(bodyParser.json({ limit: "30mb", extented: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
+app.use(bodyParser.json({limit: "30mb", extented: true}));
+app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors(
     {
         origin: [`http://localhost:8122`],
-        methods: ['GET', 'POST', 'PUT', 'DELETE' , "OPTIONS"],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', "OPTIONS"],
         credentials: true
     }
 ))
@@ -44,7 +44,7 @@ app.use(cors(
 //app.use("/auth", authRoutes);
 app.use('/api/management', managementRoutes);
 app.use((req, res) => {
-    res.status(404).json({ success: false, status: 404, message: "Not found" });
+    res.status(404).json({errors: {}, message: "Not found"});
 });
 
 const PORT = process.env.API_PORT || 6001;
@@ -56,4 +56,4 @@ try {
     console.error(error);
 }
 
-app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+app.listen(PORT, () => console.log(`Server Listening On Port: ${PORT}`));
