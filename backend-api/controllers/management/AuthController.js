@@ -1,64 +1,73 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import {validationResult} from "express-validator";
-import Customer from "../../models/Customer.js";
 import {handleErrors, handleValidationErrors} from "../../helper/Validation.js";
+import Staff from "../../models/Staff.js";
+import StaffRole from "../../models/StaffRole.js";
 
 export const register = async (req, res) => {
-    // try {
-    //     const { fullname, email, password } = req.body;
 
-    //     const salt = await bcrypt.genSalt();
-    //     const passwordHash = await bcrypt.hash(password, salt);
-
-    //     if (!fullname || !email || !password) {
-    //         return res.status(400).json({ error: 'Please provide all required fields' });
-    //     }
-
-    //     const existingUser = await User.findOne({ email });
-    //     if (existingUser) {
-    //         return res.status(400).json({ error: 'User with this email already exists' });
-    //     }
-
-    //     const newUser = new User({
-    //         fullname,
-    //         email,
-    //         password: passwordHash,
-    //     });
-    //     const user = await newUser.save();
-
-    //     return res.status(200).json(user);
-    // } catch (error) {
-    //     res.status(500).json({ error: 'Something went wrong' });
-    // }
 };
+export const verify_token = async (req, res) => {
+    let errors = {};
+    try{
+        const user = req.user;
+        const staff = await Staff.findOne({
+            where: {id: user.id},
+            include: [{
+                model: StaffRole,
+                as: 'role',
+                attributes: ['id', 'name'] // Select the necessary fields from StaffRole
+            }]
+        });
+        if (staff) {
+            const staffData = staff.toJSON();  // Convert to plain object
+            res.status(200).json(staffData);
+        } else {
+            errors.error = "Unauthorized";
+            res.status(401).json(handleErrors(errors), errors.error)
+        }
+    } catch (err) {
+        errors.error = err.message || "Exception error";
+        res.status(500).json(errors);
+    }
 
+}
 
 export const login = async (req, res) => {
+    let errors = {};
     try {
         // Check validation results
-        let errors = validationResult(req);
+        errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json(handleValidationErrors(errors));
         }
         const {email, password} = req.body;
         errors = {};
-        const customer = await Customer.findOne({where: {email: email}});
-        if (!customer) {
+        const staff = await Staff.findOne({
+            where: {email: email},
+            include: [{
+                model: StaffRole,
+                as: 'role',
+                attributes: ['id', 'name'] // Select the necessary fields from StaffRole
+            }]
+        });
+        if (!staff) {
             errors.email = "The provided credentials are incorrect";
             return res.status(422).json(handleErrors(errors, errors.email));
         }
-        const isMatch = await bcrypt.compare(password, customer.password);
+        const staffData = staff.toJSON();  // Convert to plain object
+        const isMatch = await bcrypt.compare(password, staffData.password);
         if (!isMatch) {
-            errors.email = "The provided credentials are incorrect";
+            errors.email = "The provided credentials are incorrect 1";
             return res.status(422).json(handleErrors(errors, errors.email));
         }
-        const customerData = customer.toJSON();  // Convert to plain object
-        const token = jwt.sign({id: customer.id}, process.env.JWT_SECRET);
-        delete customerData.password;
-        customerData.api_token = token
-        res.status(200).json(customerData);
+        const token = jwt.sign(staffData, process.env.JWT_SECRET);
+        delete staffData.password;
+        staffData.api_token = token
+        res.status(200).json(staffData);
     } catch (err) {
-        res.status(500).json({error: err.message});
+        errors.error = err.message || "Exception error";
+        res.status(500).json(errors);
     }
 };
