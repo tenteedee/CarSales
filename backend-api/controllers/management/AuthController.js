@@ -17,11 +17,14 @@ export const verify_token = async (req, res) => {
             include: [{
                 model: StaffRole,
                 as: 'role',
-                attributes: ['id', 'name'] // Select the necessary fields from StaffRole
+                attributes: ['id', 'name']
             }]
         });
         if (staff) {
-            const staffData = staff.toJSON();  // Convert to plain object
+            const staffData = staff.toJSON();
+            const token = jwt.sign(staffData, process.env.JWT_SECRET);
+            delete staffData.password;
+            staffData.api_token = token;
             res.status(200).json(staffData);
         } else {
             errors.error = "Unauthorized";
@@ -49,7 +52,7 @@ export const login = async (req, res) => {
             include: [{
                 model: StaffRole,
                 as: 'role',
-                attributes: ['id', 'name'] // Select the necessary fields from StaffRole
+                attributes: ['id', 'name']
             }]
         });
         if (!staff) {
