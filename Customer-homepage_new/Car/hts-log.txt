@@ -1,0 +1,11 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sat, 14 Sep 2024 20:18:56 at https://pro-theme.com/html/sokolcov/auto-club/home.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://pro-theme.com/html/sokolcov/auto-club/home.html -O1 "D:\Projects\VScode\Customer-homepage_new\Car" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+
+HTTrack Website Copier/3.49-2 mirror complete in 1 minutes 12 seconds : 209 links scanned, 208 files written (10306900 bytes overall) [8438700 bytes received at 117204 bytes/sec], 2538108 bytes transferred using HTTP compression in 63 files, ratio 24%, 52.2 requests per connection
+(No errors, 0 warnings, 0 messages)
