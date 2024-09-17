@@ -1,10 +1,18 @@
 import express from 'express';
-import customerRouter from './customerRoutes.js';
-const router = express.Router();
+import { validateLogin } from '../../helper/Validation.js';
+import { verifyToken } from '../../middleware/Auth.js';
+import {
+  login,
+  verify_token,
+} from '../../controllers/shop/AuthController.js';
 
-router.get('/', (req, res) => {
-  res.send('Main shop');
-});
-router.use('/customer', customerRouter);
+const authRouter = express.Router();  // This should be where you define your routes
+// Define routes in authRouter
+authRouter.post('/login', validateLogin, login);
+authRouter.post('/verify_token', verifyToken, verify_token);
+
+// Use the authRouter with /auth prefix
+const router = express.Router();
+router.use('/auth', authRouter);
 
 export default router;
