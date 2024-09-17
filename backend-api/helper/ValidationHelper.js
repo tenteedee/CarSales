@@ -6,7 +6,12 @@ export const validateLogin = [
         .isLength({min: 4})
         .withMessage('Password must be at least 4 characters long.'),
 ];
-
+export const validateRegister = [
+    // body('email').isEmail().withMessage('Please provide a valid email.'),
+    // body('password')
+    //     .isLength({min: 4})
+    //     .withMessage('Password must be at least 4 characters long.'),
+];
 export const handleValidationErrors = (errors, message) => {
     return {
         message: message || 'Validation errors',

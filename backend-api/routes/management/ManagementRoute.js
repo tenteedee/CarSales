@@ -1,6 +1,6 @@
 import express from 'express';
-import {verifyToken} from '../../middleware/Auth.js';
-import {validateLogin} from '../../helper/Validation.js';
+import {verifyStaffToken, verifyToken} from '../../middleware/Auth.js';
+import {validateLogin} from '../../helper/ValidationHelper.js';
 import {login, verify_token} from '../../controllers/management/AuthController.js';
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 const authRouter = express.Router();
 // Define routes in authRouter
 authRouter.post('/login', validateLogin, login);
-authRouter.post('/verify_token', verifyToken, verify_token);
+authRouter.post('/verify_token', verifyStaffToken([]), verify_token);
 // Use authRouter with /auth prefix
 router.use('/auth', authRouter);
 

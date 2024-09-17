@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {validationResult} from "express-validator";
-import {handleErrors, handleValidationErrors,} from "../../helper/Validation.js";
+import {handleErrors, handleValidationErrors,} from "../../helper/ValidationHelper.js";
 import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
 import {JWT_SECRET} from "../../config/Config.js";

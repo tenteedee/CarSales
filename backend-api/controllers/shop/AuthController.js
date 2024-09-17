@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {validationResult} from "express-validator";
-import {handleErrors, handleValidationErrors,} from "../../helper/Validation.js";
+import {handleErrors, handleValidationErrors,} from "../../helper/ValidationHelper.js";
 import Customer from "../../models/Customer.js";
 import {OAuth2Client} from "google-auth-library";
 import {GOOGLE_CLIENT_ID, JWT_SECRET} from "../../config/Config.js";
