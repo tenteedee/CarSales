@@ -33,7 +33,19 @@ export const loginWithGoogle = async (req, res) => {
     }
 };
 
+export const register = async (req, res) => {
+    let errors = {};
+    try {
+        errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json(handleValidationErrors(errors));
+        }
 
+    } catch (err) {
+        errors.error = err.message || "Server error";
+        res.status(500).json(errors);
+    }
+};
 export const login = async (req, res) => {
     let errors = {};
     try {
