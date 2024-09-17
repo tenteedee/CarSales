@@ -45,7 +45,7 @@ const Staff = db.define('staff', {
         defaultValue: DataTypes.NOW
     }
 }, {
-    tableName: 'staff',
+    tableName: 'staffs',
     timestamps: true,
     underscored: true,
     createdAt: 'created_at',

@@ -18,7 +18,12 @@ export const validateRegister = [
   check('dob', 'Date of birth is required').not().isEmpty(),
   check('dob', 'Invalid date').isDate({ format: 'DD-MM-YYYY' }),
 ];
-
+// export const validateRegister = [
+//   body('email').isEmail().withMessage('Please provide a valid email.'),
+//   body('password')
+//     .isLength({ min: 4 })
+//     .withMessage('Password must be at least 4 characters long.'),
+// ];
 export const handleValidationErrors = (errors, message) => {
   return {
     message: message || 'Validation errors',
