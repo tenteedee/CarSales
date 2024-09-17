@@ -4,6 +4,7 @@ import {validationResult} from "express-validator";
 import {handleErrors, handleValidationErrors,} from "../../helper/Validation.js";
 import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
+import {JWT_SECRET} from "../../config/Config.js";
 
 export const verify_token = async (req, res) => {
     let errors = {};
@@ -21,7 +22,7 @@ export const verify_token = async (req, res) => {
         });
         if (staff) {
             const staffData = staff.toJSON();
-            const token = jwt.sign(staffData, process.env.JWT_SECRET);
+            const token = jwt.sign(staffData, JWT_SECRET);
             delete staffData.password;
             staffData.api_token = token;
             res.status(200).json(staffData);
@@ -68,7 +69,7 @@ export const login = async (req, res) => {
             return res.status(422).json(handleErrors(errors, errors.email));
         }
 
-        const token = jwt.sign(staffData, process.env.JWT_SECRET);
+        const token = jwt.sign(staffData, JWT_SECRET);
         delete staffData.password;
         staffData.api_token = token;
         res.status(200).json(staffData);
