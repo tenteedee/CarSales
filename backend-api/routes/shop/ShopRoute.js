@@ -1,10 +1,7 @@
 import express from 'express';
 import {validateLogin, validateRegister} from '../../helper/ValidationHelper.js';
-import { verifyToken } from '../../middleware/Auth.js';
-import {
-  login, loginWithGoogle,
-  verify_token,
-} from '../../controllers/shop/AuthController.js';
+import {verifyToken} from '../../middleware/Auth.js';
+import {login, loginWithGoogle, register, verify_token} from '../../controllers/shop/AuthController.js';
 
 const authRouter = express.Router();  // This should be where you define your routes
 // Define routes in authRouter
