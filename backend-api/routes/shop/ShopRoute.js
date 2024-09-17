@@ -13,10 +13,10 @@ const authRouter = express.Router();
 authRouter.post('/login', validateLogin, login);
 authRouter.post('/verify_token', verifyToken, verify_token);
 authRouter.post('/google/callback', loginWithGoogle);
+authRouter.post('/register', validateRegister, register);
 
 // Use the authRouter with /auth prefix
 const router = express.Router();
 router.use('/auth', authRouter);
-router.post('/register', validateRegister, register);
 
 export default router;
