@@ -1,5 +1,5 @@
 import express from 'express';
-import {verifyToken} from '../../middleware/auth.js';
+import {verifyToken} from '../../middleware/Auth.js';
 import {validateLogin} from '../../helper/Validation.js';
 import {login, verify_token} from '../../controllers/management/AuthController.js';
 
