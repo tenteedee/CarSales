@@ -4,8 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import db from './config/Database.js';
-import shopRoutes from './routes/shop/index.js';
-import staffRoutes from './routes/management/index.js';
+import shopRoutes from './routes/shop/ShopRoute.js';
+import staffRoutes from './routes/management/ManagementRoute.js';
 
 dotenv.config();
 const app = express();

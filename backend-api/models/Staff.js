@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import {DataTypes} from 'sequelize';
 import db from '../config/Database.js';
 import StaffRole from './StaffRole.js'; // Import the StaffRole model
 
@@ -53,6 +53,6 @@ const Staff = db.define('staff', {
 });
 
 // Define the relationship with StaffRole
-Staff.belongsTo(StaffRole, { foreignKey: 'role_id', as: 'role' });
+Staff.belongsTo(StaffRole, {foreignKey: 'role_id', as: 'role'});
 
 export default Staff;
