@@ -1,14 +1,19 @@
 import express from 'express';
-import {verifyStaffToken} from '../../middleware/Auth.js';
-import {validateLogin} from '../../helper/ValidationHelper.js';
-import {login, verify_token} from '../../controllers/management/AuthController.js';
-import {query} from "../../controllers/management/UserController.js";
+import { verifyStaffToken } from '../../middleware/Auth.js';
+import { validateLogin } from '../../helper/ValidationHelper.js';
+import {
+  login,
+  verify_token,
+} from '../../controllers/management/AuthController.js';
+import { query } from '../../controllers/management/UserController.js';
+import { getSetting } from '../../controllers/management/SettingController.js';
+import route from '../shop/AuthRoute.js';
 
 const router = express.Router();
 
 // Define a base route for management API
 router.get('/', (req, res) => {
-    res.send('worked management api');
+  res.send('worked management api');
 });
 
 // Define authRouter for authentication routes
@@ -22,6 +27,8 @@ router.use('/auth', authRouter);
 // Define users for authentication routes
 const userRouter = express.Router();
 userRouter.get('/query', query);
-router.use('/users', verifyStaffToken(["Director"]), userRouter);
+router.use('/users', verifyStaffToken(['Director']), userRouter);
+
+router.get('/setting', getSetting);
 
 export default router;
