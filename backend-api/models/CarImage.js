@@ -1,37 +1,21 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 
-const Customer = db.define(
-  'customer',
+const CarImage = db.define(
+  'car_image',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    fullname: {
-      type: DataTypes.STRING(255),
+    car_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    password: {
+    image_url: {
       type: DataTypes.STRING(255),
       allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    phone_number: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    address: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    date_of_birth: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -43,7 +27,7 @@ const Customer = db.define(
     },
   },
   {
-    tableName: 'customers',
+    tableName: 'car_images',
     timestamps: true,
     underscored: true,
     createdAt: 'created_at',
@@ -51,4 +35,4 @@ const Customer = db.define(
   }
 );
 
-export default Customer;
+export default CarImage;

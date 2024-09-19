@@ -1,36 +1,37 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
+import CarImage from './CarImage.js';
 
-const Customer = db.define(
-  'customer',
+const Car = db.define(
+  'car',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    fullname: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    email: {
+    model: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    phone_number: {
-      type: DataTypes.STRING(20),
+    brand: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    type: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.DECIMAL(15, 2),
       allowNull: true,
     },
-    address: {
-      type: DataTypes.STRING(255),
+    description: {
+      type: DataTypes.TEXT(1000),
       allowNull: true,
     },
-    date_of_birth: {
-      type: DataTypes.DATE,
+    stock: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     created_at: {
@@ -43,7 +44,7 @@ const Customer = db.define(
     },
   },
   {
-    tableName: 'customers',
+    tableName: 'cars',
     timestamps: true,
     underscored: true,
     createdAt: 'created_at',
@@ -51,4 +52,14 @@ const Customer = db.define(
   }
 );
 
-export default Customer;
+Car.hasMany(CarImage, {
+  foreignKey: 'car_id',
+  as: 'images',
+});
+
+CarImage.belongsTo(Car, {
+  foreignKey: 'car_id',
+  as: 'car',
+});
+
+export default Car;
