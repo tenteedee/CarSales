@@ -42,13 +42,11 @@ export const verify_token = async (req, res) => {
 export const login = async (req, res) => {
   let errors = {};
   try {
-    // Check validation results
     errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json(handleValidationErrors(errors));
     }
     const { email, password } = req.body;
-    errors = {};
     const staff = await Staff.findOne({
       where: { email: email },
       include: [
@@ -60,7 +58,7 @@ export const login = async (req, res) => {
       ],
     });
     if (!staff) {
-      errors.email = 'The provided credentials are incorrect';
+      errors.email = 'Email is not registered';
       return res.status(422).json(handleErrors(errors, errors.email));
     }
 
@@ -68,8 +66,8 @@ export const login = async (req, res) => {
     //const isMatch = password == staffData.password;
     const isMatch = await bcrypt.compare(password, staffData.password);
     if (!isMatch) {
-      errors.email = 'The provided credentials are incorrect';
-      return res.status(422).json(handleErrors(errors, errors.email));
+      errors.password = 'Password is incorrect';
+      return res.status(422).json(handleErrors(errors, errors.password));
     }
 
     const token = jwt.sign(staffData, JWT_SECRET);

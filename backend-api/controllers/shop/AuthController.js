@@ -43,19 +43,23 @@ export const login = async (req, res) => {
     }
 
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
     const customer = await Customer.findOne({ where: { email: email } });
 
     if (!customer) {
-      errors.email = 'The provided credentials are incorrect';
+      errors.email = 'Email is not registered';
       return res.status(422).json(handleErrors(errors, errors.email));
     }
 
     const customerData = customer.toJSON();
-    const isMatch = password == customerData.password;
-    //const isMatch = await bcrypt.compare(password, customer.password);
+    //const isMatch = password == customerData.password;
+    const isMatch = await bcrypt.compare(password, customer.password);
     if (!isMatch) {
-      errors.email = 'The provided credentials are incorrect';
-      return res.status(422).json(handleErrors(errors, errors.email));
+      errors.password = 'Password is incorrect';
+      return res.status(422).json(handleErrors(errors, errors.password));
     }
 
     const token = jwt.sign({ id: customer.id }, JWT_SECRET, {
