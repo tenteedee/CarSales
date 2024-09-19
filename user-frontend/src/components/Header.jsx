@@ -1,5 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 const Header = () => {
+    const token = useSelector((state) => state.auth.token);
     return (
         <>
             <header className="b-topBar">
@@ -20,34 +24,33 @@ const Header = () => {
                                 1-800- 624-5462
                             </div>
                         </div>
-                        <div className="col-md-4 col-xs-6">
-                            <nav className="b-topBar__nav">
-                                <ul>
-                                    <li>
-                                        <a href="#">Cart</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Register</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Sign in</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div className="col-md-2 col-xs-6">
-                            <div className="b-topBar__lang">
-                                <div className="dropdown">
-                                    <a
-                                        href="#"
-                                        className="dropdown-toggle"
-                                        data-toggle="dropdown"
-                                    >
-                                        Language
-                                    </a>
+                        <div className="col-md-2 col-xs-6"></div>
+                        {!token ? (
+                            <>
+                                <div className="col-md-4 col-xs-6">
+                                    <nav className="b-topBar__nav">
+                                        <ul>
+                                            <li>
+                                                <Link to={'/register'}>
+                                                    Register
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/login'}>Login</Link>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
-                            </div>
-                        </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="col-md-4 col-xs-6">
+                                    <nav className="b-topBar__nav">
+                                        <Link to={'/profile'} />
+                                    </nav>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </header>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
-import Home from './pages/Jobs/Home';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,7 +14,6 @@ import { fetchConfig } from './reduxStore/configSlice';
 function App() {
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
-    const config = useSelector((state) => state.config.config);
     useEffect(() => {
         // Fetch config from backend when the component mounts
         dispatch(fetchConfig());
