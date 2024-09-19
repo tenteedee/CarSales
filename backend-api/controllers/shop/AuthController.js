@@ -26,7 +26,6 @@ export const loginWithGoogle = async (req, res) => {
             idToken: token,
             audience: GOOGLE_CLIENT_ID,  // Verify the audience matches your Google client ID
         });
-
         const {email, name} = ticket.getPayload();
     } catch (e) {
 
