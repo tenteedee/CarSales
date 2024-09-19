@@ -14,7 +14,7 @@ const Setting = db.define(
     },
   },
   {
-    tableName: 'setting',
+    tableName: 'settings',
     timestamps: true,
     underscored: true,
   }
