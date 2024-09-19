@@ -76,7 +76,6 @@ const Navbar = () => {
                                             to="/"
                                         >
                                             Home{' '}
-                                            <span className="fa fa-caret-down"></span>
                                         </Link>
                                     </li>
                                 </ul>

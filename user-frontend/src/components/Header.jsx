@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+    const config = useSelector((state) => state.config.config);
     const token = useSelector((state) => state.auth.token);
     return (
         <>
@@ -15,13 +16,13 @@ const Header = () => {
                         <div className="col-md-4 col-xs-6">
                             <div className="b-topBar__addr">
                                 <span className="fa fa-map-marker"></span>
-                                202 W 7TH ST, LOS ANGELES, CA 90014
+                                {config?.address}
                             </div>
                         </div>
                         <div className="col-md-2 col-xs-6">
                             <div className="b-topBar__tel">
                                 <span className="fa fa-phone"></span>
-                                1-800- 624-5462
+                                {config?.phone}
                             </div>
                         </div>
                         <div className="col-md-2 col-xs-6"></div>

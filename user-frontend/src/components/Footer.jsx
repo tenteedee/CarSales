@@ -19,10 +19,7 @@ const Footer = () => {
                                         </a>
                                     </h3>
                                 </div>
-                                <p>
-                                    &copy; 2015 Designed by Templines &amp;
-                                    Powered by WordPress.
-                                </p>
+                                <p>&copy; 2024 By G4</p>
                             </div>
                         </div>
                         <div className="col-xs-8">

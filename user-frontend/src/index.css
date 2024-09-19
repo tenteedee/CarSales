@@ -1,4 +1,5 @@
 /* FONTS */
+
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,cyrillic');
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,700');
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
@@ -7,6 +8,7 @@
 /* MAIN CSS */
 
 @import url('./assets/css/bootstrap.css');
+@import url('./assets/css/font-awesome.min.css');
 @import url('./assets/css/theme.css');
 @import url('./assets/css/home.css');
 @import url('./assets/css/home-2.css');
