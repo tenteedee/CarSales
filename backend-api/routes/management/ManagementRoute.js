@@ -6,8 +6,6 @@ import {
   verify_token,
 } from '../../controllers/management/AuthController.js';
 import { query } from '../../controllers/management/UserController.js';
-import { getSetting } from '../../controllers/management/SettingController.js';
-import route from '../shop/AuthRoute.js';
 
 const router = express.Router();
 
@@ -28,7 +26,4 @@ router.use('/auth', authRouter);
 const userRouter = express.Router();
 userRouter.get('/query', query);
 router.use('/users', verifyStaffToken(['Director']), userRouter);
-
-router.get('/setting', getSetting);
-
 export default router;

@@ -1,18 +1,18 @@
 import Setting from '../../models/Setting.js';
 
-export const getSetting = async (req, res) => {
+export const getAllSettings = async (req, res) => {
     try {
-        const key = req.params.key;
-        const setting = await Setting.findByPk(key, {
+        // Lấy tất cả các cài đặt
+        const settings = await Setting.findAll({
             attributes: ['key', 'value'],
         });
-        if (!setting) {
-            return res.status(404).json({
-                message: 'Setting is not available',
-            });
-        }
-        res.status(200).json(setting);
+        const settingsObject = {};
+        settings.forEach(setting => {
+            settingsObject[setting.key] = setting.value;
+        });
+        res.status(200).json(settingsObject);
     } catch (err) {
-        res.status(500).json({error: err.message || 'Exception error'});
+        res.status(500).json({ error: err.message || 'Exception error' });
     }
 };
+
