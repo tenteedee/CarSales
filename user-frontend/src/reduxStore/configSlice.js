@@ -3,7 +3,7 @@ import axios from '../axios';
 
 // Async thunk to fetch configuration from backend
 export const fetchConfig = createAsyncThunk('config/fetchConfig', async () => {
-    const response = await axios.get('api/shop/settings'); // Replace with your actual URL
+    const response = await axios.get('settings'); // Replace with your actual URL
     return response.data; // Assuming the response contains the config object
 });
 

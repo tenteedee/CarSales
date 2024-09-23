@@ -1,40 +1,34 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import { useSelector, useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import { fetchConfig } from './reduxStore/configSlice';
+
 
 function App() {
     const token = useSelector((state) => state.auth.token);
-    const dispatch = useDispatch();
-    useEffect(() => {
-        // Fetch config from backend when the component mounts
-        dispatch(fetchConfig());
-    }, [dispatch]);
 
     return (
         <div>
             <Header />
             <Navbar />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path='/' element={<Home />} />
                 <Route
-                    path="/login"
-                    element={!token ? <Login /> : <Navigate to="/" />}
+                    path='/login'
+                    element={!token ? <Login /> : <Navigate to='/' />}
                 />
                 <Route
-                    path="/signup"
-                    element={!token ? <Signup /> : <Navigate to="/" />}
+                    path='/signup'
+                    element={!token ? <Signup /> : <Navigate to='/' />}
                 />
                 {/* <Route path="/job/:id" element={!token ? <Navigate to='/login' /> : <DetailJob />} /> */}
-                <Route path="*" element={<NotFound />} />
+                <Route path='*' element={<NotFound />} />
             </Routes>
             <Footer />
         </div>
@@ -43,9 +37,9 @@ function App() {
 
 const NotFound = () => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-black bg-gray-100">
-            <h1 className="text-6xl font-bold">404</h1>
-            <h2 className="text-2xl">Page Not Found</h2>
+        <div className='flex flex-col items-center justify-center min-h-screen text-black bg-gray-100'>
+            <h1 className='text-6xl font-bold'>404</h1>
+            <h2 className='text-2xl'>Page Not Found</h2>
         </div>
     );
 };

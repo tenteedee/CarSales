@@ -5,7 +5,6 @@ const initialState = {
     token: null,
     allUsers: []
 }
-
 export const authSlice = createSlice({
     name: "auth",
     initialState,
