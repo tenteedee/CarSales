@@ -23,9 +23,9 @@ const SidebarMenuMain = () => {
       </div>
 
       <SidebarMenuItem
-        to='/users'
+        to='/staffs'
         icon='abstract-28'
-        title='User management'
+        title='Staff management'
         fontIcon='bi-layers'
       />
     </>

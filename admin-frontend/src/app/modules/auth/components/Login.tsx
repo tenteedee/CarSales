@@ -22,14 +22,8 @@ const loginSchema = Yup.object().shape({
 
 const initialValues = {
   email: 'admin@demo.com',
-  password: 'demo',
+  password: '122333',
 }
-
-/*
-  Formik+YUP+Typescript:
-  https://jaredpalmer.com/formik/docs/tutorial#getfieldprops
-  https://medium.com/@maurice.de.beijer/yup-validation-and-typescript-and-formik-6c342578a20e
-*/
 
 export function Login() {
   const [loading, setLoading] = useState(false)
@@ -208,13 +202,6 @@ export function Login() {
         </button>
       </div>
       {/* end::Action */}
-
-      <div className='text-gray-500 text-center fw-semibold fs-6'>
-        Not a Member yet?{' '}
-        <Link to='/auth/registration' className='link-primary'>
-          Sign up
-        </Link>
-      </div>
     </form>
   )
 }
