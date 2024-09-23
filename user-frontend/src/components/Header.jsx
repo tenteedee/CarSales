@@ -10,12 +10,14 @@ const Header = () => {
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true); // Add loading state
+    const [isOpen, setIsOpen] = useState(false); // Add state for dropdown open/close
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true); // Stop loading when done
             await dispatch(fetchConfig());
         };
-        fetchData().then(r => {
+        fetchData().then(() => {
             setLoading(false); // Stop loading when done
         });
     }, [dispatch]);
@@ -28,6 +30,11 @@ const Header = () => {
             }),
         );
     };
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen); // Toggle dropdown state
+    };
+
     // Show loading screen if still loading
     if (loading) {
         return <Loading />;
@@ -60,15 +67,16 @@ const Header = () => {
                                     <nav className='b-topBar__nav'>
                                         <ul>
                                             <li>
-                                                <Link to={'/register'}>
-                                                    Register
-                                                </Link>
-                                            </li>
-                                            <li>
                                                 <Link to={'/login'}>Login</Link>
                                             </li>
-
+                                            <li>
+                                                <Link to={'/signup'}>Register</Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/cart'}>Cart</Link>
+                                            </li>
                                         </ul>
+
                                     </nav>
                                 </div>
                             </>
@@ -83,10 +91,9 @@ const Header = () => {
                                             <li>
                                                 <Link to={'/profile'}>Cá nhân</Link>
                                             </li>
-
                                         </ul>
-                                    </nav>
 
+                                    </nav>
                                 </div>
                             </>
                         )}
