@@ -42,10 +42,19 @@ const staffsColumns: ReadonlyArray<Column<Staff>> = [
     },
     {
         Header: (props) => <TableHeader tableProps={props} title='Role'/>,
-        id: 'role.name',
+        id: 'role_id',
         Cell: ({...props}) => (
             <div className='text-primary font-weight-bold mt-1'>
                 {props.data[props.row.index].role.name}
+            </div>
+        ),
+    },
+    {
+        Header: (props) => <TableHeader tableProps={props} title='Showroom'/>,
+        id: 'showroom_id',
+        Cell: ({...props}) => (
+            <div className='text-success font-weight-bold mt-1'>
+                {props.data[props.row.index].showroom.name}
             </div>
         ),
     },

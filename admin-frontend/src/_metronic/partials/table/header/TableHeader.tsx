@@ -17,11 +17,10 @@ const TableHeader: FC<Props> = ({className, title, tableProps, sortable = true})
         return state.sort && state.sort === id
     }, [state, id])
     const order: 'asc' | 'desc' | undefined = useMemo(() => state.order, [state])
-
     const sortColumn = () => {
         if (!sortable) return
         // avoid sorting for these columns
-        if (id === 'actions' || id === 'selection') {
+        if (id === 'actions' || id === 'selection' ) {
             return
         }
 

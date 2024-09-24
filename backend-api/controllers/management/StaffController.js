@@ -1,4 +1,5 @@
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
+import Showroom from "../../models/Showroom.js";
 import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
 import { Op } from "sequelize"; // Sequelize operators
@@ -39,6 +40,11 @@ export const queryStaff = async (req, res) => {
           model: StaffRole,
           as: "role",
           attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["name"],
         },
       ],
       order: [[sortColumn, sortOrder.toUpperCase()]], // Sorting logic
@@ -83,6 +89,6 @@ export const queryStaff = async (req, res) => {
       data: staffList,
     });
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: error || "Something went wrong" });
   }
 };
