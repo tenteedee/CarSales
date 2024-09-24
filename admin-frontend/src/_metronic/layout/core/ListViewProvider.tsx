@@ -1,36 +1,30 @@
 import {FC, useState, createContext, useContext, useMemo} from 'react'
-
-import {useQueryResponse, useQueryResponseData} from './QueryResponseProvider'
 import {
-    calculatedGroupingIsDisabled,
-    calculateIsAllDataSelected, groupingOnSelect,
-    groupingOnSelectAll,
     ID,
+    calculatedGroupingIsDisabled,
+    calculateIsAllDataSelected,
+    groupingOnSelect,
     initialListView,
     ListViewContextProps,
-    WithChildren
-} from "../../helpers";
+    groupingOnSelectAll,
+    WithChildren,
+} from '../../helpers'
+import {useQueryResponse, useQueryResponseData} from './QueryResponseProvider'
+import {QueryResponse} from "../../../app/utils/model/models";
 
 const ListViewContext = createContext<ListViewContextProps>(initialListView)
 
-const ListViewProvider: FC<WithChildren> = ({children}) => {
+type Props = WithChildren & {
+    onDelete?: (ids: Array<ID>) => Promise<QueryResponse>
+}
+
+const ListViewProvider: FC<Props> = ({children, onDelete}) => {
     const [selected, setSelected] = useState<Array<ID>>(initialListView.selected)
     const [itemIdForUpdate, setItemIdForUpdate] = useState<ID>(initialListView.itemIdForUpdate)
     const {isLoading} = useQueryResponse()
-    const data = useQueryResponseData()
+    const data = useQueryResponseData<any>()
     const disabled = useMemo(() => calculatedGroupingIsDisabled(isLoading, data), [isLoading, data])
     const isAllSelected = useMemo(() => calculateIsAllDataSelected(data, selected), [data, selected])
-    // Function to handle delete with confirmation
-    const onDelete = (): Promise<void> => {
-        return new Promise((resolve, reject) => {
-            // Your delete logic here
-            // If successful, call resolve()
-            resolve();
-
-            // If there's an error, call reject() with an error
-            // reject(new Error('Something went wrong'));
-        });
-    };
 
     return (
         <ListViewContext.Provider
@@ -44,12 +38,12 @@ const ListViewProvider: FC<WithChildren> = ({children}) => {
                     groupingOnSelect(id, selected, setSelected)
                 },
                 onSelectAll: () => {
-                    //groupingOnSelectAll(isAllSelected, setSelected, data)
+                    groupingOnSelectAll<any>(isAllSelected, setSelected, data)
                 },
-                onDelete: onDelete,
                 clearSelected: () => {
                     setSelected([])
                 },
+                onDelete: () => onDelete?.(selected),
             }}
         >
             {children}

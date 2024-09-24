@@ -2,10 +2,10 @@ import {Route, Routes, Outlet} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import { StaffsListWrapper } from './Staffs'
 
-const usersBreadcrumbs: Array<PageLink> = [
+const staffsBreadcrumbs: Array<PageLink> = [
     {
-        title: 'User Management',
-        path: '/users',
+        title: 'Staff Management',
+        path: '/staff',
         isSeparator: false,
         isActive: false,
     },
@@ -25,7 +25,7 @@ const StaffsPage = () => {
                     index
                     element={
                         <>
-                            <PageTitle breadcrumbs={usersBreadcrumbs}>Staffs list</PageTitle>
+                            <PageTitle breadcrumbs={staffsBreadcrumbs}>Staffs list</PageTitle>
                             <StaffsListWrapper />
                         </>
                     }

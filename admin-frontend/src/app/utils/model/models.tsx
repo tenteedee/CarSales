@@ -4,3 +4,8 @@ export type Filters = {
     options?: any,
     type ?: string
 }
+export type QueryResponse = {
+    success: boolean
+    message: string
+    data?: any
+}

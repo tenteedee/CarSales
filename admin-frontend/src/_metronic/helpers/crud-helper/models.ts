@@ -62,7 +62,7 @@ export type ListViewContextProps = {
   selected: Array<ID>
   onSelect: (selectedId: ID) => void
   onSelectAll: () => void
-  onDelete: () => Promise<void>
+  onDelete: () => Promise<void> | void // Handle cases where it might not return a Promise
   clearSelected: () => void
   // NULL => (CREATION MODE) | MODAL IS OPENED
   // NUMBER => (EDIT MODE) | MODAL IS OPENED
@@ -77,7 +77,7 @@ export const initialListView: ListViewContextProps = {
   selected: [],
   onSelect: () => {},
   onSelectAll: () => {},
-  onDelete: () => Promise.resolve(), // Correctly returning a resolved Promise
+  onDelete:  async () => Promise.resolve(), // Return a resolved Promise for the initial state
   clearSelected: () => {},
   setItemIdForUpdate: () => {},
   isAllSelected: false,
