@@ -5,7 +5,7 @@ import { StaffsListWrapper } from './Staffs'
 const staffsBreadcrumbs: Array<PageLink> = [
     {
         title: 'Staff Management',
-        path: '/staff',
+        path: '/staffs',
         isSeparator: false,
         isActive: false,
     },
