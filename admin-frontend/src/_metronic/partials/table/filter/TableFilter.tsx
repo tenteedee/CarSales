@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {useFormik} from 'formik'
 import {Confirm} from 'notiflix'
 import {FC, useEffect} from 'react'
@@ -49,10 +48,12 @@ const TableFilter: FC<Props> = ({filters}) => {
 
     const onDeleteClick = () => {
         Confirm.show('Xác nhận', 'Bạn có chắc muốn xóa các bản ghi này không?', 'Yes', 'No', () => {
-            onDelete()?.finally(() => {
-                refetch()
-                clearSelected()
-            })
+            if (onDelete) {
+                onDelete()?.finally(() => {
+                    refetch()
+                    clearSelected()
+                })
+            }
         })
     }
 

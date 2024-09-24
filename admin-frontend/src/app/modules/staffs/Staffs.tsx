@@ -5,8 +5,8 @@ import {staffFilters} from "./components/filters/StaffFilter";
 import {TableFilter} from "../../../_metronic/partials/table/filter/TableFilter";
 import {KTCard} from "../../../_metronic/helpers";
 import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
-import {FC} from "react";
 import {Table} from "../../../_metronic/partials/table/Table";
+import { ListViewProvider } from "../../../_metronic/layout/core/ListViewProvider";
 
 const Staffs = () => {
     return (
@@ -18,12 +18,14 @@ const Staffs = () => {
         </>
     )
 }
-const StaffsListWrapper: FC = () => {
+const StaffsListWrapper = () => {
     return (
         <>
             <QueryRequestProvider>
                 <QueryResponseProvider id={"staffs"} request={getStaffs}>
-                    <Staffs/>
+                    <ListViewProvider>
+                        <Staffs/>
+                    </ListViewProvider>
                 </QueryResponseProvider>
             </QueryRequestProvider>
         </>

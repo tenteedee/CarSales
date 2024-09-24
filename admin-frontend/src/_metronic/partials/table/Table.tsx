@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 import { useTable, ColumnInstance, Row, Column } from 'react-table'
-import { KTCardBody } from '../../helpers';
+
+import { TableHeaderColumn } from './header/TableHeaderColumn'
+import { TableLoading } from './loading/TableLoading'
+import { TablePagination } from './pagination/TablePagination'
+import { TableRow } from './row/TableRow'
 import {useQueryResponseData, useQueryResponseLoading} from "../../layout/core/QueryResponseProvider";
-import { TableHeaderColumn } from './header/TableHeaderColumn';
-import { TableLoading } from './loading/TableLoading';
-import { TablePagination } from './pagination/TablePagination';
-import { TableRow } from './row/TableRow';
+import { KTCardBody } from '../../helpers'
 
 type Props<T extends object> = {
     columns: ReadonlyArray<Column<T>>
@@ -14,8 +15,10 @@ type Props<T extends object> = {
 
 function Table<T extends object>({ columns, id }: Props<T>) {
     const responseData = useQueryResponseData<T>()
+    // Log response data to inspect the structure
     const isLoading = useQueryResponseLoading()
-    const data = useMemo(() => responseData, [responseData])
+    const data = useMemo(() => responseData || [], [responseData]);
+    // Log the extracted data to verify it's an array
     const tableColumns = useMemo(() => columns, [columns])
     const { getTableProps, getTableBodyProps, headers, rows, prepareRow, footerGroups } = useTable<T>({
         columns: tableColumns,

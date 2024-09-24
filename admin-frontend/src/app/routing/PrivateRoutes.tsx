@@ -1,5 +1,5 @@
-import { FC, Suspense} from 'react'
-import {Route, Routes, Navigate} from 'react-router-dom'
+import {FC, Suspense} from 'react'
+import {Navigate, Route, Routes} from 'react-router-dom'
 import {MasterLayout} from '../../_metronic/layout/MasterLayout'
 import TopBarProgress from 'react-topbar-progress-indicator'
 import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
@@ -11,42 +11,42 @@ import StaffsPage from "../modules/staffs/StaffsPage";
 
 const PrivateRoutes = () => {
 
-  return (
-    <Routes>
-      <Route element={<MasterLayout />}>
-        {/* Redirect to Dashboard after success login/registartion */}
-        <Route path='auth/*' element={<Navigate to='/dashboard' />} />
-        {/* Pages */}
-        <Route path='/' element={<DashboardWrapper />} />
-        <Route path='dashboard' element={<DashboardWrapper />} />
-        <Route path='builder' element={<BuilderPageWrapper />} />
-        <Route path='menu-test' element={<MenuTestPage />} />
-        {/* Lazy Modules */}
-        <Route
-            path='staffs/*'
-            element={
-              <SuspensedView>
-                <StaffsPage />
-              </SuspensedView>
-            }
-        />
-        {/* Page Not Found */}
-        <Route path='*' element={<Navigate to='/error/404' />} />
-      </Route>
-    </Routes>
-  )
+    return (
+        <Routes>
+            <Route element={<MasterLayout/>}>
+                {/* Redirect to Dashboard after success login/registartion */}
+                <Route path='auth/*' element={<Navigate to='/dashboard'/>}/>
+                {/* Pages */}
+                <Route path='/' element={<DashboardWrapper/>}/>
+                <Route path='dashboard' element={<DashboardWrapper/>}/>
+                <Route path='builder' element={<BuilderPageWrapper/>}/>
+                <Route path='menu-test' element={<MenuTestPage/>}/>
+                {/* Lazy Modules */}
+                <Route
+                    path='staffs/*'
+                    element={
+                        <SuspensedView>
+                            <StaffsPage/>
+                        </SuspensedView>
+                    }
+                />
+                {/* Page Not Found */}
+                <Route path='*' element={<Navigate to='/error/404'/>}/>
+            </Route>
+        </Routes>
+    )
 }
 
 const SuspensedView: FC<WithChildren> = ({children}) => {
-  const baseColor = getCSSVariableValue('--bs-primary')
-  TopBarProgress.config({
-    barColors: {
-      '0': baseColor,
-    },
-    barThickness: 1,
-    shadowBlur: 5,
-  })
-  return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
+    const baseColor = getCSSVariableValue('--bs-primary')
+    TopBarProgress.config({
+        barColors: {
+            '0': baseColor,
+        },
+        barThickness: 1,
+        shadowBlur: 5,
+    })
+    return <Suspense fallback={<TopBarProgress/>}>{children}</Suspense>
 }
 
 export {PrivateRoutes}

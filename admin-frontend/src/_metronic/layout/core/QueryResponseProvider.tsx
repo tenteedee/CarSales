@@ -54,7 +54,6 @@ function useQueryResponseData<T>(): Array<T> {
     if (!response) {
         return []
     }
-
     return response?.data || []
 }
 
