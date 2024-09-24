@@ -16,7 +16,6 @@ const TableFilter: FC<Props> = ({filters}) => {
     const {updateState} = useQueryRequest()
     const {refetch} = useQueryResponse()
     const {selected, onDelete, clearSelected} = useListView()
-    //const {optionLabels} = useItem()
 
     const initialValues = (filters: Array<Filters>): any => {
         let object: object = {}
@@ -91,8 +90,9 @@ const TableFilter: FC<Props> = ({filters}) => {
                                                         value: -1,
                                                         label: `Chọn ${filter.label.toLowerCase()}`,
                                                     }}
-                                                    onChange={(newValue: any) =>
+                                                    onChange={(newValue: any) => {
                                                         formik.setFieldValue(filter.name, newValue.value)
+                                                        }
                                                     }
                                                 ></SelectField>
                                             </div>

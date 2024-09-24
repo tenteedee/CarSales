@@ -3,22 +3,42 @@ import {Filters} from "../../../../utils/model/models";
 export const staffFilters: Array<Filters> = [
     {
         name: 'id',
-        label: 'Mã nhân viên',
+        label: 'Staff ID',
     },
-
+    {
+        name: 'fullname',
+        label: 'Name',
+    },
+    {
+        name: 'email',
+        label: 'Email',
+    },
+    {
+        name: 'phone_number',
+        label: 'Phone',
+    },
     // {
-    //     name: 'status',
-    //     label: 'Trạng thái',
+    //     name: 'role',
+    //     label: 'Role',
     //     type: 'select',
     //     options: [
     //         {
-    //             value: 0,
-    //             label: 'Đang chờ',
+    //             value: 1,
+    //             label: 'Technical',
     //         },
     //         {
-    //             value: 1,
-    //             label: 'Thành công',
+    //             value: 2,
+    //             label: 'Sale',
     //         },
+    //         {
+    //             value: 3,
+    //             label: "Insurance"
+    //         },
+    //         {
+    //             value: 4,
+    //             label: "Director"
+    //         }
     //     ],
     // },
+
 ]
