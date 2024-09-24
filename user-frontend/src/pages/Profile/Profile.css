@@ -1,0 +1,27 @@
+.user-profile-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    height: 100vh;
+}
+
+.profile-info {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.password-section {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+input {
+    width: 500px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

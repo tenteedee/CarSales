@@ -28,6 +28,7 @@ const Header = () => {
     }, [dispatch]);
 
     const logOut = async () => {
+        localStorage.removeItem('token');
         dispatch(
             setLogin({
                 user: {},
@@ -66,7 +67,7 @@ const Header = () => {
                             <nav className="b-topBar__nav">
                                 <ul style={{ display: 'flex', gap: '10px' }}>
                                     <li><Link to={'/login'}>Login</Link></li>
-                                    <li><Link to={'/signup'}>Register</Link></li>
+                                    <li><Link to={'/register'}>Register</Link></li>
                                     <li><Link to={'/cart'}>Cart</Link></li>
                                 </ul>
                             </nav>

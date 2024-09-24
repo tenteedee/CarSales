@@ -33,6 +33,7 @@ function Login() {
         setIsLoading(true);
         try {
             const response = await axios.post('auth/login', { email, password });
+            localStorage.setItem('token', response.data.token);
             dispatch(
                 setLogin({
                     user: response.data.user,
@@ -41,15 +42,13 @@ function Login() {
             );
             navigate('/');
         } catch (error) {
-            // Check if there are validation errors in the response
             if (error.response && error.response.data.errors) {
                 const validationErrors = error.response.data.errors;
-                // Handle password validation error, for example:
                 if (validationErrors.password) {
-                    setError(validationErrors.password); // Get the first error for password
+                    setError(validationErrors.password);
                 }
                 if (validationErrors.email) {
-                    setError(validationErrors.email); // Get the first error for password
+                    setError(validationErrors.email);
                 }
             } else {
                 setError(error.response?.data.error || 'Something went wrong');
@@ -104,10 +103,10 @@ function Login() {
                     </button>
                 </form>
 
-                <div className="signup-redirect">
+                <div className="redirect">
                     <span>Don't have an account? </span>
-                    <Link to="/signup" className="signup-link">
-                        Sign up
+                    <Link to="/register" className="register-link">
+                        Register
                     </Link>
                 </div>
             </div>
