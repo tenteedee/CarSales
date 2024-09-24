@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import UserProfile from './pages/Profile';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
@@ -25,6 +26,10 @@ function App() {
                 <Route
                     path="/register"
                     element={!token ? <Register /> : <Navigate to="/" />}
+                />
+                <Route
+                    path="/profile"
+                    element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
                 {/* <Route path="/job/:id" element={!token ? <Navigate to='/login' /> : <DetailJob />} /> */}
                 <Route path="*" element={<NotFound />} />
