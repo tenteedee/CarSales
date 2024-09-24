@@ -6,7 +6,4 @@ export type Filters = {
     options?: any,
     type ?: string
 }
-export type Res = {
-    id?: ID,
-}
-export type QueryResponse = Response<Array<Res>>;
+export type QueryResponse = Response<Array<any>>;
