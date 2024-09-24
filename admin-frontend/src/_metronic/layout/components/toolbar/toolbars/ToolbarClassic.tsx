@@ -43,11 +43,6 @@ const ToolbarClassic = () => {
         </div>
       )}
 
-      {config.app?.toolbar?.secondaryButton && (
-        <a href='#' className='btn btn-sm btn-flex btn-light fw-bold'>
-          Filter
-        </a>
-      )}
 
       {config.app?.toolbar?.primaryButton && (
         <a

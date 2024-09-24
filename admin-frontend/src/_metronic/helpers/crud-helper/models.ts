@@ -1,4 +1,5 @@
 import {Dispatch, SetStateAction} from 'react'
+import {QueryResponse} from "../../../app/utils/model/models";
 
 export type ID = undefined | null | number
 
@@ -62,6 +63,7 @@ export type ListViewContextProps = {
   selected: Array<ID>
   onSelect: (selectedId: ID) => void
   onSelectAll: () => void
+  onDelete?: () => Promise<QueryResponse> | undefined;  // Ensure it returns Promise<void>
   clearSelected: () => void
   // NULL => (CREATION MODE) | MODAL IS OPENED
   // NUMBER => (EDIT MODE) | MODAL IS OPENED
@@ -76,8 +78,10 @@ export const initialListView: ListViewContextProps = {
   selected: [],
   onSelect: () => {},
   onSelectAll: () => {},
+  //onDelete: async () => Promise.resolve({} as QueryResponse), // Returning a mock QueryResponse
   clearSelected: () => {},
   setItemIdForUpdate: () => {},
   isAllSelected: false,
   disabled: false,
 }
+

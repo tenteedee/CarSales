@@ -46,6 +46,7 @@ export const login = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(422).json(handleValidationErrors(errors));
     }
+    errors = {};
     const { email, password } = req.body;
     const staff = await Staff.findOne({
       where: { email: email },
