@@ -194,7 +194,7 @@ function Signup() {
                         className="login-button"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Creating new account...' : 'Sign up'}
+                        {isLoading ? 'Creating new account...' : 'Register'}
                     </button>
                 </form>
 

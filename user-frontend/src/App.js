@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import UserProfile from './pages/Profile';
+import UserProfile from './pages/Profile/Profile';
 
 function App() {
     const token = useSelector((state) => state.auth.token);

@@ -92,17 +92,17 @@
 }
 
 /* Redirect link styling */
-.signup-redirect {
+.redirect {
     text-align: center;
     margin-top: 20px;
 }
 
-.signup-link {
+.register-link {
     color: #007bff;
     text-decoration: none;
     font-weight: 600;
 }
 
-.signup-link:hover {
+.register-link:hover {
     text-decoration: underline;
 }

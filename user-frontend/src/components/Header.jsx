@@ -55,7 +55,7 @@ const Header = () => {
                             </div>
                         </div>
                         <div className='col-md-2 col-xs-6'></div>
-                        {!token ? (
+                        {token==='' ? (
                             <>
                                 <div className='col-md-4 col-xs-6'>
                                     <nav className='b-topBar__nav'>

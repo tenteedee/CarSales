@@ -79,24 +79,20 @@ export const register = async (req, res) => {
 
     const { fullname, email, password, phone_number, address, dob } = req.body;
 
-    // Try to parse the dob
     const parsedDob = moment(
       dob,
       ['MM-DD-YYYY', 'DD-MM-YYYY', 'YYYY-MM-DD'],
       true
     );
 
-    // Check if the date is valid
     if (!parsedDob.isValid()) {
       return res
         .status(422)
         .json({ errors: [{ msg: 'Invalid date', path: 'dob' }] });
     }
 
-    // Format the date for storage
     const formattedDob = parsedDob.format('YYYY-MM-DD');
 
-    // Check existing email
     const existingUser = await Customer.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already exists' });
@@ -111,7 +107,7 @@ export const register = async (req, res) => {
       password: passwordHash,
       phone_number,
       address,
-      date_of_birth: formattedDob, // Store the formatted date
+      date_of_birth: formattedDob,
     });
 
     const token = jwt.sign({ id: newCustomer.id }, process.env.JWT_SECRET, {
@@ -125,5 +121,29 @@ export const register = async (req, res) => {
     res.status(200).json(customerData);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const user = await Customer.findByPk(userId);
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Old password is incorrect.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

@@ -101,10 +101,10 @@ function Login() {
                     </button>
                 </form>
 
-                <div className="signup-redirect">
+                <div className="redirect">
                     <span>Don't have an account? </span>
-                    <Link to="/signup" className="signup-link">
-                        Sign up
+                    <Link to="/register" className="register-link">
+                        Register
                     </Link>
                 </div>
             </div>
