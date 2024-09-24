@@ -6,6 +6,7 @@ import {TableFilter} from "../../../_metronic/partials/table/filter/TableFilter"
 import {KTCard} from "../../../_metronic/helpers";
 import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
 import {FC} from "react";
+import {Table} from "../../../_metronic/partials/table/Table";
 
 const Staffs = () => {
     return (
@@ -22,7 +23,7 @@ const StaffsListWrapper: FC = () => {
         <>
             <QueryRequestProvider>
                 <QueryResponseProvider id={"staffs"} request={getStaffs}>
-                    <Staffs></Staffs>
+                    <Staffs/>
                 </QueryResponseProvider>
             </QueryRequestProvider>
         </>
