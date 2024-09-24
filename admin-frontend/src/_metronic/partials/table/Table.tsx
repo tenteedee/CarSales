@@ -15,10 +15,8 @@ type Props<T extends object> = {
 
 function Table<T extends object>({ columns, id }: Props<T>) {
     const responseData = useQueryResponseData<T>()
-    // Log response data to inspect the structure
     const isLoading = useQueryResponseLoading()
-    const data = useMemo(() => responseData || [], [responseData]);
-    // Log the extracted data to verify it's an array
+    const data = useMemo(() => responseData, [responseData]);
     const tableColumns = useMemo(() => columns, [columns])
     const { getTableProps, getTableBodyProps, headers, rows, prepareRow, footerGroups } = useTable<T>({
         columns: tableColumns,
