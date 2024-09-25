@@ -15,7 +15,7 @@ const Home = () => {
                 <div id="carousel" className="slide carousel carousel-fade">
                     <div className="carousel-inner">
                         <div className="item active">
-                            <img src="src\assets\media\main-slider\4.jpg" alt="sliderImg" />
+                            <img src="./images/4.jpg" alt="sliderImg" />
                             <div className="container">
                                 <div className="carousel-caption b-slider__info">
                                     <h3>Find your dream car</h3>
