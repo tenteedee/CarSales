@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './reduxStore/store';
-import { I18nextProvider } from 'react-i18next'; // Add I18nextProvider for i18n
+import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
 
 // Import your language translations
@@ -15,15 +15,11 @@ import global_en from './translations/en';
 
 // Initialize i18next
 i18next.init({
-    interpolation: { escapeValue: false }, // Fix syntax here
+    interpolation: { escapeValue: false },
     lng: 'vn', // Set default language
     resources: {
-        vn: {
-            global: global_vn,
-        },
-        en: {
-            global: global_en,
-        },
+        vn: global_vn,
+        en: global_en,
     },
 });
 

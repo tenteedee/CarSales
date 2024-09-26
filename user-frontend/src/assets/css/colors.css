@@ -265,6 +265,7 @@ body,
 .b-info__aside>a.btn.m-btn:hover span,
 .b-world__item a.btn.m-btn:hover span,
 .dropdown-menu,
+/* Thêm phần này */
 .b-items__cars-one-info a.btn.m-btn:hover span,
 .b-items__aside-main-footer button.btn.m-btn span.fa,
 .b-items__aside-main-footer button.btn.m-btn:hover,
@@ -277,6 +278,39 @@ body,
 .b-world .container {
     background-color: #fff;
     fill: #fff;
+}
+
+/* Thêm CSS cho dropdown menu */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    float: left;
+    min-width: 100px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.dropdown-menu li {
+    padding: 5px 20px;
+}
+
+.dropdown-menu li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f1f1f1;
 }
 
 
