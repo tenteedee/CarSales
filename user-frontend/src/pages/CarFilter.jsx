@@ -15,7 +15,7 @@ function CarFilter() {
             try {
                 const brandResponse = await axios.get('/car/brand');
                 setBrands(brandResponse.data);
-                
+
                 const typeResponse = await axios.get('/car/type');
                 setTypes(typeResponse.data);
             } catch (error) {
@@ -27,7 +27,6 @@ function CarFilter() {
         fetchAllCars();
     }, []);
 
-    
     const fetchAllCars = async () => {
         try {
             const response = await axios.get('/car/all');
@@ -46,8 +45,12 @@ function CarFilter() {
             maxPrice,
         };
 
+        console.log('Search params:' + searchParams);
+
         try {
-            const response = await axios.get('/car/search', { params: searchParams });
+            const response = await axios.get('/car/search', {
+                params: searchParams,
+            });
             setCars(response.data);
         } catch (error) {
             console.error('Error fetching cars based on search:', error);
@@ -61,13 +64,13 @@ function CarFilter() {
                 <div className="b-search__main">
                     <h4>SELECT YOUR SUITABLE VEHICLE</h4>
                     <form
-                        onChange={handleSearch}
+                        onSubmit={handleSearch}
                         className="b-search__main-form"
                     >
                         <div className="row">
-                            <div className="col-xs-12 col-md-8">
+                            <div className="col-xs-16 col-md-12">
                                 <div className="m-firstSelects">
-                                    <div className="col-xs-3">
+                                    <div className="col-md-3">
                                         <select
                                             value={selectedBrand}
                                             onChange={(e) =>
@@ -89,12 +92,16 @@ function CarFilter() {
                                         <span className="fa fa-caret-down"></span>
                                     </div>
 
-                                    <div className="col-xs-3">
+                                    <div className="col-md-3">
                                         <select
                                             value={selectedType}
-                                            onChange={(e) =>
-                                                setSelectedType(e.target.value)
-                                            }
+                                            onChange={(e) => {
+                                                console.log(
+                                                    'Type ID Selected:',
+                                                    e.target.value
+                                                );
+                                                setSelectedType(e.target.value);
+                                            }}
                                         >
                                             <option value="">
                                                 Select Type
@@ -111,7 +118,7 @@ function CarFilter() {
                                         <span className="fa fa-caret-down"></span>
                                     </div>
 
-                                    <div className="col-xs-3">
+                                    <div className="col-md-2">
                                         <input
                                             type="number"
                                             placeholder="Min Price"
@@ -122,7 +129,7 @@ function CarFilter() {
                                         />
                                     </div>
 
-                                    <div className="col-xs-3">
+                                    <div className="col-md-2">
                                         <input
                                             type="number"
                                             placeholder="Max Price"
@@ -132,40 +139,56 @@ function CarFilter() {
                                             }
                                         />
                                     </div>
+                                    <button type="submit" className='col-md-2'>Search</button>
+                                        <span className="fa fa-search"></span>
                                 </div>
                             </div>
                         </div>
-                        <div className="car-results">
-                            <h4>Car Results</h4>
-                            <div className="row">
-                                {cars.length === 0 ? (
-                                    <p>No cars found!</p>
-                                ) : (
-                                    cars.map((car) => (
+                    </form>
+                    <div className="car-results">
+                        <h4>Search Results</h4>
+                        <div className="row">
+                            {cars.length === 0 ? (
+                                <p>No cars found!</p>
+                            ) : (
+                                cars.map((car) => (
+                                    <div
+                                        key={car.id}
+                                        className="col-xs-12 col-md-4 car-item"
+                                    >
+                                        <img
+                                            src={
+                                                car.images &&
+                                                car.images.length > 0
+                                                    ? car.images[0].image_url
+                                                    : 'default-car.png'
+                                            }
+                                            alt={car.model}
+                                            className="img-responsive"
+                                            style={{
+                                                width: '220px',
+                                                height: '120px',
+                                                objectFit: 'cover',
+                                                objectPosition: 'center',
+                                            }}
+                                        />
                                         <div
-                                            key={car.id}
-                                            className="col-xs-12 col-md-4 car-item"
+                                            style={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                width: '220px',
+                                            }}
                                         >
-                                            <img
-                                                src={
-                                                    car.images &&
-                                                    car.images.length > 0
-                                                        ? car.images[0]
-                                                              .image_url
-                                                        : 'default-car.png'
-                                                }
-                                                alt={car.model}
-                                                className="img-responsive"
-                                                style={{ height: '120px' }}
-                                            />
-                                            <h5>{car.model}</h5>
+                                            <div>
+                                                <h5>{car.model}</h5>
+                                            </div>
                                             <p>Price: ${car.price}</p>
                                         </div>
-                                    ))
-                                )}
-                            </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </section>

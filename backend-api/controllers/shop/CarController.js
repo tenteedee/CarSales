@@ -83,12 +83,12 @@ export const filterCars = async (req, res) => {
 
     let searchFields = {};
 
-    if (type) {
-      searchFields.type_id = type;
-    }
-
     if (brand) {
       searchFields.brand_id = brand;
+    }
+
+    if (type) {
+      searchFields.type_id = type;
     }
 
     if (minPrice && maxPrice) {

@@ -144,7 +144,6 @@ a.m-langLink {
     box-shadow: none;
 }
 
-
 /* Nav */
 .b-nav {
     padding: 30px 0 25px;
@@ -162,7 +161,7 @@ a.m-langLink {
 .b-nav__logo h3 {
     margin: 0;
     font-size: 26px;
-    line-height: 20px
+    line-height: 20px;
 }
 
 .b-nav__logo h3 a {
@@ -372,15 +371,20 @@ a.m-langLink {
     z-index: 2;
 }
 
-
 /* Search */
 .b-search {
     height: 300px;
 }
 
+.b-search container {
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .b-search__main {
     text-align: center;
-    height: 480px;
+    height: 640px;
     margin-top: -125px;
     padding: 35px 60px 50px 60px;
     z-index: 1000;
@@ -427,13 +431,19 @@ a.m-langLink {
     position: absolute;
 }
 
-.b-search__main-type input[type='radio']:checked + label.b-search__main-type-svg + h5 {
-    border-bottom: 1px solid #B4B4B4;
+.b-search__main-type
+    input[type='radio']:checked
+    + label.b-search__main-type-svg
+    + h5 {
+    border-bottom: 1px solid #b4b4b4;
     text-align: center;
     margin-bottom: -1px;
 }
 
-.b-search__main-type input[type='radio']:checked + label.b-search__main-type-svg + h5:after {
+.b-search__main-type
+    input[type='radio']:checked
+    + label.b-search__main-type-svg
+    + h5:after {
     background: url(../images/elements/chevron-down.png) center no-repeat;
     width: 100%;
     height: 7px;
@@ -526,7 +536,9 @@ a.m-langLink {
     text-transform: uppercase;
 }
 
-.b-search__main-form-submit button:focus.b-search__main-form-submit button:active {
+.b-search__main-form-submit
+    button:focus.b-search__main-form-submit
+    button:active {
     outline: none;
 }
 
@@ -578,7 +590,6 @@ a.m-langLink {
     content: '';
     border-radius: 100%;
     vertical-align: text-top;
-
 }
 
 .ui-slider-handle:last-of-type {
@@ -593,7 +604,6 @@ a.m-langLink {
     height: 100%;
     position: absolute;
 }
-
 
 /* Featured */
 .b-featured {
@@ -641,7 +651,7 @@ a.m-langLink {
     padding-left: 5px;
     clear: both;
     text-align: left;
-    border-bottom: 1px solid #B4B4B4;
+    border-bottom: 1px solid #b4b4b4;
     position: relative;
 }
 
@@ -742,13 +752,12 @@ a.m-langLink {
 }
 
 .owl-buttons > div.owl-next:before {
-    content: "\f105";
+    content: '\f105';
 }
 
 .owl-buttons > div.owl-prev:before {
-    content: "\f104";
+    content: '\f104';
 }
-
 
 /* Welcome */
 .b-welcome {
@@ -888,13 +897,13 @@ a.m-langLink {
     margin-left: -10px;
 }
 
-
 /* World */
 .b-world {
     background: url(../images/backgrounds/carRight.jpg) right bottom no-repeat;
     text-align: center;
     position: relative;
     box-shadow: 0px 30px 100px -38px rgba(0, 0, 0, 0.3);
+    margin-top: 30px;
 }
 
 .b-world .container {
@@ -962,7 +971,7 @@ a.m-langLink {
     font: 300 13px 'Open Sans', sans-serif;
     text-align: left;
     padding-top: 35px;
-    border-top: 1px solid #B4B4B4;
+    border-top: 1px solid #b4b4b4;
     position: relative;
     margin-bottom: 40px;
     line-height: 1.7;
@@ -1004,6 +1013,16 @@ a.m-langLink {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border: 1px solid #dddddd;
+}
+
+.clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.clearfix {
+    clear: both; /* Hoặc có thể dùng trực tiếp clear */
 }
 
 /* Asks */
@@ -1098,7 +1117,6 @@ a.m-langLink {
     font: 700 16px 'Open Sans', sans-serif;
 }
 
-
 /* Auto */
 .b-auto {
     text-align: center;
@@ -1131,7 +1149,7 @@ a.m-langLink {
 }
 
 .b-auto__main-toggle.m-active {
-    border-bottom: 1px solid #B4B4B4;
+    border-bottom: 1px solid #b4b4b4;
 }
 
 .b-auto__main-toggle.active:after {
@@ -1180,7 +1198,6 @@ a.m-langLink {
     right: 20px;
     top: 50%;
     margin-top: -4px;
-
 }
 
 .b-auto__main-nav li:hover a {
@@ -1221,7 +1238,7 @@ a.m-langLink {
 
 .b-auto__main-item {
     padding-bottom: 25px;
-    border-bottom: 1px solid #B4B4B4;
+    border-bottom: 1px solid #b4b4b4;
     position: relative;
     margin-bottom: 50px;
 }
@@ -1290,7 +1307,6 @@ a.m-langLink {
     display: none;
 }
 
-
 /* Count */
 .b-count {
     background: url(../images/backgrounds/count.png) right top no-repeat;
@@ -1350,7 +1366,6 @@ a.m-langLink {
     border-right: 3px solid #fff;
     display: inline-block;
 }
-
 
 /* Contact */
 .b-contact {
@@ -1470,7 +1485,7 @@ a.m-langLink {
 .b-review__main h5 {
     text-align: center;
     font: 600 12px 'Open Sans', sans-serif;
-    border-bottom: 1px solid #B4B4B4;
+    border-bottom: 1px solid #b4b4b4;
     position: relative;
     margin: 0 0 0 115px;
     padding-bottom: 30px;
@@ -1506,7 +1521,7 @@ a.m-langLink {
     -o-transform: scale(-1, 1);
     transform: scale(-1, 1);
     filter: FlipH;
-    -ms-filter: "FlipH";
+    -ms-filter: 'FlipH';
 }
 
 .b-review__main p {
@@ -1524,7 +1539,6 @@ a.m-langLink {
 .b-review > img {
     width: 100%;
 }
-
 
 /* Features */
 .b-features {
@@ -1556,7 +1570,6 @@ a.m-langLink {
     margin-right: 30px;
     border-right: 3px solid #fff;
 }
-
 
 /* Info */
 .b-info {
@@ -1736,7 +1749,7 @@ a.m-langLink {
     font-size: 20px;
     margin-right: 15px;
     display: block;
-    float: left
+    float: left;
 }
 
 .b-info__contacts-item span.fa-fax {
@@ -1768,7 +1781,6 @@ a.m-langLink {
 .b-info__map a:hover {
     text-decoration: none;
 }
-
 
 /* Footer */
 .b-footer {
