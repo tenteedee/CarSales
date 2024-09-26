@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 import CarImage from './CarImage.js';
+import Brand from './Brand.js';
+import CarType from './CarType.js';
 
 const Car = db.define(
   'car',
@@ -14,12 +16,12 @@ const Car = db.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    brand: {
-      type: DataTypes.STRING(50),
+    brand_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    type: {
-      type: DataTypes.STRING(50),
+    type_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     price: {
@@ -59,6 +61,30 @@ Car.hasMany(CarImage, {
 
 CarImage.belongsTo(Car, {
   foreignKey: 'car_id',
+  as: 'car',
+});
+
+Car.hasOne(Brand, {
+  foreignKey: 'id',
+  sourceKey: 'brand_id',
+  as: 'brand',
+});
+
+Brand.belongsTo(Car, {
+  foreignKey: 'id',
+  targetKey: 'brand_id',
+  as: 'car',
+});
+
+Car.hasOne(CarType, {
+  foreignKey: 'id',
+  sourceKey: 'type_id',
+  as: 'type',
+});
+
+CarType.belongsTo(Car, {
+  foreignKey: 'id',
+  targetKey: 'type_id',
   as: 'car',
 });
 
