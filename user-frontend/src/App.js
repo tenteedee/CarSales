@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
+import CarDetail from './pages/CarDetail';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
@@ -31,6 +32,7 @@ function App() {
                     path="/profile"
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
+                <Route path="/car/detail/:id" component={CarDetail} />
                 {/* <Route path="/job/:id" element={!token ? <Navigate to='/login' /> : <DetailJob />} /> */}
                 <Route path="*" element={<NotFound />} />
             </Routes>

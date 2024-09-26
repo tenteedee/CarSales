@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from '../axios';
 
 function CarFilter() {
@@ -152,10 +153,12 @@ function CarFilter() {
                                 <p>No cars found!</p>
                             ) : (
                                 cars.map((car) => (
+
                                     <div
                                         key={car.id}
                                         className="col-xs-12 col-md-4 car-item"
                                     >
+                                        <Link to={`/car/detail/${car.id}`} style={{ textDecoration: 'none' }}>
                                         <img
                                             src={
                                                 car.images &&
@@ -184,6 +187,7 @@ function CarFilter() {
                                             </div>
                                             <p>Price: ${car.price}</p>
                                         </div>
+                                        </Link>
                                     </div>
                                 ))
                             )}

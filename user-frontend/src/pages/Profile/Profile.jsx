@@ -72,7 +72,7 @@ const UserProfile = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="dob">Date of Birth:</label>
+                        <label htmlFor="dob">Date of Birth (mm/dd/yyyy):</label>
                         <input
                             type="text"
                             id="dob"
