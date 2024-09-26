@@ -63,29 +63,8 @@ const Navbar = () => {
                                 id="nav"
                             >
                                 <ul className="navbar-nav-menu">
-                                    <li
-                                        className={`dropdown ${isDropdownOpen.home ? 'open' : ''
-                                            }`}
-                                        onMouseEnter={() =>
-                                            handleMouseEnter('home')
-                                        }
-                                        onMouseLeave={() =>
-                                            handleMouseLeave('home')
-                                        }
-                                    >
-                                        <Link className="dropdown-toggle" to="/">
-                                            TRANG CHỦ{' '}
-                                            <span className="fa fa-caret-down"></span>
-                                        </Link>
-                                        {isDropdownOpen.home && (
-                                            <ul className="dropdown-menu h-nav">
-                                                <li>
-                                                    <Link to="/home-2">
-                                                        Home Page 2
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        )}
+                                    <li>
+                                        <Link to="/">TRANG CHỦ</Link>
                                     </li>
                                     <li
                                         className={`dropdown ${isDropdownOpen.buyCar ? 'open' : ''

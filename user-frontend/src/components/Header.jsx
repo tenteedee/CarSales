@@ -4,25 +4,28 @@ import { Link } from 'react-router-dom';
 import { fetchConfig } from '../reduxStore/configSlice';
 import Loading from './Loading';
 import { setLogin } from '../reduxStore/authSlice';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
     const config = useSelector((state) => state.config.config);
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true); // Add loading state
-    const [isOpen, setIsOpen] = useState(false); // Add state for dropdown open/close
-    const { t, i18n } = useTranslation(); // Correctly use useTranslation
+    const [loading, setLoading] = useState(true);
+    const [isDropdownOpen, setIsDropdownOpen] = useState({
+        language: false,
+    });
+    const { t, i18n } = useTranslation();
 
     const handleChangeLanguage = (lang) => {
-        i18n.changeLanguage(lang); // No type declaration needed in JSX
+        i18n.changeLanguage(lang);
+        setIsDropdownOpen(prevState => ({ ...prevState, language: false })); // Đóng dropdown sau khi chọn ngôn ngữ
     };
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             await dispatch(fetchConfig());
-            setLoading(false); // Stop loading when done
+            setLoading(false);
         };
         fetchData();
     }, [dispatch]);
@@ -37,8 +40,12 @@ const Header = () => {
         );
     };
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen); // Toggle dropdown state
+    const handleMouseEnter = (dropdown) => {
+        setIsDropdownOpen(prevState => ({ ...prevState, [dropdown]: true }));
+    };
+
+    const handleMouseLeave = (dropdown) => {
+        setIsDropdownOpen(prevState => ({ ...prevState, [dropdown]: false }));
     };
 
     // Show loading screen if still loading
@@ -53,12 +60,14 @@ const Header = () => {
                     <div className="col-md-3 col-xs-6">
                         <div className="b-topBar__addr">
                             <span className="fa fa-map-marker"></span>
+                            ĐỊA CHỈ
                             {config?.address}
                         </div>
                     </div>
                     <div className="col-md-3 col-xs-6">
                         <div className="b-topBar__tel">
                             <span className="fa fa-phone"></span>
+                            SỐ ĐIỆN THOẠI
                             {config?.phone}
                         </div>
                     </div>
@@ -66,9 +75,9 @@ const Header = () => {
                         {!token ? (
                             <nav className="b-topBar__nav">
                                 <ul style={{ display: 'flex', gap: '10px' }}>
-                                    <li><Link to={'/login'}>Login</Link></li>
-                                    <li><Link to={'/register'}>Register</Link></li>
-                                    <li><Link to={'/cart'}>Cart</Link></li>
+                                    <li><Link to={'/login'}>{t('LOGIN')}</Link></li>
+                                    <li><Link to={'/register'}>{t('REGISTER')}</Link></li>
+                                    <li><Link to={'/cart'}>{t('CART')}</Link></li>
                                 </ul>
                             </nav>
                         ) : (
@@ -86,31 +95,40 @@ const Header = () => {
                     </div>
                     <div className="col-md-2 col-xs-6">
                         <div className="b-topBar__lang">
-                            <div className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">NGÔN NGỮ</a>
-                                <a className="m-langLink dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <span className="b-topBar__lang-flag m-en"></span>VN<span className="fa fa-caret-down"></span>
+                            <div
+                                className={`dropdown ${isDropdownOpen.language ? 'open' : ''}`}
+                                onMouseEnter={() => handleMouseEnter('language')}
+                                onMouseLeave={() => handleMouseLeave('language')}
+                            >
+                                <a href="#" className="dropdown-toggle">
+                                    {t('NGÔN NGỮ')} <span className="fa fa-caret-down"></span>
                                 </a>
-                                <ul className="dropdown-menu h-lang">
-                                    <li>
-                                        <a className="m-langLink dropdown-toggle" data-toggle="dropdown" href="#">
-                                            <span className="b-topBar__lang-flag m-en"></span>VN
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className="m-langLink dropdown-toggle" data-toggle="dropdown" href="#">
-                                            <span className="b-topBar__lang-flag m-es"></span>EN
-                                        </a>
-                                    </li>
-                                </ul>
+                                {isDropdownOpen.language && (
+                                    <ul className="dropdown-menu h-lang">
+                                        <li>
+                                            <a
+                                                className="m-langLink"
+                                                onClick={() => handleChangeLanguage('vn')}
+                                            >
+                                                <span className="b-topBar__lang-flag m-vn"></span> VN
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                className="m-langLink"
+                                                onClick={() => handleChangeLanguage('en')}
+                                            >
+                                                <span className="b-topBar__lang-flag m-en"></span> EN
+                                            </a>
+                                        </li>
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-
-
     );
 };
 
