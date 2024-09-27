@@ -57,9 +57,7 @@ export const login = async (req, res) => {
       return res.status(422).json(handleErrors(errors, errors.password));
     }
 
-    const token = jwt.sign({ id: customer.id }, JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign({ id: customer.id }, JWT_SECRET);
 
     delete customerData.password;
 

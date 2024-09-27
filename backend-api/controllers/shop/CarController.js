@@ -1,12 +1,24 @@
 import Car from '../../models/Car.js';
 import CarImage from '../../models/CarImage.js';
+import Brand from '../../models/Brand.js';
+import CarType from '../../models/CarType.js';
 import { Op } from 'sequelize';
 
 export const getAllCars = async (req, res) => {
   try {
     const cars = await Car.findAll({
-      attributes: ['id', 'model', 'brand', 'type', 'price', 'stock'],
+      attributes: ['id', 'model', 'price', 'stock'],
       include: [
+        {
+          model: Brand,
+          as: 'brand',
+          attributes: ['name'],
+        },
+        {
+          model: CarType,
+          as: 'type',
+          attributes: ['name'],
+        },
         {
           model: CarImage,
           as: 'images',
@@ -29,16 +41,18 @@ export const getCarById = async (req, res) => {
   try {
     const carId = req.params.id;
     const car = await Car.findByPk(carId, {
-      attributes: [
-        'id',
-        'model',
-        'brand',
-        'type',
-        'price',
-        'description',
-        'stock',
-      ],
+      attributes: ['id', 'model', 'price', 'description', 'stock'],
       include: [
+        {
+          model: Brand,
+          as: 'brand',
+          attributes: ['name'],
+        },
+        {
+          model: CarType,
+          as: 'type',
+          attributes: ['name'],
+        },
         {
           model: CarImage,
           as: 'images',
@@ -64,13 +78,17 @@ export const getCarById = async (req, res) => {
 
 export const filterCars = async (req, res) => {
   try {
-    const { type, minPrice, maxPrice } = req.query;
+    const { brand, type, minPrice, maxPrice } = req.query;
     console.log('req.query:', req.query);
 
     let searchFields = {};
 
+    if (brand) {
+      searchFields.brand_id = brand;
+    }
+
     if (type) {
-      searchFields.type = type.toLowerCase().trim();
+      searchFields.type_id = type;
     }
 
     if (minPrice && maxPrice) {
@@ -95,8 +113,18 @@ export const filterCars = async (req, res) => {
       //     [Op.between]: [1000, 10000],
       //   },
       // },
-      attributes: ['id', 'model', 'brand', 'type', 'price', 'stock'],
+      attributes: ['id', 'model', 'price', 'stock'],
       include: [
+        {
+          model: Brand,
+          as: 'brand',
+          attributes: ['name'],
+        },
+        {
+          model: CarType,
+          as: 'type',
+          attributes: ['name'],
+        },
         {
           model: CarImage,
           as: 'images',
@@ -187,6 +215,37 @@ export const updateCar = async (req, res) => {
     await car.save();
 
     res.status(200).json({ message: 'Car updated successfully', car });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getAllBrands = async (req, res) => {
+  try {
+    const brands = await Brand.findAll({
+      attributes: ['id', 'name'],
+    });
+
+    if (!brands || brands.length === 0) {
+      return res.status(404).json({ message: 'No brands found!' });
+    }
+
+    res.status(200).json(brands);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getAllTypes = async (req, res) => {
+  try {
+    const types = await CarType.findAll({
+      attributes: ['id', 'name'],
+    });
+
+    if (!types || types.length === 0) {
+      return res.status(404).json({ message: 'No car types found!' });
+    }
+
+    res.status(200).json(types);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
