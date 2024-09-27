@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Home from './pages/Home';
 import Login from './pages/auth/Login';
@@ -11,11 +11,22 @@ import UserProfile from './pages/Profile/Profile';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
+    const location = useLocation();
+
+    // Các đường dẫn muốn ẩn Navbar
+    const hideNavbarPaths = ['/login', '/register'];
 
     return (
         <div>
             <Header />
-            <Navbar />
+            {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
+            {!hideNavbarPaths.includes(location.pathname) && (
+                <>
+
+                    <Navbar />
+                </>
+            )}
+
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route
@@ -30,10 +41,10 @@ function App() {
                     path="/profile"
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
-                {/* Uncomment this line if you implement the DetailJob component */}
-                {/* <Route path="/job/:id" element={!token ? <Navigate to='/login' /> : <DetailJob />} /> */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
+
+            {/* Hiển thị Footer bất kể đường dẫn nào */}
             <Footer />
         </div>
     );

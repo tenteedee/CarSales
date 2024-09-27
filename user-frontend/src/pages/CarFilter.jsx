@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../axios';
+import { useTranslation } from 'react-i18next';
 
 function CarFilter() {
+    const { t } = useTranslation();
     const [brands, setBrands] = useState([]);
     const [types, setTypes] = useState([]);
     const [selectedBrand, setSelectedBrand] = useState('');
@@ -45,8 +47,6 @@ function CarFilter() {
             maxPrice,
         };
 
-        console.log('Search params:', searchParams);
-
         try {
             const response = await axios.get('/car/search', {
                 params: searchParams,
@@ -60,31 +60,21 @@ function CarFilter() {
     return (
         <section className="b-search">
             <div className="container">
-                <h1>UNSURE WHICH VEHICLE YOU ARE LOOKING FOR? FIND IT HERE</h1>
+                <h1>{t('SEARCH.HEADER')}</h1>
                 <div className="b-search__main">
-                    <h4>SELECT YOUR SUITABLE VEHICLE</h4>
-                    <form
-                        onSubmit={handleSearch}
-                        className="b-search__main-form"
-                    >
+                    <h4>{t('SEARCH.SUBHEADER')}</h4>
+                    <form onSubmit={handleSearch} className="b-search__main-form">
                         <div className="row">
                             <div className="col-xs-16 col-md-12">
                                 <div className="m-firstSelects">
                                     <div className="col-md-3">
                                         <select
                                             value={selectedBrand}
-                                            onChange={(e) =>
-                                                setSelectedBrand(e.target.value)
-                                            }
+                                            onChange={(e) => setSelectedBrand(e.target.value)}
                                         >
-                                            <option value="">
-                                                Select Brand
-                                            </option>
+                                            <option value="">{t('SEARCH.SELECT_BRAND')}</option>
                                             {brands.map((brand) => (
-                                                <option
-                                                    key={brand.id}
-                                                    value={brand.id}
-                                                >
+                                                <option key={brand.id} value={brand.id}>
                                                     {brand.name}
                                                 </option>
                                             ))}
@@ -95,22 +85,11 @@ function CarFilter() {
                                     <div className="col-md-3">
                                         <select
                                             value={selectedType}
-                                            onChange={(e) => {
-                                                console.log(
-                                                    'Type ID Selected:',
-                                                    e.target.value
-                                                );
-                                                setSelectedType(e.target.value);
-                                            }}
+                                            onChange={(e) => setSelectedType(e.target.value)}
                                         >
-                                            <option value="">
-                                                Select Type
-                                            </option>
+                                            <option value="">{t('SEARCH.SELECT_TYPE')}</option>
                                             {types.map((type) => (
-                                                <option
-                                                    key={type.id}
-                                                    value={type.id}
-                                                >
+                                                <option key={type.id} value={type.id}>
                                                     {type.name}
                                                 </option>
                                             ))}
@@ -121,26 +100,22 @@ function CarFilter() {
                                     <div className="col-md-2">
                                         <input
                                             type="number"
-                                            placeholder="Min Price"
+                                            placeholder={t('SEARCH.MIN_PRICE')}
                                             value={minPrice}
-                                            onChange={(e) =>
-                                                setMinPrice(e.target.value)
-                                            }
+                                            onChange={(e) => setMinPrice(e.target.value)}
                                         />
                                     </div>
 
                                     <div className="col-md-2">
                                         <input
                                             type="number"
-                                            placeholder="Max Price"
+                                            placeholder={t('SEARCH.MAX_PRICE')}
                                             value={maxPrice}
-                                            onChange={(e) =>
-                                                setMaxPrice(e.target.value)
-                                            }
+                                            onChange={(e) => setMaxPrice(e.target.value)}
                                         />
                                     </div>
-                                    <button type="submit" className='col-md-2'>
-                                        Search
+                                    <button type="submit" className="col-md-2">
+                                        {t('SEARCH.SEARCH')}
                                         <span className="fa fa-search"></span>
                                     </button>
                                 </div>
@@ -148,20 +123,16 @@ function CarFilter() {
                         </div>
                     </form>
                     <div className="car-results">
-                        <h4>Search Results</h4>
+                        <h4>{t('SEARCH.SEARCH_RESULTS')}</h4>
                         <div className="row">
                             {cars.length === 0 ? (
-                                <p>No cars found!</p>
+                                <p>{t('SEARCH.NO_CARS_FOUND')}</p>
                             ) : (
                                 cars.map((car) => (
-                                    <div
-                                        key={car.id}
-                                        className="col-xs-12 col-md-4 car-item"
-                                    >
+                                    <div key={car.id} className="col-xs-12 col-md-4 car-item">
                                         <img
                                             src={
-                                                car.images &&
-                                                    car.images.length > 0
+                                                car.images && car.images.length > 0
                                                     ? car.images[0].image_url
                                                     : 'default-car.png'
                                             }
@@ -184,7 +155,7 @@ function CarFilter() {
                                             <div>
                                                 <h5>{car.model}</h5>
                                             </div>
-                                            <p>Price: ${car.price}</p>
+                                            <p>{t('CAR.PRICE', { price: car.price })}</p>
                                         </div>
                                     </div>
                                 ))
