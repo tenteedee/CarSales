@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../axios';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 function CarFilter() {
     const { t } = useTranslation();
@@ -130,6 +131,7 @@ function CarFilter() {
                             ) : (
                                 cars.map((car) => (
                                     <div key={car.id} className="col-xs-12 col-md-4 car-item">
+                                        <Link to={`/car/detail/${car.id}`} style={{ textDecoration: 'none' }}></Link>
                                         <img
                                             src={
                                                 car.images && car.images.length > 0

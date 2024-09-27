@@ -1,7 +1,7 @@
 import axios from '../../axios';
 import { useEffect, useState } from 'react';
 import ChangePassword from './ChangePassword';
-import './Profile.css'; 
+import './Profile.css';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -72,11 +72,11 @@ const UserProfile = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="dob">Date of Birth:</label>
+                        <label htmlFor="dob">Date of Birth (mm/dd/yyyy):</label>
                         <input
                             type="text"
                             id="dob"
-                            value={new Date(userData.date_of_birth).toLocaleDateString()} 
+                            value={new Date(userData.date_of_birth).toLocaleDateString()}
                             readOnly
                         />
                     </div>
