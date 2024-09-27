@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -31,6 +30,7 @@ function App() {
                     path="/profile"
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
+                {/* Uncomment this line if you implement the DetailJob component */}
                 {/* <Route path="/job/:id" element={!token ? <Navigate to='/login' /> : <DetailJob />} /> */}
                 <Route path="*" element={<NotFound />} />
             </Routes>

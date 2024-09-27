@@ -7,20 +7,14 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './reduxStore/store';
 import { I18nextProvider } from 'react-i18next';
-import i18next from 'i18next';
+import i18n from './i18n'; // Ensure correct import for i18n
+import resources from './i18n/resources'; // Import your language resources
 
-// Import your language translations
-import global_vn from './translations/vn';
-import global_en from './translations/en';
-
-// Initialize i18next
-i18next.init({
+// Initialize i18next with resources
+i18n.init({
     interpolation: { escapeValue: false },
     lng: 'vn', // Set default language
-    resources: {
-        vn: global_vn,
-        en: global_en,
-    },
+    resources, // Use the imported resources
 });
 
 // Create the root for React DOM
@@ -31,7 +25,7 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <I18nextProvider i18n={i18next}>
+                <I18nextProvider i18n={i18n}>
                     <Router>
                         <App />
                     </Router>

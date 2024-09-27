@@ -92,7 +92,7 @@ const CarDetail = ({ carId }) => {
       
       <div className="mt-6">
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
-          Add to Cart
+          Make an order
         </button>
       </div>
     </div>

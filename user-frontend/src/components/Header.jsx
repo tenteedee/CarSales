@@ -18,7 +18,7 @@ const Header = () => {
 
     const handleChangeLanguage = (lang) => {
         i18n.changeLanguage(lang);
-        setIsDropdownOpen(prevState => ({ ...prevState, language: false })); // Đóng dropdown sau khi chọn ngôn ngữ
+        setIsDropdownOpen(prevState => ({ ...prevState, language: false })); // Close dropdown after language selection
     };
 
     useEffect(() => {
@@ -60,15 +60,13 @@ const Header = () => {
                     <div className="col-md-3 col-xs-6">
                         <div className="b-topBar__addr">
                             <span className="fa fa-map-marker"></span>
-                            ĐỊA CHỈ
-                            {config?.address}
+                            ĐỊA CHỈ: {config?.address}
                         </div>
                     </div>
                     <div className="col-md-3 col-xs-6">
                         <div className="b-topBar__tel">
                             <span className="fa fa-phone"></span>
-                            SỐ ĐIỆN THOẠI
-                            {config?.phone}
+                            SỐ ĐIỆN THOẠI: {config?.phone}
                         </div>
                     </div>
                     <div className="col-md-3 col-xs-6">
@@ -77,7 +75,7 @@ const Header = () => {
                                 <ul style={{ display: 'flex', gap: '10px' }}>
                                     <li><Link to={'/login'}>{t('LOGIN')}</Link></li>
                                     <li><Link to={'/register'}>{t('REGISTER')}</Link></li>
-                                    <li><Link to={'/cart'}>{t('CART')}</Link></li>
+
                                 </ul>
                             </nav>
                         ) : (
