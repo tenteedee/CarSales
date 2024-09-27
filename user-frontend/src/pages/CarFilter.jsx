@@ -45,7 +45,7 @@ function CarFilter() {
             maxPrice,
         };
 
-        console.log('Search params:' + searchParams);
+        console.log('Search params:', searchParams);
 
         try {
             const response = await axios.get('/car/search', {
@@ -139,8 +139,10 @@ function CarFilter() {
                                             }
                                         />
                                     </div>
-                                    <button type="submit" className='col-md-2'>Search</button>
+                                    <button type="submit" className='col-md-2'>
+                                        Search
                                         <span className="fa fa-search"></span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -159,7 +161,7 @@ function CarFilter() {
                                         <img
                                             src={
                                                 car.images &&
-                                                car.images.length > 0
+                                                    car.images.length > 0
                                                     ? car.images[0].image_url
                                                     : 'default-car.png'
                                             }

@@ -60,13 +60,13 @@ const Header = () => {
                     <div className="col-md-3 col-xs-6">
                         <div className="b-topBar__addr">
                             <span className="fa fa-map-marker"></span>
-                            ĐỊA CHỈ: {config?.address}
+                            {t('ADDRESS')}: {config?.address}
                         </div>
                     </div>
                     <div className="col-md-3 col-xs-6">
                         <div className="b-topBar__tel">
                             <span className="fa fa-phone"></span>
-                            SỐ ĐIỆN THOẠI: {config?.phone}
+                            {t('PHONE')}: {config?.phone}
                         </div>
                     </div>
                     <div className="col-md-3 col-xs-6">
