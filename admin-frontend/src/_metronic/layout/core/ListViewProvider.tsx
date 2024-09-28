@@ -16,8 +16,7 @@ const ListViewContext = createContext<ListViewContextProps>(initialListView)
 
 type Props = WithChildren & {
     onDelete?: (ids: Array<ID>) => Promise<QueryResponse>
-}
-
+};
 const ListViewProvider: FC<Props> = ({children, onDelete}) => {
     const [selected, setSelected] = useState<Array<ID>>(initialListView.selected)
     const [itemIdForUpdate, setItemIdForUpdate] = useState<ID>(initialListView.itemIdForUpdate)
