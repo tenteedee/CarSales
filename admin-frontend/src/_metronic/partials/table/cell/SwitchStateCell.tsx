@@ -1,4 +1,3 @@
-// import {updateState} from 'app/utils/requests/requests'
 import {FC, useEffect, useState} from 'react'
 import {ID} from "../../../helpers";
 import {useAuth} from "../../../../app/modules/auth";

@@ -1,5 +1,4 @@
 import {ID} from "../../../_metronic/helpers";
-
 export async function updateState(
     table: string,
     column: string,

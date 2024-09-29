@@ -1,6 +1,6 @@
 import {Route, Routes, Outlet} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import { StaffsListWrapper } from './Staffs'
+import {StaffEditWrapper, StaffsListWrapper } from './Staffs'
 
 const staffsBreadcrumbs: Array<PageLink> = [
     {
@@ -27,6 +27,16 @@ const StaffsPage = () => {
                         <>
                             <PageTitle breadcrumbs={staffsBreadcrumbs}>Staffs list</PageTitle>
                             <StaffsListWrapper />
+                        </>
+                    }
+                />
+                {/* Route cho chỉnh sửa nhân viên */}
+                <Route
+                    path="edit/:id"
+                    element={
+                        <>
+                            <PageTitle breadcrumbs={staffsBreadcrumbs}>Edit Staff</PageTitle>
+                            <StaffEditWrapper />
                         </>
                     }
                 />

@@ -13,7 +13,8 @@ const TableRow: FC<Props> = ({row}) => (
             return (
                 <td
                     {...cell.getCellProps()}
-                    className={clsx({'text-end min-w-100px': cell.column.id === 'actions'})}
+                    //className={clsx({'text-end min-w-100px': cell.column.id === 'actions'})}
+                    className={""}
                 >
                     {cell.render('Cell')}
                 </td>

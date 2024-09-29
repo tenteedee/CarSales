@@ -3,6 +3,61 @@ import Showroom from "../../models/Showroom.js";
 import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
 import { Op } from "sequelize"; // Sequelize operators
+export const getStaff = async (req, res) => {
+  const { id } = req.params; // Lấy ID từ URL
+
+  try {
+    // Tìm nhân viên theo ID
+    const staff = await Staff.findOne({
+      where: { id },
+      include: [
+        {
+          model: StaffRole,
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    if (!staff) {
+      // Nếu không tìm thấy nhân viên
+      return res.status(404).json({ error: "Nhân viên không tồn tại" });
+    }
+
+    // Trả về thông tin nhân viên
+    return res.status(200).json({ data: staff });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
+export const deleteStaff = async (req, res) => {
+  let staffIds = req.body.ids; // Nhận mảng ID từ payload
+  if (!staffIds || staffIds.length === 0) {
+    res.status(500).json({ error: "Danh sách ID không hợp lệ" });
+  }
+  // Loại bỏ ID == 1 ra khỏi danh sách staffIds
+  staffIds = staffIds.filter((id) => id !== 1);
+  try {
+    const deletedCount = await Staff.destroy({
+      where: {
+        id: staffIds,
+      },
+    });
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ error: "Không tìm thấy nhân viên để xóa" });
+    }
+
+    res.status(200).json({ error: "Xóa thành công", deletedCount });
+  } catch (error) {
+    res.status(500).json({ error: "Lỗi máy chủ khi xóa nhân viên" });
+  }
+};
 
 export const queryStaff = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
