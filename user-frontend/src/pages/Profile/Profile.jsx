@@ -1,7 +1,7 @@
 import axios from '../../axios';
 import { useEffect, useState } from 'react';
 import ChangePassword from './ChangePassword';
-import './Profile.css'; 
+import './Profile.css';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({
@@ -76,7 +76,7 @@ const UserProfile = () => {
                         <input
                             type="text"
                             id="dob"
-                            value={new Date(userData.date_of_birth).toLocaleDateString()} 
+                            value={new Date(userData.date_of_birth).toLocaleDateString()}
                             readOnly
                         />
                     </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../axios';
 import './auth.css'; // Importing the same CSS used for the Login page
 
-function Signup() {
+function Register() {
     const navigate = useNavigate();
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
@@ -209,4 +209,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default Register;

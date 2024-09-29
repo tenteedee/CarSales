@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import the hook
 
 const Navbar = () => {
+    const { t } = useTranslation(); // Call the hook to get the t function
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState({
         home: false,
@@ -58,90 +60,65 @@ const Navbar = () => {
                                 </button>
                             </div>
                             <div
-                                className={`collapse navbar-collapse navbar-main-slide ${isNavbarOpen ? 'in' : ''
-                                    }`}
+                                className={`collapse navbar-collapse navbar-main-slide ${isNavbarOpen ? 'in' : ''}`}
                                 id="nav"
                             >
                                 <ul className="navbar-nav-menu">
                                     <li>
-                                        <Link to="/">TRANG CHỦ</Link>
+                                        <Link to="/">{t('TRANG CHỦ')}</Link>
                                     </li>
                                     <li
-                                        className={`dropdown ${isDropdownOpen.buyCar ? 'open' : ''
-                                            }`}
-                                        onMouseEnter={() =>
-                                            handleMouseEnter('buyCar')
-                                        }
-                                        onMouseLeave={() =>
-                                            handleMouseLeave('buyCar')
-                                        }
+                                        className={`dropdown ${isDropdownOpen.buyCar ? 'open' : ''}`}
+                                        onMouseEnter={() => handleMouseEnter('buyCar')}
+                                        onMouseLeave={() => handleMouseLeave('buyCar')}
                                     >
                                         <Link className="dropdown-toggle" to="#">
-                                            MUA XE{' '}
-                                            <span className="fa fa-caret-down"></span>
+                                            {t('MUA XE')} <span className="fa fa-caret-down"></span>
                                         </Link>
                                         {isDropdownOpen.buyCar && (
                                             <ul className="dropdown-menu h-nav">
                                                 <li>
-                                                    <Link to="/listings">
-                                                        TRẢ GÓP
-                                                    </Link>
+                                                    <Link to="/listings">{t('TRẢ GÓP')}</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/listingsTwo">
-                                                        DỰ TOÁN CHI PHÍ
-                                                    </Link>
+                                                    <Link to="/listingsTwo">{t('DỰ TOÁN CHI PHÍ')}</Link>
                                                 </li>
                                             </ul>
                                         )}
                                     </li>
                                     <li>
-                                        <Link to="/about">GIỚI THIỆU</Link>
+                                        <Link to="/about">{t('GIỚI THIỆU')}</Link>
                                     </li>
                                     <li>
-                                        <Link to="/article">KHUYẾN MÃI</Link>
+                                        <Link to="/article">{t('KHUYẾN MÃI')}</Link>
                                     </li>
                                     <li
-                                        className={`dropdown ${isDropdownOpen.services
-                                            ? 'open'
-                                            : ''
-                                            }`}
-                                        onMouseEnter={() =>
-                                            handleMouseEnter('services')
-                                        }
-                                        onMouseLeave={() =>
-                                            handleMouseLeave('services')
-                                        }
+                                        className={`dropdown ${isDropdownOpen.services ? 'open' : ''}`}
+                                        onMouseEnter={() => handleMouseEnter('services')}
+                                        onMouseLeave={() => handleMouseLeave('services')}
                                     >
                                         <Link className="dropdown-toggle" to="#">
-                                            DỊCH VỤ{' '}
-                                            <span className="fa fa-caret-down"></span>
+                                            {t('DỊCH VỤ')} <span className="fa fa-caret-down"></span>
                                         </Link>
                                         {isDropdownOpen.services && (
                                             <ul className="dropdown-menu h-nav">
                                                 <li>
-                                                    <Link to="/blog">
-                                                        BẢO HÀNH
-                                                    </Link>
+                                                    <Link to="/blog">{t('BẢO HÀNH')}</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/blogTwo">
-                                                        PHỤ TÙNG VÀ PHỤ KIỆN
-                                                    </Link>
+                                                    <Link to="/blogTwo">{t('PHỤ TÙNG VÀ PHỤ KIỆN')}</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/404">
-                                                        ĐĂNG KÝ LÁI THỬ
-                                                    </Link>
+                                                    <Link to="/404">{t('ĐĂNG KÝ LÁI THỬ')}</Link>
                                                 </li>
                                             </ul>
                                         )}
                                     </li>
                                     <li>
-                                        <Link to="/submit1">TIN TỨC</Link>
+                                        <Link to="/submit1">{t('TIN TỨC')}</Link>
                                     </li>
                                     <li>
-                                        <Link to="/contacts">LIÊN HỆ</Link>
+                                        <Link to="/contacts">{t('LIÊN HỆ')}</Link>
                                     </li>
                                 </ul>
                             </div>

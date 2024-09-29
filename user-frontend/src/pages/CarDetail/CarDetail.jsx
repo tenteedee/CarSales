@@ -101,40 +101,46 @@ const CarDetail = () => {
                         <div className="col-md-2 mb-1"></div>
                         <div
                             className="col-md-4 mb-3"
-                            style={{ textAlign: 'left' }}
+                            style={{ textAlign: 'left', fontSize: '16px'}}
                         >
-                            <p>
-                                <strong>Brand:</strong>{' '}
-                                {carInfo?.brand.name || 'N/A'}
-                            </p>
-                            <p>
-                                <strong>Body type:</strong>
-                                {carInfo?.type.name || 'N/A'}
-                            </p>
-                            <p>
-                                <strong>Model:</strong>{' '}
-                                {carInfo?.model || 'N/A'}
-                            </p>
+                            <table>
+                                <th style={{width: '100px'}}></th>
+                                <tr>
+                                    <th><strong>Brand: </strong>{' '}</th>
+                                    <td>{carInfo?.brand.name || 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Body type: </strong></td>
+                                    <td>{carInfo?.type.name || 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Model: </strong>{' '}</td>
+                                    <td>{carInfo?.model || 'N/A'}</td>
+                                </tr>
+                            </table>
                         </div>
-                        <div className="col-md-4 mb-3" style={{ textAlign: 'left' }}>
-                            <p>
-                                <strong>Type:</strong>{' '}
-                                {carInfo?.type.name || 'N/A'}
-                            </p>
-                            <p>
-                                <strong>Price:</strong> $
-                                {carInfo?.price
+                        <div
+                            className="col-md-4 mb-3"
+                            style={{ textAlign: 'left', fontSize: '16px'}}
+                        >
+                            <table>
+                                <th style={{width: '100px'}}></th>
+                                <tr>
+                                    <th><strong>Price: </strong></th>
+                                    <td>$ {carInfo?.price
                                     ? parseFloat(carInfo.price).toLocaleString()
-                                    : 'N/A'}
-                            </p>
-                            <p>
-                                <strong>Stock:</strong>{' '}
-                                {carInfo?.stock || 'N/A'} available
-                            </p>
+                                    : 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stock: </strong></td>
+                                    <td>{carInfo?.stock || 'N/A'} available</td>
+                                </tr>
+                                
+                            </table>
                         </div>
                     </div>
 
-                    <div className="text-center">
+                    <div className="text-center" id="make-order-btn">
                         <button className="btn btn-primary">
                             Make an order
                         </button>

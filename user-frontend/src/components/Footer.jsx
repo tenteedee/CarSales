@@ -14,7 +14,7 @@ const Footer = () => {
                             >
                                 <div className="b-nav__logo">
                                     <h3>
-                                        <a href="home.html">
+                                        <a href="/">
                                             Auto<span>Club</span>
                                         </a>
                                     </h3>
