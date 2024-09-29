@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from '../axios';
+import axios from '../../axios';
 
 function CarFilter() {
     const [brands, setBrands] = useState([]);
@@ -97,10 +97,6 @@ function CarFilter() {
                                         <select
                                             value={selectedType}
                                             onChange={(e) => {
-                                                console.log(
-                                                    'Type ID Selected:',
-                                                    e.target.value
-                                                );
                                                 setSelectedType(e.target.value);
                                             }}
                                         >
@@ -157,6 +153,7 @@ function CarFilter() {
                                     <div
                                         key={car.id}
                                         className="col-xs-12 col-md-4 car-item"
+                                        style={{ marginBottom: '20px' }}
                                     >
                                         <Link to={`/car/detail/${car.id}`} style={{ textDecoration: 'none' }}>
                                         <img
@@ -169,8 +166,8 @@ function CarFilter() {
                                             alt={car.model}
                                             className="img-responsive"
                                             style={{
-                                                width: '220px',
-                                                height: '120px',
+                                                width: '250px',
+                                                height: '150px',
                                                 objectFit: 'cover',
                                                 objectPosition: 'center',
                                             }}
@@ -179,13 +176,13 @@ function CarFilter() {
                                             style={{
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
-                                                width: '220px',
+                                                width: '250px',
                                             }}
                                         >
                                             <div>
-                                                <h5>{car.model}</h5>
+                                                <h5>{car.brand.name} - {car.model}</h5>
                                             </div>
-                                            <p>Price: ${car.price}</p>
+                                            <p>Price: ${parseInt(car.price)}</p>
                                         </div>
                                         </Link>
                                     </div>

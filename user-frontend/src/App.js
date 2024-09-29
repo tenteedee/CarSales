@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
+import Home from './pages/HomePage/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
-import CarDetail from './pages/CarDetail';
+import CarDetail from './pages/CarDetail/CarDetail';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
@@ -32,7 +32,7 @@ function App() {
                     path="/profile"
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
-                <Route path="/car/detail/:id" component={CarDetail} />
+                <Route path="/car/detail/:id" element={<CarDetail />} />
                 {/* <Route path="/job/:id" element={!token ? <Navigate to='/login' /> : <DetailJob />} /> */}
                 <Route path="*" element={<NotFound />} />
             </Routes>

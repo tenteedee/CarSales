@@ -1,0 +1,60 @@
+.image-container {
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center content horizontally */
+    position: relative; /* For positioning buttons */
+    margin-bottom: 20px; /* Add space below the image container */
+}
+
+.image-nav-btn {
+    display: flex; /* Flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #ffffff41;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    height: 40px; /* Consistent height */
+    width: 40px; /* Consistent width */
+    font-size: 20px; /* Set a base font size */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    position: absolute; /* Positioning relative to the image */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust position to center */
+}
+
+.image-nav-btn:first-of-type {
+    left: 20px; /* Space from left */
+}
+
+.image-nav-btn:last-of-type {
+    right: 20px; /* Space from right */
+}
+
+.image-nav-btn:hover {
+    background-color: #f0f0f083; /* Light gray on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.image-nav-btn:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Add a blue glow effect on focus */
+}
+
+.card-body {
+    text-align: center; /* Center text inside card body */
+}
+
+.card-title {
+    margin-bottom: 20px; /* Space below title */
+}
+
+.text-center.py-8 {
+    padding: 2rem 0;
+}
+
+.text-center.py-8.text-red-600 {
+    padding: 2rem 0;
+    color: #e3342f;
+}
