@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
+import Contacts from './pages/Contacts/Contacts';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
@@ -42,6 +43,7 @@ function App() {
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
                 <Route path="/car/detail/:id" element={<CarDetail />} />
+                <Route path="/contacts" element={<Contacts />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
