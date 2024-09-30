@@ -10,7 +10,11 @@ import {
   queryStaff,
   deleteStaff,
   getStaff,
+  updateStaff,
+  createStaff,
 } from "../../controllers/management/StaffController.js";
+import { queryRoles } from "../../controllers/management/RoleController.js";
+import { queryShowrooms } from "../../controllers/management/ShowroomController.js";
 
 const router = express.Router();
 
@@ -35,8 +39,17 @@ router.use("/users", verifyStaffToken(["Director"]), userRouter);
 const staffRoute = express.Router();
 staffRoute.get("/query", queryStaff);
 staffRoute.delete("/delete", deleteStaff);
+staffRoute.post("/create", createStaff);
 staffRoute.get("/:id", getStaff);
-
+staffRoute.post("/:id", updateStaff);
 router.use("/staffs", verifyStaffToken(["Director"]), staffRoute);
+
+const roleRoute = express.Router();
+roleRoute.get("/", queryRoles);
+router.use("/roles", verifyStaffToken(["Director"]), roleRoute);
+
+const showroomRoute = express.Router();
+showroomRoute.get("/", queryShowrooms);
+router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
 
 export default router;

@@ -8,9 +8,10 @@ import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import StaffsPage from "../modules/staffs/StaffsPage";
+import {useAuth} from "../modules/auth";
 
 const PrivateRoutes = () => {
-
+    const {hasRole} = useAuth()
     return (
         <Routes>
             <Route element={<MasterLayout/>}>
@@ -22,14 +23,17 @@ const PrivateRoutes = () => {
                 <Route path='builder' element={<BuilderPageWrapper/>}/>
                 <Route path='menu-test' element={<MenuTestPage/>}/>
                 {/* Lazy Modules */}
-                <Route
-                    path='staffs/*'
-                    element={
-                        <SuspensedView>
-                            <StaffsPage/>
-                        </SuspensedView>
-                    }
-                />
+                {hasRole("Director") && (
+                    <Route
+                        path='staffs/*'
+                        element={
+                            <SuspensedView>
+                                <StaffsPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
+
                 {/* Page Not Found */}
                 <Route path='*' element={<Navigate to='/error/404'/>}/>
             </Route>

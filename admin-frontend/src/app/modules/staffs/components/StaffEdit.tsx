@@ -1,35 +1,21 @@
-import {Staff} from "../core/models";
+import {ShowroomModel, Staff} from "../core/models";
 import React, {FC, useEffect, useState} from "react";
-import {PageLink} from "../../../../_metronic/layout/core";
 import {Link, Outlet, useNavigate, useParams} from 'react-router-dom'
-import {getStaff} from "../core/requests";
+import {getRoles, getShowrooms, getStaff, updateStaff} from "../core/requests";
 import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {KTIcon, toAbsoluteUrl} from "../../../../_metronic/helpers";
-import {ChartsWidget1, ListsWidget5, TablesWidget1, TablesWidget5} from "../../../../_metronic/partials/widgets";
+import {RoleModel} from "../../auth";
 
-
-const accountBreadCrumbs: Array<PageLink> = [
-    {
-        title: 'Account',
-        path: '/staffs/edit/:id',
-        isSeparator: false,
-        isActive: false,
-    },
-    {
-        title: '',
-        path: '',
-        isSeparator: true,
-        isActive: false,
-    },
-]
 type Props = {};
 export const StaffEdit: FC<Props> = ({...props}) => {
     const {id} = useParams(); // Lấy ID từ URL
     const navigate = useNavigate();
-    const [staff, setStaff] = useState<Staff | null>(null); // Khai báo state staff
+    const [staff, setStaff] = useState<Staff | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [roles, setRoles] = useState<RoleModel[]>([]);
+    const [showrooms, setShowrooms] = useState<ShowroomModel[]>([]);
 
     useEffect(() => {
         if (id) {
@@ -65,7 +51,85 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 })
                 .finally(() => setLoading(false));
         }
+        getRoles()
+            .then((response: QueryResponse) => {
+                setRoles(response.data || []);
+            })
+            .catch(() => {
+                toast.error('Có lỗi xảy ra khi lấy danh sách vai trò', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            });
+        getShowrooms()
+            .then((response: QueryResponse) => {
+                setShowrooms(response.data || []);
+            })
+            .catch(() => {
+                toast.error('Có lỗi xảy ra khi lấy danh sách showrooms', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            });
     }, [id, navigate]);
+    const handleUpdate = () => {
+        if (staff && id) {
+            updateStaff(id, staff) // Gọi API để cập nhật staff
+                .then((response) => {
+                    const staffData = response.data;
+                    if (staffData && !Array.isArray(staffData)) {
+                        setStaff(staffData); // Đặt dữ liệu nhân viên vào state
+                        setStaff({...staff, password: ""})
+
+                        toast.success('Cập nhật thông tin thành công', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    } else {
+                        setError(true);
+                        toast.error('Không tìm thấy dữ liệu nhân viên hoặc dữ liệu không hợp lệ', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
+
+                })
+                .catch((error) => {
+                    const errorMessage = error && error.response && error.response.data && error.response.data.error
+                        ? error.response.data.error
+                        : "Cập nhật thất bại, vui lòng thử lại!";
+                    toast.error(errorMessage, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                });
+        }
+    };
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -77,6 +141,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
             </>
         );
     }
+
     return (
         <>
             <div className='card mb-5 mb-xl-10'>
@@ -178,7 +243,6 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                     <div className='card-title m-0'>
                         <h3 className='fw-bolder m-0'>Profile Details</h3>
                     </div>
-
                 </div>
 
                 <div className='card-body p-9'>
@@ -186,14 +250,59 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                         <label className='col-lg-4 fw-bold text-muted'>Full Name</label>
 
                         <div className='col-lg-8'>
-                            <span className='fw-bolder fs-6 text-dark'>{staff?.fullname}</span>
+                            <input
+                                type="text"
+                                className='form-control'
+                                value={staff?.fullname || ''}
+                                onChange={(e) => setStaff({...staff, fullname: e.target.value})}
+                            />
                         </div>
                     </div>
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Role</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Phone Number</label>
 
                         <div className='col-lg-8'>
-                            <span className='fw-bolder fs-6 text-danger'>{staff?.role?.name}</span>
+                            <input
+                                type="text"
+                                className='form-control'
+                                value={staff?.phone_number || ''}
+                                onChange={(e) => setStaff({...staff, phone_number: e.target.value})}
+                            />
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>
+                            Email
+                        </label>
+
+                        <div className='col-lg-8 d-flex align-items-center'>
+                            <input
+                                type='email'
+                                className='form-control'
+                                value={staff?.email || ''}
+                                onChange={(e) => setStaff({...staff, email: e.target.value})}
+                            />
+                        </div>
+
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Role</label>
+                        <div className='col-lg-8'>
+                            <select
+                                className='form-control'
+                                value={staff?.role_id || ''}
+                                onChange={(e) => {
+                                    const selectedRoleId = Number(e.target.value);
+                                    setStaff({...staff, role_id: selectedRoleId});
+                                }}
+                            >
+                                <option value=''>Select role</option>
+                                {roles.map((role) => (
+                                    <option key={role.id} value={role.id}>
+                                        {role.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
@@ -201,47 +310,72 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                         <label className='col-lg-4 fw-bold text-muted'>Showroom</label>
 
                         <div className='col-lg-8 fv-row'>
-                            <span className='fw-bold fs-6'>{staff?.showroom?.name}</span>
+                            <select
+                                className='form-control'
+                                value={staff?.showroom_id || ''}
+                                onChange={(e) => {
+                                    const selectedShowroomId = Number(e.target.value);
+                                    setStaff({...staff, showroom_id: selectedShowroomId});
+                                }}
+                            >
+                                <option value=''>Select Showroom</option>
+                                {showrooms.map((showroom) => (
+                                    <option key={showroom.id} value={showroom.id}>
+                                        {showroom.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
+
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>
-                            Email
+                            Password
                             <i
                                 className='fas fa-exclamation-circle ms-1 fs-7'
                                 data-bs-toggle='tooltip'
-                                title='Phone number must be active'
+                                title='Leave empty to not change password'
                             ></i>
                         </label>
 
                         <div className='col-lg-8 d-flex align-items-center'>
-                            <span className='fw-bolder fs-6 me-2'>{staff?.email}</span>
-                            <span className='badge badge-success'>Verified</span>
+                            <input
+                                type='password'
+                                className='form-control'
+                                placeholder="Nhập mật khẩu mới"
+                                value={staff?.password || ''}
+                                onChange={(e) => setStaff({...staff, password: e.target.value})}
+                            />
                         </div>
+
+                    </div>
+
+                    <div className='d-flex my-4'>
+                        <button className='btn btn-primary' onClick={handleUpdate}>Update</button>
                     </div>
                 </div>
             </div>
+            {/* Use for statistic */}
+            {/*<div className='row gy-10 gx-xl-10'>*/}
+            {/*    <div className='col-xl-6'>*/}
+            {/*        <ChartsWidget1 className='card-xxl-stretch mb-5 mb-xl-10'/>*/}
+            {/*    </div>*/}
 
-            <div className='row gy-10 gx-xl-10'>
-                <div className='col-xl-6'>
-                    <ChartsWidget1 className='card-xxl-stretch mb-5 mb-xl-10'/>
-                </div>
+            {/*    <div className='col-xl-6'>*/}
+            {/*        <TablesWidget1 className='card-xxl-stretch mb-5 mb-xl-10'/>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
-                <div className='col-xl-6'>
-                    <TablesWidget1 className='card-xxl-stretch mb-5 mb-xl-10'/>
-                </div>
-            </div>
+            {/*<div className='row gy-10 gx-xl-10'>*/}
+            {/*    <div className='col-xl-6'>*/}
+            {/*        <ListsWidget5 className='card-xxl-stretch mb-5 mb-xl-10'/>*/}
+            {/*    </div>*/}
 
-            <div className='row gy-10 gx-xl-10'>
-                <div className='col-xl-6'>
-                    <ListsWidget5 className='card-xxl-stretch mb-5 mb-xl-10'/>
-                </div>
-
-                <div className='col-xl-6'>
-                    <TablesWidget5 className='card-xxl-stretch mb-5 mb-xl-10'/>
-                </div>
-            </div>
+            {/*    <div className='col-xl-6'>*/}
+            {/*        <TablesWidget5 className='card-xxl-stretch mb-5 mb-xl-10'/>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </>
     )
 }
