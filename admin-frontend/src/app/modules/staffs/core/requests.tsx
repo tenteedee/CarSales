@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from "axios";
 import {QueryResponse} from "../../../utils/model/models";
 import {ID} from "../../../../_metronic/helpers";
+import {Staff} from "./models";
 
 const API_URL = process.env.REACT_APP_API_URL
 const STAFF_URL = `${API_URL}/staffs`
@@ -19,5 +20,25 @@ export const deleteStaff = (staffIds: Array<ID>): Promise<QueryResponse> => {
 export const getStaff = (id: string): Promise<QueryResponse> => {
     return axios
         .get(`${STAFF_URL}/${id}`)
+        .then((response: AxiosResponse<QueryResponse>) => response.data);
+}
+export const updateStaff = (id: string, staff: Staff): Promise<QueryResponse> => {
+    return axios
+        .post(`${STAFF_URL}/${id}`, staff)
+        .then((response: AxiosResponse<QueryResponse>) => response.data);
+}
+export const createStaff = (staff: Staff): Promise<QueryResponse> => {
+    return axios
+        .post(`${STAFF_URL}/create`, staff)
+        .then((response: AxiosResponse<QueryResponse>) => response.data);
+}
+export const getRoles = (): Promise<QueryResponse> => {
+    return axios
+        .get(`${API_URL}/roles`)
+        .then((response: AxiosResponse<QueryResponse>) => response.data);
+}
+export const getShowrooms = (): Promise<QueryResponse> => {
+    return axios
+        .get(`${API_URL}/showrooms`)
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 }

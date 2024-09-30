@@ -3,8 +3,80 @@ import Showroom from "../../models/Showroom.js";
 import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
 import { Op } from "sequelize"; // Sequelize operators
-export const getStaff = async (req, res) => {
+import bcrypt from "bcrypt";
+export const createStaff = async (req, res) => {
+  const { fullname, email, role_id, showroom_id, password, phone_number } =
+    req.body; // Lấy các trường từ body
+
+  try {
+    // Kiểm tra xem các trường bắt buộc đã có hay chưa
+    if (!fullname || !email || !password) {
+      return res.status(400).json({ error: "Vui lòng điền đầy đủ thông tin" });
+    }
+
+    const existingStaff = await Staff.findOne({ where: { email } });
+    if (existingStaff) {
+      return res.status(400).json({ error: "Email đã được sử dụng" });
+    }
+
+    // Băm mật khẩu nếu có
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Tạo nhân viên mới
+    const newStaff = await Staff.create({
+      fullname,
+      email,
+      phone_number,
+      password: hashedPassword, // Lưu mật khẩu đã băm
+    });
+
+    // Cập nhật role nếu role_id có trong body
+    if (role_id) {
+      const role = await StaffRole.findOne({ where: { id: role_id } });
+      if (!role) {
+        return res.status(400).json({ error: "Vai trò không tồn tại" });
+      }
+      await newStaff.setRole(role); // Thiết lập mối quan hệ với role
+    }
+
+    // Cập nhật showroom nếu showroom_id có trong body
+    if (showroom_id) {
+      const showroom = await Showroom.findOne({ where: { id: showroom_id } });
+      if (!showroom) {
+        return res.status(400).json({ error: "Showroom không tồn tại" });
+      }
+      await newStaff.setShowroom(showroom); // Thiết lập mối quan hệ với showroom
+    }
+
+    // Lấy lại thông tin nhân viên vừa tạo bao gồm các mối quan hệ
+    const createdStaff = await Staff.findOne({
+      where: { id: newStaff.id },
+      include: [
+        {
+          model: StaffRole,
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["id", "name"],
+        },
+      ],
+    });
+
+    // Trả về thông tin nhân viên đã tạo
+    return res.status(201).json({ data: createdStaff });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
+export const updateStaff = async (req, res) => {
   const { id } = req.params; // Lấy ID từ URL
+  const { fullname, email, role_id, showroom_id, password, phone_number } =
+    req.body; // Lấy các trường cần cập nhật từ body
 
   try {
     // Tìm nhân viên theo ID
@@ -19,7 +91,80 @@ export const getStaff = async (req, res) => {
         {
           model: Showroom,
           as: "showroom",
-          attributes: ["name"],
+          attributes: ["id", "name"],
+        },
+      ],
+    });
+
+    if (!staff) {
+      return res.status(404).json({ error: "Nhân viên không tồn tại" });
+    }
+
+    staff.fullname = fullname || staff.fullname;
+    staff.email = email || staff.email;
+    staff.phone_number = phone_number || staff.phone_number;
+
+    if (role_id && id != 1) {
+      const role = await StaffRole.findOne({ where: { id: role_id } });
+      if (!role) {
+        return res.status(400).json({ error: "Vai trò không tồn tại" });
+      }
+      await staff.setRole(role);
+    }
+
+    if (showroom_id) {
+      const showroom = await Showroom.findOne({ where: { id: showroom_id } });
+      if (!showroom) {
+        return res.status(400).json({ error: "Showroom không tồn tại" });
+      }
+      await staff.setShowroom(showroom);
+    }
+    if (password) {
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      staff.password = hashedPassword;
+    }
+    await staff.save();
+
+    const updatedStaff = await Staff.findOne({
+      where: { id },
+      include: [
+        {
+          model: StaffRole,
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["id", "name"],
+        },
+      ],
+    });
+    const staffData = updatedStaff.toJSON();
+    staffData.password = "";
+    return res.status(200).json({ data: staffData });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
+
+export const getStaff = async (req, res) => {
+  const { id } = req.params; // Lấy ID từ URL
+  try {
+    // Tìm nhân viên theo ID
+    const staff = await Staff.findOne({
+      where: { id },
+      include: [
+        {
+          model: StaffRole,
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["id", "name"],
         },
       ],
     });
@@ -28,9 +173,10 @@ export const getStaff = async (req, res) => {
       // Nếu không tìm thấy nhân viên
       return res.status(404).json({ error: "Nhân viên không tồn tại" });
     }
-
+    const staffData = staff.toJSON();
+    staffData.password = "";
     // Trả về thông tin nhân viên
-    return res.status(200).json({ data: staff });
+    return res.status(200).json({ data: staffData });
   } catch (error) {
     return res.status(500).json({ error: "Lỗi máy chủ" });
   }
@@ -99,7 +245,7 @@ export const queryStaff = async (req, res) => {
         {
           model: Showroom,
           as: "showroom",
-          attributes: ["name"],
+          attributes: ["id", "name"],
         },
       ],
       order: [[sortColumn, sortOrder.toUpperCase()]], // Sorting logic

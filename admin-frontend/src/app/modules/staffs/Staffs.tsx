@@ -7,7 +7,7 @@ import {QueryResponse} from "../../utils/model/models";
 import {toast} from "react-toastify";
 import {StaffsList} from "./components/StaffList";
 import {StaffEdit} from "./components/StaffEdit";
-
+import {StaffCreate} from "./components/StaffCreate";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -50,11 +50,17 @@ const StaffsListWrapper = () => {
     );
 }
 const StaffEditWrapper = () => {
-
     return (
         <>
             <StaffEdit/>
         </>
     );
 }
-export {StaffsListWrapper, StaffEditWrapper}
+const StaffCreateWrapper = () => {
+    return (
+        <>
+            <StaffCreate></StaffCreate>
+        </>
+    );
+}
+export {StaffsListWrapper, StaffEditWrapper, StaffCreateWrapper}
