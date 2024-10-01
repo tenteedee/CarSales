@@ -82,6 +82,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 });
             });
     }, [id, navigate]);
+    
     const handleUpdate = () => {
         if (staff && id) {
             updateStaff(id, staff) // Gọi API để cập nhật staff
@@ -148,7 +149,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 <div className='card-body pt-9 pb-0'>
                     <div className='d-flex flex-wrap flex-sm-nowrap mb-3'>
                         <div className='me-7 mb-4'>
-                            <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
+                            <div className='symbol symbol-800px symbol-lg-100px symbol-fixed position-relative'>
                                 <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='Metronic'/>
                                 <div
                                     className='position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px'></div>
@@ -195,14 +196,14 @@ export const StaffEdit: FC<Props> = ({...props}) => {
 
                                 <div className='d-flex my-4'>
 
-                                    <a
-                                        href='#'
-                                        className='btn btn-sm btn-danger me-3'
-                                        data-bs-toggle='modal'
-                                        data-bs-target='#kt_modal_offer_a_deal'
-                                    >
-                                        Delete
-                                    </a>
+                                    {/*<a*/}
+                                    {/*    href='#'*/}
+                                    {/*    className='btn btn-sm btn-danger me-3'*/}
+                                    {/*    data-bs-toggle='modal'*/}
+                                    {/*    data-bs-target='#kt_modal_offer_a_deal'*/}
+                                    {/*>*/}
+                                    {/*    Delete*/}
+                                    {/*</a>*/}
 
                                 </div>
                             </div>
