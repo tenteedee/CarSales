@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
+import TestDrive from './pages/TestDrive/TestDrive';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
@@ -42,7 +43,9 @@ function App() {
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
                 <Route path="/car/detail/:id" element={<CarDetail />} />
+                <Route path="/test-drive" element={<TestDrive />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="/404" element={<NotFound />} />
             </Routes>
             <Footer />
         </div>
@@ -51,9 +54,9 @@ function App() {
 
 const NotFound = () => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-black bg-gray-100">
-            <h1 className="text-6xl font-bold">404</h1>
-            <h2 className="text-2xl">Page Not Found</h2>
+        <div className="not-found">
+            <h1 className="not-found status">404</h1>
+            <h2 className="not-found error">Page Not Found</h2>
         </div>
     );
 };

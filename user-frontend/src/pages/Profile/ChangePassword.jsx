@@ -10,6 +10,12 @@ const ChangePassword = () => {
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
+
+        const passwordRegex = /^[^\s]{6,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            setMessage('Invalid Password! Make a strong password');
+            return;
+        }
         if (newPassword !== confirmPassword) {
             setMessage("New passwords do not match.");
             return;
@@ -25,7 +31,10 @@ const ChangePassword = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setMessage("Password changed successfully.");
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setMessage("Password changed successfully!");
         } catch (error) {
             console.error('Error changing password:', error);
             setMessage("Old password is incorrect!");

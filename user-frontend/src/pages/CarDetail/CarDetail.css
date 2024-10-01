@@ -1,5 +1,11 @@
-#make-order-btn {
+#btn-container {
     padding: 25px 50px 75px;
+    display: flex;
+    justify-content: center;
+}
+
+#submit-btn {
+    padding: 10px 50px;
 }
 
 .image-container {
@@ -26,6 +32,7 @@
     position: absolute; /* Positioning relative to the image */
     top: 50%; /* Center vertically */
     transform: translateY(-50%); /* Adjust position to center */
+    color: rgb(0, 0, 0);
 }
 
 .image-nav-btn:first-of-type {

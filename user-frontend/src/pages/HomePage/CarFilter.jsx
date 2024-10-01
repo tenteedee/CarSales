@@ -123,6 +123,7 @@ function CarFilter() {
                                             onChange={(e) =>
                                                 setMinPrice(e.target.value)
                                             }
+                                            style={{ width: '150px'}}
                                         />
                                     </div>
 
@@ -134,10 +135,11 @@ function CarFilter() {
                                             onChange={(e) =>
                                                 setMaxPrice(e.target.value)
                                             }
+                                            style={{ width: '150px'}}
                                         />
                                     </div>
                                     <button type="submit" className="col-md-2">
-                                        {t('SEARCH.SEARCH')}
+                                        {t('SEARCH.SEARCH') + ' '}
                                         <span className="fa fa-search"></span>
                                     </button>
                                 </div>
@@ -145,7 +147,7 @@ function CarFilter() {
                         </div>
                     </form>
                     <div className="car-results">
-                        <h4>{t('SEARCH.SEARCH_RESULTS')}</h4>
+                        <h3>{t('SEARCH.SEARCH_RESULTS')}</h3>
                         <div className="row">
                             {cars.length === 0 ? (
                                 <p>{t('SEARCH.NO_CARS_FOUND')}</p>

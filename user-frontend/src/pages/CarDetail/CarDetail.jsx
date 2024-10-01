@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import './CarDetail.css'; // Import the custom CSS file
 
 const CarDetail = () => {
+    const navigate = useNavigate();
     const { id: carId } = useParams();
     const [carInfo, setCarInfo] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,7 @@ const CarDetail = () => {
                 setCarInfo(response.data);
             } catch (err) {
                 setError('Error fetching car information');
+                navigate('/404');
                 console.error('Error fetching car information:', err);
             } finally {
                 setIsLoading(false);
@@ -53,6 +55,11 @@ const CarDetail = () => {
             <div className="text-center py-8">No car information available</div>
         );
     }
+
+    const handleRequestTestDrive = () => {
+        localStorage.setItem('selectedCar', JSON.stringify(carInfo));
+        navigate('/test-drive');
+    };
 
     return (
         <div className="container my-5">
@@ -94,56 +101,76 @@ const CarDetail = () => {
                             </>
                         )}
                     </div>
-                    <div className="row mb-4">{carInfo?.description || ''}</div>
+                    <div className="row mb-4" >{carInfo?.description || ''}</div>
 
                     <div className="row mb-4">
                         <h2>Details</h2>
                         <div className="col-md-2 mb-1"></div>
                         <div
                             className="col-md-4 mb-3"
-                            style={{ textAlign: 'left', fontSize: '16px'}}
+                            style={{ textAlign: 'left', fontSize: '16px' }}
                         >
                             <table>
-                                <th style={{width: '100px'}}></th>
+                                <th style={{ width: '100px' }}></th>
                                 <tr>
-                                    <th><strong>Brand: </strong>{' '}</th>
+                                    <th>
+                                        <strong>Brand: </strong>{' '}
+                                    </th>
                                     <td>{carInfo?.brand.name || 'N/A'}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Body type: </strong></td>
+                                    <td>
+                                        <strong>Body type: </strong>
+                                    </td>
                                     <td>{carInfo?.type.name || 'N/A'}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Model: </strong>{' '}</td>
+                                    <td>
+                                        <strong>Model: </strong>{' '}
+                                    </td>
                                     <td>{carInfo?.model || 'N/A'}</td>
                                 </tr>
                             </table>
                         </div>
                         <div
                             className="col-md-4 mb-3"
-                            style={{ textAlign: 'left', fontSize: '16px'}}
+                            style={{ textAlign: 'left', fontSize: '16px' }}
                         >
                             <table>
-                                <th style={{width: '100px'}}></th>
+                                <th style={{ width: '100px' }}></th>
                                 <tr>
-                                    <th><strong>Price: </strong></th>
-                                    <td>$ {carInfo?.price
-                                    ? parseFloat(carInfo.price).toLocaleString()
-                                    : 'N/A'}</td>
+                                    <th>
+                                        <strong>Price: </strong>
+                                    </th>
+                                    <td>
+                                        ${' '}
+                                        {carInfo?.price
+                                            ? parseFloat(
+                                                  carInfo.price
+                                              ).toLocaleString()
+                                            : 'N/A'}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Stock: </strong></td>
+                                    <td>
+                                        <strong>Stock: </strong>
+                                    </td>
                                     <td>{carInfo?.stock || 'N/A'} available</td>
                                 </tr>
-                                
                             </table>
                         </div>
                     </div>
-
-                    <div className="text-center" id="make-order-btn">
-                        <button className="btn btn-primary">
-                            Make an order
-                        </button>
+                    <div className="text-center" id="btn-container">
+                        <div className="text-center" id='submit-btn'>
+                            <button className="btn btn-primary">
+                                Make an Order
+                            </button>
+                        </div>
+                        <div className="text-center" id='submit-btn'>
+                            <button className="btn btn-primary" onClick={handleRequestTestDrive}>
+                                Request Test Drive
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

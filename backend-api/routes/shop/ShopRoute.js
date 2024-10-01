@@ -3,10 +3,14 @@ import authRouter from './AuthRoute.js';
 import carRouter from './CarRoute.js';
 import customerRouter from './CustomerRoute.js';
 import { getAllSettings } from '../../controllers/shop/SettingController.js';
+import { verifyToken } from '../../middleware/Auth.js';
+import { requestTestDrive } from '../../controllers/shop/TestDrive.js';
 
 const router = express.Router();
 router.use('/auth', authRouter);
 router.use('/car', carRouter);
 router.use('/customer', customerRouter);
 router.get('/settings', getAllSettings);
+router.get('/test-request', verifyToken, requestTestDrive);
+
 export default router;

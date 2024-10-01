@@ -118,6 +118,7 @@ function Register() {
                             className="form-input"
                             value={fullname}
                             onChange={(e) => setFullname(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -129,6 +130,7 @@ function Register() {
                             className="form-input"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -140,6 +142,7 @@ function Register() {
                             className="form-input"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -153,6 +156,7 @@ function Register() {
                             className="form-input"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -164,6 +168,7 @@ function Register() {
                             className="form-input"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -175,6 +180,7 @@ function Register() {
                             className="form-input"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -186,6 +192,7 @@ function Register() {
                             className="form-input"
                             value={dob}
                             onChange={(e) => setDob(e.target.value)}
+                            required
                         />
                     </div>
 
