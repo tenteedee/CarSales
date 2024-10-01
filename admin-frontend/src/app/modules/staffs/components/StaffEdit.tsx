@@ -85,7 +85,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
     
     const handleUpdate = () => {
         if (staff && id) {
-            updateStaff(id, staff) // Gọi API để cập nhật staff
+            updateStaff(id, staff)
                 .then((response) => {
                     const staffData = response.data;
                     if (staffData && !Array.isArray(staffData)) {

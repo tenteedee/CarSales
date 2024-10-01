@@ -1,11 +1,11 @@
 import {PageLink, PageTitle} from "../../../_metronic/layout/core";
 import {Navigate, Outlet, Route, Routes} from "react-router-dom";
-import {SettingsGeneralWrapper} from "./Settings";
+import {NewsWrapper} from "./News";
 
-const settingsBreadcrumbs: Array<PageLink> = [
+const newsBreadcrumbs: Array<PageLink> = [
     {
-        title: 'Settings',
-        path: '/settings',
+        title: 'New',
+        path: '/news',
         isSeparator: false,
         isActive: false,
     },
@@ -17,7 +17,7 @@ const settingsBreadcrumbs: Array<PageLink> = [
     },
 ]
 
-const SettingsPage = () => {
+const NewsPage = () => {
     return (
         <Routes>
             <Route element={<Outlet/>}>
@@ -25,8 +25,8 @@ const SettingsPage = () => {
                     index
                     element={
                         <>
-                            <PageTitle breadcrumbs={settingsBreadcrumbs}>Settings</PageTitle>
-                            <SettingsGeneralWrapper/>
+                            <PageTitle breadcrumbs={newsBreadcrumbs}>News</PageTitle>
+                            <NewsWrapper/>
                         </>
                     }
                 />
@@ -37,4 +37,5 @@ const SettingsPage = () => {
     )
 }
 
-export default SettingsPage
+export default NewsPage
+

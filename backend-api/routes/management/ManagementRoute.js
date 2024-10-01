@@ -19,6 +19,13 @@ import {
   querySettings,
   updateSettings,
 } from "../../controllers/management/SettingController.js";
+import {
+  queryCategories,
+  deleteCategories,
+  getCategory,
+  updateCategory,
+  createCategory,
+} from "../../controllers/management/CategoryController.js";
 
 const router = express.Router();
 
@@ -59,7 +66,14 @@ router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
 const settingsRoute = express.Router();
 settingsRoute.get("/", querySettings);
 settingsRoute.post("/", updateSettings);
-
 router.use("/settings", verifyStaffToken(["Director"]), settingsRoute);
 
+const categoriesRoute = express.Router();
+categoriesRoute.get("/", queryCategories);
+categoriesRoute.delete("/delete", deleteCategories);
+categoriesRoute.post("/create", createCategory);
+categoriesRoute.get("/:id", getCategory);
+categoriesRoute.post("/:id", updateCategory);
+
+router.use("/categories", verifyStaffToken(["Director"]), categoriesRoute);
 export default router;

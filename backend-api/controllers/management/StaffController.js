@@ -2,14 +2,13 @@ import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import Showroom from "../../models/Showroom.js";
 import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
-import { Op } from "sequelize"; // Sequelize operators
+import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 export const createStaff = async (req, res) => {
   const { fullname, email, role_id, showroom_id, password, phone_number } =
-    req.body; // Lấy các trường từ body
+    req.body;
 
   try {
-    // Kiểm tra xem các trường bắt buộc đã có hay chưa
     if (!fullname || !email || !password) {
       return res.status(400).json({ error: "Vui lòng điền đầy đủ thông tin" });
     }
@@ -19,37 +18,32 @@ export const createStaff = async (req, res) => {
       return res.status(400).json({ error: "Email đã được sử dụng" });
     }
 
-    // Băm mật khẩu nếu có
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Tạo nhân viên mới
     const newStaff = await Staff.create({
       fullname,
       email,
       phone_number,
-      password: hashedPassword, // Lưu mật khẩu đã băm
+      password: hashedPassword,
     });
 
-    // Cập nhật role nếu role_id có trong body
     if (role_id) {
       const role = await StaffRole.findOne({ where: { id: role_id } });
       if (!role) {
         return res.status(400).json({ error: "Vai trò không tồn tại" });
       }
-      await newStaff.setRole(role); // Thiết lập mối quan hệ với role
+      await newStaff.setRole(role);
     }
 
-    // Cập nhật showroom nếu showroom_id có trong body
     if (showroom_id) {
       const showroom = await Showroom.findOne({ where: { id: showroom_id } });
       if (!showroom) {
         return res.status(400).json({ error: "Showroom không tồn tại" });
       }
-      await newStaff.setShowroom(showroom); // Thiết lập mối quan hệ với showroom
+      await newStaff.setShowroom(showroom);
     }
 
-    // Lấy lại thông tin nhân viên vừa tạo bao gồm các mối quan hệ
     const createdStaff = await Staff.findOne({
       where: { id: newStaff.id },
       include: [
@@ -66,7 +60,6 @@ export const createStaff = async (req, res) => {
       ],
     });
 
-    // Trả về thông tin nhân viên đã tạo
     return res.status(201).json({ data: createdStaff });
   } catch (error) {
     console.error(error);
@@ -74,12 +67,11 @@ export const createStaff = async (req, res) => {
   }
 };
 export const updateStaff = async (req, res) => {
-  const { id } = req.params; // Lấy ID từ URL
+  const { id } = req.params;
   const { fullname, email, role_id, showroom_id, password, phone_number } =
-    req.body; // Lấy các trường cần cập nhật từ body
+    req.body;
 
   try {
-    // Tìm nhân viên theo ID
     const staff = await Staff.findOne({
       where: { id },
       include: [
@@ -150,9 +142,8 @@ export const updateStaff = async (req, res) => {
 };
 
 export const getStaff = async (req, res) => {
-  const { id } = req.params; // Lấy ID từ URL
+  const { id } = req.params;
   try {
-    // Tìm nhân viên theo ID
     const staff = await Staff.findOne({
       where: { id },
       include: [
@@ -170,23 +161,20 @@ export const getStaff = async (req, res) => {
     });
 
     if (!staff) {
-      // Nếu không tìm thấy nhân viên
       return res.status(404).json({ error: "Nhân viên không tồn tại" });
     }
     const staffData = staff.toJSON();
     staffData.password = "";
-    // Trả về thông tin nhân viên
     return res.status(200).json({ data: staffData });
   } catch (error) {
     return res.status(500).json({ error: "Lỗi máy chủ" });
   }
 };
 export const deleteStaff = async (req, res) => {
-  let staffIds = req.body.ids; // Nhận mảng ID từ payload
+  let staffIds = req.body.ids;
   if (!staffIds || staffIds.length === 0) {
     res.status(500).json({ error: "Danh sách ID không hợp lệ" });
   }
-  // Loại bỏ ID == 1 ra khỏi danh sách staffIds
   staffIds = staffIds.filter((id) => id !== 1);
   try {
     const deletedCount = await Staff.destroy({
@@ -208,30 +196,27 @@ export const deleteStaff = async (req, res) => {
 export const queryStaff = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
   const currentPage = parseInt(req.query.page) || 1;
-  const sortColumn = req.query.sort || "id"; // Default sort by 'id'
-  const sortOrder = req.query.order || "desc"; // Default order 'desc'
+  const sortColumn = req.query.sort || "id";
+  const sortOrder = req.query.order || "desc";
   const searchQuery = req.query.search || "";
 
   try {
-    // Parsing the search query
     const searchConditions = {};
     if (searchQuery) {
       searchQuery.split("|").forEach((condition) => {
         const [key, value] = condition.split("=");
         if (key && value) {
           searchConditions[key] = {
-            [Op.like]: `%${value}%`, // Modify this for more flexible searching
+            [Op.like]: `%${value}%`,
           };
         }
       });
     }
 
-    // Counting total items with search condition
     const totalStaff = await Staff.count({
       where: searchConditions,
     });
 
-    // Fetching paginated results
     const staffList = await Staff.findAll({
       where: searchConditions,
       offset: (currentPage - 1) * perPage,
@@ -248,10 +233,9 @@ export const queryStaff = async (req, res) => {
           attributes: ["id", "name"],
         },
       ],
-      order: [[sortColumn, sortOrder.toUpperCase()]], // Sorting logic
+      order: [[sortColumn, sortOrder.toUpperCase()]],
     });
 
-    // Pagination
     const pagination = {
       current_page: currentPage,
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,

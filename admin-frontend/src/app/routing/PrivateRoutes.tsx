@@ -10,6 +10,8 @@ import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import StaffsPage from "../modules/staffs/StaffsPage";
 import {useAuth} from "../modules/auth";
 import SettingsPage from "../modules/settings/SettingsPage";
+import NewsPage from "../modules/news/NewsPage";
+import CategoryPage from "../modules/category/CategoryPage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -36,10 +38,30 @@ const PrivateRoutes = () => {
                 )}
                 {hasRole("Director") && (
                     <Route
+                        path='categories/*'
+                        element={
+                            <SuspensedView>
+                                <CategoryPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {hasRole("Director") && (
+                    <Route
                         path='settings/*'
                         element={
                             <SuspensedView>
                                 <SettingsPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {hasRole("Director") && (
+                    <Route
+                        path='news/*'
+                        element={
+                            <SuspensedView>
+                                <NewsPage/>
                             </SuspensedView>
                         }
                     />
