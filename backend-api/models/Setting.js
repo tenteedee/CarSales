@@ -1,9 +1,13 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
 
 const Setting = db.define(
-  'setting',
+  "setting",
   {
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
     key: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -14,9 +18,11 @@ const Setting = db.define(
     },
   },
   {
-    tableName: 'settings',
+    tableName: "settings",
     timestamps: true,
     underscored: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 

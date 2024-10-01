@@ -9,6 +9,7 @@ import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import StaffsPage from "../modules/staffs/StaffsPage";
 import {useAuth} from "../modules/auth";
+import SettingsPage from "../modules/settings/SettingsPage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -33,7 +34,16 @@ const PrivateRoutes = () => {
                         }
                     />
                 )}
-
+                {hasRole("Director") && (
+                    <Route
+                        path='settings/*'
+                        element={
+                            <SuspensedView>
+                                <SettingsPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
                 {/* Page Not Found */}
                 <Route path='*' element={<Navigate to='/error/404'/>}/>
             </Route>

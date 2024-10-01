@@ -12,6 +12,16 @@ const ToolbarClassic = () => {
         : 'bg-body btn-color-gray-700 btn-active-color-primary'
     const location = useLocation();
     const {hasRole} = useAuth()
+    const createButtonLinks = [
+        {path: '/staffs', role: 'Director'},
+    ];
+    const currentPath = location.pathname;
+    const shouldShowCreateButton = createButtonLinks.some(
+        (link) =>
+            hasRole(link.role) &&
+            currentPath.startsWith(link.path) &&
+            !currentPath.endsWith('/create')
+    );
 
     return (
         <div className='d-flex align-items-center gap-2 gap-lg-3'>
@@ -29,15 +39,15 @@ const ToolbarClassic = () => {
                     <KTIcon iconName='calendar-8' className='fs-1 ms-2 me-0'/>
                 </div>
             )}
-            {hasRole("Director") && !location.pathname.endsWith('/create') && (
+
+            {shouldShowCreateButton && (
                 <Link
-                    to={`${location.pathname}/create`}
+                    to={`${currentPath}/create`}
                     className='btn btn-sm fw-bold btn-primary'
                 >
                     Create
                 </Link>
             )}
-
         </div>
     )
 }

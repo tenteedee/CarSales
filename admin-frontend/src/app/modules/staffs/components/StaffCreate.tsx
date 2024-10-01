@@ -3,7 +3,7 @@ import {createStaff, getRoles, getShowrooms} from "../core/requests"; // Bạn c
 import {ShowroomModel, Staff} from "../core/models";
 import {toast} from "react-toastify";
 import {RoleModel} from "../../auth";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 type Props = {};
 export const StaffCreate: FC<Props> = () => {
