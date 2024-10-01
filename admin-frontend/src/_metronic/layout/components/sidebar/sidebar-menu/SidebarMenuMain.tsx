@@ -3,6 +3,8 @@ import React from 'react'
 import {useIntl} from 'react-intl'
 import {SidebarMenuItem} from './SidebarMenuItem'
 import {useAuth} from "../../../../../app/modules/auth";
+import {Route} from "react-router-dom";
+import SettingsPage from "../../../../../app/modules/settings/SettingsPage";
 
 const SidebarMenuMain = () => {
     const intl = useIntl()
@@ -24,7 +26,22 @@ const SidebarMenuMain = () => {
                     <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
                 </div>
             </div>
-
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/news'
+                    icon='menu'
+                    title='News'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/categories'
+                    icon='menu'
+                    title='News Category'
+                    fontIcon='bi-layers'
+                />
+            )}
             {hasRole("Director") && (
                 <SidebarMenuItem
                     to='/staffs'

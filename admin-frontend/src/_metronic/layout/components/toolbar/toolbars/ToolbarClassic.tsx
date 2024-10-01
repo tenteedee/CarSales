@@ -14,6 +14,7 @@ const ToolbarClassic = () => {
     const {hasRole} = useAuth()
     const createButtonLinks = [
         {path: '/staffs', role: 'Director'},
+        {path: '/categories', role: 'Director'},
     ];
     const currentPath = location.pathname;
     const shouldShowCreateButton = createButtonLinks.some(

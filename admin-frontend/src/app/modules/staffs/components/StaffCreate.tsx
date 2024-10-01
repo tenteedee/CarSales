@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import {createStaff, getRoles, getShowrooms} from "../core/requests"; // Bạn cần tạo các API này
+import {createStaff, getRoles, getShowrooms} from "../core/requests";
 import {ShowroomModel, Staff} from "../core/models";
 import {toast} from "react-toastify";
 import {RoleModel} from "../../auth";
@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 type Props = {};
 export const StaffCreate: FC<Props> = () => {
-    const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
+    const navigate = useNavigate();
 
     const [staff, setStaff] = useState<Partial<Staff>>({
         fullname: "",
@@ -30,7 +30,6 @@ export const StaffCreate: FC<Props> = () => {
         getShowrooms().then((response) => setShowrooms(response.data || []));
     }, []);
 
-    // Hàm xử lý khi nhập liệu vào các trường
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStaff({
             ...staff,
@@ -38,7 +37,6 @@ export const StaffCreate: FC<Props> = () => {
         });
     };
 
-    // Hàm xử lý khi chọn role
     const handleRoleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedRoleId = Number(e.target.value);
         //const selectedRole = roles.find((role) => role.id === selectedRoleId);
@@ -48,7 +46,6 @@ export const StaffCreate: FC<Props> = () => {
         });
     };
 
-    // Hàm xử lý khi chọn showroom
     const handleShowroomChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedShowroomId = Number(e.target.value);
         //const selectedShowroom = showrooms.find((showroom) => showroom.id === selectedShowroomId);
@@ -58,9 +55,7 @@ export const StaffCreate: FC<Props> = () => {
         });
     };
 
-    // Hàm xử lý khi nhấn nút "Create"
     const handleCreate = () => {
-        // Gửi request tạo staff
         createStaff(staff)
             .then(() => {
                 toast.success("Tạo nhân viên thành công!", {
