@@ -33,8 +33,14 @@ const SidebarMenuMain = () => {
                     fontIcon='bi-layers'
                 />
             )}
-
-
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/settings'
+                    icon='wrench'
+                    title='Settings'
+                    fontIcon='bi-layers'
+                />
+            )}
         </>
     )
 }

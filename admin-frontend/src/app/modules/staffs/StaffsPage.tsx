@@ -1,4 +1,4 @@
-import {Route, Routes, Outlet, Navigate} from 'react-router-dom'
+import {Navigate, Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import {StaffCreateWrapper, StaffEditWrapper, StaffsListWrapper} from './Staffs'
 
@@ -26,7 +26,7 @@ const StaffsPage = () => {
                     element={
                         <>
                             <PageTitle breadcrumbs={staffsBreadcrumbs}>Staffs list</PageTitle>
-                            <StaffsListWrapper />
+                            <StaffsListWrapper/>
                         </>
                     }
                 />
@@ -35,7 +35,7 @@ const StaffsPage = () => {
                     element={
                         <>
                             <PageTitle breadcrumbs={staffsBreadcrumbs}>Create Staff</PageTitle>
-                            <StaffCreateWrapper />
+                            <StaffCreateWrapper/>
                         </>
                     }
                 />
@@ -44,7 +44,7 @@ const StaffsPage = () => {
                     element={
                         <>
                             <PageTitle breadcrumbs={staffsBreadcrumbs}>Edit Staff</PageTitle>
-                            <StaffEditWrapper />
+                            <StaffEditWrapper/>
                         </>
                     }
                 />

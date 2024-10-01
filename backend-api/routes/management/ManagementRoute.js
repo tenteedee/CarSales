@@ -15,6 +15,10 @@ import {
 } from "../../controllers/management/StaffController.js";
 import { queryRoles } from "../../controllers/management/RoleController.js";
 import { queryShowrooms } from "../../controllers/management/ShowroomController.js";
+import {
+  querySettings,
+  updateSettings,
+} from "../../controllers/management/SettingController.js";
 
 const router = express.Router();
 
@@ -51,5 +55,11 @@ router.use("/roles", verifyStaffToken(["Director"]), roleRoute);
 const showroomRoute = express.Router();
 showroomRoute.get("/", queryShowrooms);
 router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
+
+const settingsRoute = express.Router();
+settingsRoute.get("/", querySettings);
+settingsRoute.post("/", updateSettings);
+
+router.use("/settings", verifyStaffToken(["Director"]), settingsRoute);
 
 export default router;
