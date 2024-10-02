@@ -14,7 +14,7 @@ function CarFilter() {
     const [maxPrice, setMaxPrice] = useState('');
     const [cars, setCars] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const carsPerPage = 6;
+    const carsPerPage = 9;
 
     useEffect(() => {
         const fetchBrandsAndTypes = async () => {
@@ -47,8 +47,8 @@ function CarFilter() {
         const searchParams = {
             brand: selectedBrand,
             type: selectedType,
-            minPrice: minPrice.replace(/\D/g, ''), // Bỏ ký tự không phải số trước khi gửi
-            maxPrice: maxPrice.replace(/\D/g, ''), // Bỏ ký tự không phải số trước khi gửi
+            minPrice: minPrice.replace(/\D/g, ''),
+            maxPrice: maxPrice.replace(/\D/g, ''),
         };
 
         try {
@@ -72,15 +72,14 @@ function CarFilter() {
         }).format(value);
     };
 
-    // Hàm xử lý khi người dùng nhập giá trị vào input
     const handleMinPriceChange = (e) => {
-        const value = e.target.value.replace(/\D/g, ''); // Loại bỏ ký tự không phải số
-        setMinPrice(formatCurrency(value)); // Định dạng lại giá trị thành số tiền
+        const value = e.target.value.replace(/\D/g, '');
+        setMinPrice(formatCurrency(value));
     };
 
     const handleMaxPriceChange = (e) => {
-        const value = e.target.value.replace(/\D/g, ''); // Loại bỏ ký tự không phải số
-        setMaxPrice(formatCurrency(value)); // Định dạng lại giá trị thành số tiền
+        const value = e.target.value.replace(/\D/g, '');
+        setMaxPrice(formatCurrency(value));
     };
 
     const indexOfLastCar = currentPage * carsPerPage;
@@ -188,7 +187,7 @@ function CarFilter() {
                             </div>
                         </div>
                     </form>
-                    <div className="car-results">
+                    <div className="car-results flex justify-center">
                         <h3>{t('SEARCH.SEARCH_RESULTS')}</h3>
                         <div className="row">
                             {currentCars.length === 0 ? (
@@ -197,7 +196,7 @@ function CarFilter() {
                                 currentCars.map((car) => (
                                     <div
                                         key={car.id}
-                                        className="col-xs-12 col-md-4 car-item"
+                                        className="col-xs-12 col-md-4 car-item "
                                     >
                                         <Link
                                             to={`/car/detail/${car.id}`}

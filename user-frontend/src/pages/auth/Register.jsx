@@ -29,7 +29,7 @@ function Register() {
 
         const stringRegex = /^[a-zA-Z0-9_.\s-]{3,}$/;
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        const passwordRegex = /^[^\s]{6,}$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
         const phoneRegex = /^[0-9]{10,11}$/;
 
         if (!stringRegex.test(fullname)) {
@@ -45,7 +45,7 @@ function Register() {
             setShowError(true);
             return false;
         } else if (!passwordRegex.test(password)) {
-            setError('Invalid Password! Make a strong password');
+            setError('Invalid Password! Must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.');
             setShowError(true);
             return false;
         } else if (password !== confirmPassword) {
@@ -98,7 +98,7 @@ function Register() {
     useEffect(() => {
         const timer = setTimeout(() => {
             showError && setShowError(false);
-        }, 5000);
+        }, 10000);
         return () => clearTimeout(timer);
     }, [showError]);
 
