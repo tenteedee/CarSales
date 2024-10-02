@@ -4,6 +4,7 @@ import { setLogin } from '../../reduxStore/authSlice';
 import { useDispatch } from 'react-redux';
 import axios from '../../axios';
 import "./auth.css"
+//a@gmail.com.' or 1  = 1
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

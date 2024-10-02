@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
-import './CarDetail.css'; // Import the custom CSS file
+import './CarDetail.css';
 
 const CarDetail = () => {
     const navigate = useNavigate();
@@ -16,10 +16,11 @@ const CarDetail = () => {
             try {
                 const response = await axios.get(`car/detail/${carId}`);
                 setCarInfo(response.data);
+                console.log(response.data);
             } catch (err) {
                 setError('Error fetching car information');
                 navigate('/404');
-                console.error('Error fetching car information:', err);
+                console.error(err.response.data.error);
             } finally {
                 setIsLoading(false);
             }
@@ -108,14 +109,14 @@ const CarDetail = () => {
                         <div className="col-md-2 mb-1"></div>
                         <div
                             className="col-md-4 mb-3"
-                            style={{ textAlign: 'left', fontSize: '16px' }}
+                            style={{ textAlign: 'left', fontSize: '16px'}}
                         >
                             <table>
-                                <th style={{ width: '100px' }}></th>
+                                <th style={{ width: '100px'}}></th>
                                 <tr>
-                                    <th>
+                                    <td>
                                         <strong>Brand: </strong>{' '}
-                                    </th>
+                                    </td>
                                     <td>{carInfo?.brand.name || 'N/A'}</td>
                                 </tr>
                                 <tr>
@@ -130,14 +131,20 @@ const CarDetail = () => {
                                     </td>
                                     <td>{carInfo?.model || 'N/A'}</td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Stock: </strong>
+                                    </td>
+                                    <td>{carInfo?.stock || 'N/A'} available</td>
+                                </tr>
                             </table>
                         </div>
                         <div
                             className="col-md-4 mb-3"
-                            style={{ textAlign: 'left', fontSize: '16px' }}
+                            style={{ textAlign: 'left', fontSize: '24px', color:'green'}}
                         >
                             <table>
-                                <th style={{ width: '100px' }}></th>
+                                <th style={{ width: '100px'}}></th>
                                 <tr>
                                     <th>
                                         <strong>Price: </strong>
@@ -151,12 +158,7 @@ const CarDetail = () => {
                                             : 'N/A'}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Stock: </strong>
-                                    </td>
-                                    <td>{carInfo?.stock || 'N/A'} available</td>
-                                </tr>
+                                
                             </table>
                         </div>
                     </div>

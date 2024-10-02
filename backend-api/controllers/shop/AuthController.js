@@ -10,6 +10,9 @@ import { OAuth2Client } from 'google-auth-library';
 import { GOOGLE_CLIENT_ID, JWT_SECRET } from '../../config/Config.js';
 import moment from 'moment';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 export const verify_token = async (req, res) => {
@@ -50,7 +53,7 @@ export const login = async (req, res) => {
     }
 
     const customerData = customer.toJSON();
-    //const isMatch = password == customerData.password;
+    // const isMatch = password == customerData.password;
     const isMatch = await bcrypt.compare(password, customer.password);
     if (!isMatch) {
       errors.password = 'Password is incorrect';
@@ -108,6 +111,7 @@ export const register = async (req, res) => {
       date_of_birth: formattedDob,
     });
 
+    // eslint-disable-next-line no-undef
     const token = jwt.sign({ id: newCustomer.id }, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });

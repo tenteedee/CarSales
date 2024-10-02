@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "eslint": "^9.11.1",
     "react-bootstrap": "^2.10.4"
+  },
+  "devDependencies": {
+    "globals": "^15.9.0"
   }
 }

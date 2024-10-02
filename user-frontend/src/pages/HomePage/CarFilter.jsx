@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Pagination } from 'react-bootstrap';
 
 function CarFilter() {
     const { t } = useTranslation();
@@ -12,6 +13,8 @@ function CarFilter() {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [cars, setCars] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); 
+    const carsPerPage = 6; 
 
     useEffect(() => {
         const fetchBrandsAndTypes = async () => {
@@ -44,8 +47,8 @@ function CarFilter() {
         const searchParams = {
             brand: selectedBrand,
             type: selectedType,
-            minPrice,
-            maxPrice,
+            minPrice: minPrice.replace(/\D/g, ''), // Bỏ ký tự không phải số trước khi gửi
+            maxPrice: maxPrice.replace(/\D/g, ''), // Bỏ ký tự không phải số trước khi gửi
         };
 
         try {
@@ -53,10 +56,53 @@ function CarFilter() {
                 params: searchParams,
             });
             setCars(response.data);
+            setCurrentPage(1); 
         } catch (error) {
             console.error('Error fetching cars based on search:', error);
         }
     };
+
+    // Hàm định dạng giá tiền
+    const formatCurrency = (value) => {
+        if (!value) return '';
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+        }).format(value);
+    };
+
+    // Hàm xử lý khi người dùng nhập giá trị vào input
+    const handleMinPriceChange = (e) => {
+        const value = e.target.value.replace(/\D/g, ''); // Loại bỏ ký tự không phải số
+        setMinPrice(formatCurrency(value)); // Định dạng lại giá trị thành số tiền
+    };
+
+    const handleMaxPriceChange = (e) => {
+        const value = e.target.value.replace(/\D/g, ''); // Loại bỏ ký tự không phải số
+        setMaxPrice(formatCurrency(value)); // Định dạng lại giá trị thành số tiền
+    };
+
+    const indexOfLastCar = currentPage * carsPerPage;
+    const indexOfFirstCar = indexOfLastCar - carsPerPage;
+    const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
+    const totalPages = Math.ceil(cars.length / carsPerPage);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const paginationItems = [];
+    for (let number = 1; number <= totalPages; number++) {
+        paginationItems.push(
+            <Pagination.Item
+                key={number}
+                active={number === currentPage}
+                activeLabel=''
+                onClick={() => paginate(number)}
+            >
+                {number}
+            </Pagination.Item>
+        );
+    }
 
     return (
         <section className="b-search">
@@ -117,25 +163,21 @@ function CarFilter() {
 
                                     <div className="col-md-2">
                                         <input
-                                            type="number"
+                                            type="text"
                                             placeholder={t('SEARCH.MIN_PRICE')}
                                             value={minPrice}
-                                            onChange={(e) =>
-                                                setMinPrice(e.target.value)
-                                            }
-                                            style={{ width: '150px'}}
+                                            onChange={handleMinPriceChange} // Gọi hàm xử lý
+                                            style={{ width: '150px' }}
                                         />
                                     </div>
 
                                     <div className="col-md-2">
                                         <input
-                                            type="number"
+                                            type="text"
                                             placeholder={t('SEARCH.MAX_PRICE')}
                                             value={maxPrice}
-                                            onChange={(e) =>
-                                                setMaxPrice(e.target.value)
-                                            }
-                                            style={{ width: '150px'}}
+                                            onChange={handleMaxPriceChange} // Gọi hàm xử lý
+                                            style={{ width: '150px' }}
                                         />
                                     </div>
                                     <button type="submit" className="col-md-2">
@@ -149,10 +191,10 @@ function CarFilter() {
                     <div className="car-results">
                         <h3>{t('SEARCH.SEARCH_RESULTS')}</h3>
                         <div className="row">
-                            {cars.length === 0 ? (
+                            {currentCars.length === 0 ? (
                                 <p>{t('SEARCH.NO_CARS_FOUND')}</p>
                             ) : (
-                                cars.map((car) => (
+                                currentCars.map((car) => (
                                     <div
                                         key={car.id}
                                         className="col-xs-12 col-md-4 car-item"
@@ -191,7 +233,7 @@ function CarFilter() {
                                                 </div>
                                                 <p>
                                                     {t('CAR.PRICE', {
-                                                        price: car.price,
+                                                        price: formatCurrency(parseInt(car.price)),
                                                     })}
                                                 </p>
                                             </div>
@@ -200,6 +242,11 @@ function CarFilter() {
                                 ))
                             )}
                         </div>
+                        {totalPages > 1 && (
+                            <Pagination className="justify-content-center mt-4">
+                                {paginationItems}
+                            </Pagination>
+                        )}
                     </div>
                 </div>
             </div>

@@ -10,7 +10,8 @@ const router = express.Router();
 router.use('/auth', authRouter);
 router.use('/car', carRouter);
 router.use('/customer', customerRouter);
+
 router.get('/settings', getAllSettings);
-router.get('/test-request', verifyToken, requestTestDrive);
+router.route('/test-drive-request').post(requestTestDrive);
 
 export default router;

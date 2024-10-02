@@ -3,8 +3,7 @@ import Car from '../../models/Car.js';
 import { verifyToken } from '../../middleware/Auth.js';
 
 export const requestTestDrive = async (req, res) => {
-  const { car_id, test_drive_date } = req.body;
-  const user_id = req.user.id;
+  const { car_id, customer_id, test_drive_date } = req.body;
 
   if (!car_id || !test_drive_date) {
     return res.status(400).json({ error: 'Missing required fields.' });
@@ -28,7 +27,7 @@ export const requestTestDrive = async (req, res) => {
     }
 
     const testDriveRequest = await TestDriveRequest.create({
-      customer_id: user_id,
+      customer_id: customer_id,
       car_id: car_id,
       test_drive_date: test_drive_date,
     });

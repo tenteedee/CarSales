@@ -42,15 +42,18 @@ const resources = {
             BUYING_GUIDE: 'Hướng dẫn mua hàng',
             WORLDS_LEADING_CAR_DEALER: 'Đại lý xe hàng đầu thế giới',
             WELCOME_TO_AUTOCLUB: 'Chào mừng bạn đến với AutoClub',
-            WELCOME_DESCRIPTION: 'Chúng tôi cung cấp cho bạn những trải nghiệm tuyệt vời nhất. Tại đây, bạn có thể tìm thấy những chiếc xe hoàn hảo cho bạn.',
-            SECOND_PARAGRAPH: 'Tại AutoClub, chúng tôi cam kết mang đến dịch vụ tốt nhất và giúp bạn tìm thấy chiếc xe mơ ước.',
+            WELCOME_DESCRIPTION:
+                'Chúng tôi cung cấp cho bạn những trải nghiệm tuyệt vời nhất. Tại đây, bạn có thể tìm thấy những chiếc xe hoàn hảo cho bạn.',
+            SECOND_PARAGRAPH:
+                'Tại AutoClub, chúng tôi cam kết mang đến dịch vụ tốt nhất và giúp bạn tìm thấy chiếc xe mơ ước.',
             CHECK_ITEM_1: 'Kiểm tra an toàn toàn diện',
             CHECK_ITEM_2: 'Dịch vụ khách hàng tận tình',
             CHECK_ITEM_3: 'Đội ngũ chuyên nghiệp và am hiểu',
             CHECK_ITEM_4: 'Cam kết chất lượng hàng đầu',
             TRADE_INS: 'Đổi xe',
             SUPPORT: 'Hỗ trợ 24/7',
-            GIVING_OUR_CUSTOMERS_BEST_DEALS: 'Mang đến những giao dịch tốt nhất cho khách hàng',
+            GIVING_OUR_CUSTOMERS_BEST_DEALS:
+                'Mang đến những giao dịch tốt nhất cho khách hàng',
             LATEST_VEHICLES_ON_SALE: 'Các xe mới nhất đang bán',
             REGISTERED: 'Đã đăng ký',
             EVERYTHING_YOU_NEED_TO_KNOW: 'Tất cả những gì bạn cần biết',
@@ -61,16 +64,20 @@ const resources = {
             DEALER_BRANCHES: 'Các chi nhánh nhà phân phối',
             FREE_PARTS_GIVEN: 'Nhận quà miễn phí',
             LOOKING_FOR_A_CAR: 'Bạn đang tìm xe?',
-            SEARCH_INVENTORY: 'Khám phá kho hàng với hàng ngàn chiếc xe và nhiều mẫu xe mới được thêm vào hàng ngày.',
+            SEARCH_INVENTORY:
+                'Khám phá kho hàng với hàng ngàn chiếc xe và nhiều mẫu xe mới được thêm vào hàng ngày.',
             WANT_TO_SELL_A_CAR: 'Bạn muốn bán xe?',
             OUR_PARTNERS: 'Đối tác của chúng tôi',
             OPENING_HOURS: 'Giờ làm việc',
             SALES_DEPARTMENT: 'Bộ phận Bán hàng',
-            SALES_HOURS: 'Thứ Hai - Thứ Bảy: 8:00 sáng - 5:00 chiều. Chủ Nhật nghỉ.',
+            SALES_HOURS:
+                'Thứ Hai - Thứ Bảy: 8:00 sáng - 5:00 chiều. Chủ Nhật nghỉ.',
             SERVICE_DEPARTMENT: 'Bộ phận Dịch vụ',
-            SERVICE_HOURS: 'Thứ Hai - Thứ Bảy: 8:00 sáng - 5:00 chiều. Chủ Nhật nghỉ.',
+            SERVICE_HOURS:
+                'Thứ Hai - Thứ Bảy: 8:00 sáng - 5:00 chiều. Chủ Nhật nghỉ.',
             ABOUT_US: 'Về chúng tôi',
-            ABOUT_US_DESC: 'Chúng tôi tự hào mang đến những dịch vụ và sản phẩm tốt nhất cho khách hàng.',
+            ABOUT_US_DESC:
+                'Chúng tôi tự hào mang đến những dịch vụ và sản phẩm tốt nhất cho khách hàng.',
             LATEST_AUTOS: 'Xe mới nhất',
             USED: 'Đã sử dụng',
             YEAR_2014: '2014',
@@ -96,9 +103,9 @@ const resources = {
                 ADVANCED_SEARCH: 'Tìm Kiếm Nâng Cao',
             },
             CAR: {
-                PRICE: 'Giá: ${{price}}'
-            }
-        }
+                PRICE: 'Giá: {{price}}',
+            },
+        },
     },
     en: {
         translation: {
@@ -143,15 +150,18 @@ const resources = {
             BUYING_GUIDE: 'Buying Guide',
             WORLDS_LEADING_CAR_DEALER: "WORLD'S LEADING CAR DEALER",
             WELCOME_TO_AUTOCLUB: 'WELCOME TO AUTOCLUB',
-            WELCOME_DESCRIPTION: 'Curabitur libero. Donec facilisis velit eu est.',
-            SECOND_PARAGRAPH: 'Ipsum midne ultrices magn eu tempor quam dolor eustrl sem.',
+            WELCOME_DESCRIPTION:
+                'Curabitur libero. Donec facilisis velit eu est.',
+            SECOND_PARAGRAPH:
+                'Ipsum midne ultrices magn eu tempor quam dolor eustrl sem.',
             CHECK_ITEM_1: 'Donec facilisis velit eu est phasellus consequat',
             CHECK_ITEM_2: 'Aenean vitae quam. Vivamus et nunc nunc consequat',
             CHECK_ITEM_3: 'Sem vel metus imperdiet lacinia enean',
             CHECK_ITEM_4: 'Dapibus aliquam augue fusce eleifend quisque tels',
             TRADE_INS: 'Trade-Ins',
             SUPPORT: '24/7 Support',
-            GIVING_OUR_CUSTOMERS_BEST_DEALS: 'Giving Our Customers The Best Deals',
+            GIVING_OUR_CUSTOMERS_BEST_DEALS:
+                'Giving Our Customers The Best Deals',
             LATEST_VEHICLES_ON_SALE: 'Latest Vehicles On Sale',
             REGISTERED: 'REGISTERED',
             EVERYTHING_YOU_NEED_TO_KNOW: 'Everything You Need To Know',
@@ -162,16 +172,20 @@ const resources = {
             DEALER_BRANCHES: 'Dealer Branches',
             FREE_PARTS_GIVEN: 'Free Parts Given',
             LOOKING_FOR_A_CAR: 'Looking For A Car?',
-            SEARCH_INVENTORY: 'Search the inventory with thousands of cars and new models added daily.',
+            SEARCH_INVENTORY:
+                'Search the inventory with thousands of cars and new models added daily.',
             WANT_TO_SELL_A_CAR: 'Want to Sell A Car?',
             OUR_PARTNERS: 'Our Partners',
             OPENING_HOURS: 'Opening Hours',
             SALES_DEPARTMENT: 'Sales Department',
-            SALES_HOURS: 'Monday - Saturday: 8:00 AM - 5:00 PM. Closed on Sunday.',
+            SALES_HOURS:
+                'Monday - Saturday: 8:00 AM - 5:00 PM. Closed on Sunday.',
             SERVICE_DEPARTMENT: 'Service Department',
-            SERVICE_HOURS: 'Monday - Saturday: 8:00 AM - 5:00 PM. Closed on Sunday.',
+            SERVICE_HOURS:
+                'Monday - Saturday: 8:00 AM - 5:00 PM. Closed on Sunday.',
             ABOUT_US: 'About Us',
-            ABOUT_US_DESC: 'We pride ourselves on providing the best service and products to our customers.',
+            ABOUT_US_DESC:
+                'We pride ourselves on providing the best service and products to our customers.',
             LATEST_AUTOS: 'Latest Autos',
             USED: 'Used',
             YEAR_2014: '2014',
@@ -185,22 +199,22 @@ const resources = {
             OPEN_LOCATION_MAP: 'Open Location Map',
             SEARCH: {
                 HEADER: "DON'T KNOW WHAT CAR YOU'RE LOOKING FOR? FIND IT HERE",
-                SUBHEADER: "CHOOSE YOUR PERFECT CAR",
-                SELECT_BRAND: "Select Brand",
-                SELECT_TYPE: "Select Type",
-                MIN_PRICE: "Minimum Price",
-                MAX_PRICE: "Maximum Price",
-                SEARCH: "Search",
-                NO_CARS_FOUND: "No Cars Found!",
-                SEARCH_RESULTS: "Search Results",
+                SUBHEADER: 'CHOOSE YOUR PERFECT CAR',
+                SELECT_BRAND: 'Select Brand',
+                SELECT_TYPE: 'Select Type',
+                MIN_PRICE: 'Minimum Price',
+                MAX_PRICE: 'Maximum Price',
+                SEARCH: 'Search',
+                NO_CARS_FOUND: 'No Cars Found!',
+                SEARCH_RESULTS: 'Search Results',
                 PRICE_RANGE: 'PRICE RANGE',
                 ADVANCED_SEARCH: 'Advanced Search',
             },
             CAR: {
-                PRICE: 'Price: ${{price}}'
-            }
-        }
-    }
+                PRICE: 'Price: {{price}}',
+            },
+        },
+    },
 };
 
 export default resources;

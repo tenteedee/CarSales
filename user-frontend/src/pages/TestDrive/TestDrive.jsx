@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
 import { useNavigate } from 'react-router-dom';
-import './TestDrive.css'; // Import your custom CSS file
+import './TestDrive.css';
 
 const TestDrive = () => {
     const navigate = useNavigate();
     const [carInfo, setCarInfo] = useState(null);
-    const [userData, setUserData] = useState({
+    const [customerData, setCustomerData] = useState({
         fullname: '',
         email: '',
         phone_number: '',
@@ -25,7 +25,7 @@ const TestDrive = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setUserData(response.data);
+                setCustomerData(response.data);
             } catch (error) {
                 console.error('Error fetching profile:', error);
             }
@@ -61,13 +61,17 @@ const TestDrive = () => {
         }
 
         try {
+            console.log(customerData);
+            console.log(carInfo);
+            console.log(testDriveDate);
             const response = await axios.post('/test-drive-request', {
-                customer_id: userData.id,
+                customer_id: customerData.id,
                 car_id: carInfo.id,
                 test_drive_date: testDriveDate
             });
             setSuccess('Test drive request successfully submitted!');
             setError('');
+            navigate('/');
         } catch (err) {
             setError('Failed to submit test drive request. Please try again.');
             setSuccess('');
@@ -89,11 +93,11 @@ const TestDrive = () => {
                 {success && <div className="success-message">{success}</div>}
 
                 <div className="form-group">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name">Customer Name</label>
                     <input
                         type="text"
                         id="name"
-                        value={userData.fullname}
+                        value={customerData.fullname}
                         disabled
                     />
                 </div>
@@ -103,7 +107,7 @@ const TestDrive = () => {
                     <input
                         type="email"
                         id="email"
-                        value={userData.email}
+                        value={customerData.email}
                         disabled
                     />
                 </div>
@@ -113,7 +117,7 @@ const TestDrive = () => {
                     <input
                         type="text"
                         id="phone"
-                        value={userData.phone_number}
+                        value={customerData.phone_number}
                         disabled
                     />
                 </div>
