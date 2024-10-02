@@ -13,8 +13,8 @@ function CarFilter() {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [cars, setCars] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1); 
-    const carsPerPage = 6; 
+    const [currentPage, setCurrentPage] = useState(1);
+    const carsPerPage = 6;
 
     useEffect(() => {
         const fetchBrandsAndTypes = async () => {
@@ -56,7 +56,7 @@ function CarFilter() {
                 params: searchParams,
             });
             setCars(response.data);
-            setCurrentPage(1); 
+            setCurrentPage(1);
         } catch (error) {
             console.error('Error fetching cars based on search:', error);
         }
@@ -96,7 +96,7 @@ function CarFilter() {
             <Pagination.Item
                 key={number}
                 active={number === currentPage}
-                activeLabel=''
+                activeLabel=""
                 onClick={() => paginate(number)}
             >
                 {number}
@@ -220,24 +220,25 @@ function CarFilter() {
                                                     objectPosition: 'center',
                                                 }}
                                             />
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    justifyContent:
-                                                        'space-between',
-                                                    width: '220px',
-                                                }}
-                                            >
-                                                <div>
-                                                    <h5>{car.model}</h5>
-                                                </div>
-                                                <p>
-                                                    {t('CAR.PRICE', {
-                                                        price: formatCurrency(parseInt(car.price)),
-                                                    })}
-                                                </p>
-                                            </div>
                                         </Link>
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                width: '220px',
+                                            }}
+                                        >
+                                            <div>
+                                                <h5>{car.model}</h5>
+                                            </div>
+                                            <p>
+                                                {t('CAR.PRICE', {
+                                                    price: formatCurrency(
+                                                        parseInt(car.price)
+                                                    ),
+                                                })}
+                                            </p>
+                                        </div>
                                     </div>
                                 ))
                             )}

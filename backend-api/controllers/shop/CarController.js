@@ -40,6 +40,9 @@ export const getAllCars = async (req, res) => {
 export const getCarById = async (req, res) => {
   try {
     const carId = req.params.id;
+    if (isNaN(carId)) {
+      throw new Error('Invalid car ID');
+    }
     const car = await Car.findByPk(carId, {
       attributes: ['id', 'model', 'price', 'description', 'stock'],
       include: [
