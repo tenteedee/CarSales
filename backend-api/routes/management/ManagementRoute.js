@@ -12,6 +12,7 @@ import {
   getStaff,
   updateStaff,
   createStaff,
+  updateStaffAvatar,
 } from "../../controllers/management/StaffController.js";
 import { queryRoles } from "../../controllers/management/RoleController.js";
 import { queryShowrooms } from "../../controllers/management/ShowroomController.js";
@@ -41,7 +42,7 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = path.join(process.cwd(), "uploads");
+    const uploadDir = path.join(process.cwd(), "uploads/images");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -53,8 +54,8 @@ const storage = multer.diskStorage({
     const filename = file.originalname.replace(/\s+/g, "-");
     const ext = path.extname(file.originalname);
 
-    //const newFilename = `${date}-${filename}`;
-    const newFilename = `${uuidv4()}${ext}`;
+    const newFilename = `${date}-${filename}`;
+    //const newFilename = `${uuidv4()}${ext}`;
 
     cb(null, newFilename);
   },
@@ -99,6 +100,8 @@ staffRoute.delete("/delete", deleteStaff);
 staffRoute.post("/create", createStaffValidation, createStaff);
 staffRoute.get("/:id", getStaff);
 staffRoute.post("/:id", updateStaffValidation, updateStaff);
+staffRoute.post("/:id/avatar", upload.single("avatar_url"), updateStaffAvatar);
+
 router.use("/staffs", verifyStaffToken(["Director"]), staffRoute);
 
 const roleRoute = express.Router();

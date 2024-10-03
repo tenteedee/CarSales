@@ -3,6 +3,9 @@ import {Settings} from "../core/models";
 import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {getSettings, updateSettings} from "../core/requests";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import BalloonEditor from "@ckeditor/ckeditor5-build-balloon"; // Import the full-featured Balloon editor
 
 type Props = {};
 export const GeneralSettings: FC<Props> = () => {
@@ -38,8 +41,10 @@ export const GeneralSettings: FC<Props> = () => {
         setSettings((prevSettings) =>
             prevSettings.map((setting) =>
                 setting.key === key
-                    ? { ...setting, value: file.name,
-                        uploadFile: file }
+                    ? {
+                        ...setting, value: file.name,
+                        uploadFile: file
+                    }
                     : setting
             )
         );
@@ -60,7 +65,7 @@ export const GeneralSettings: FC<Props> = () => {
 
     const handleUpdate = () => {
         const formData = new FormData();
-        settings.forEach(({ key, value, uploadFile }) => {
+        settings.forEach(({key, value, uploadFile}) => {
             if (uploadFile) {
                 formData.append(key || "", uploadFile);  // Append the file object
             } else {
@@ -69,7 +74,7 @@ export const GeneralSettings: FC<Props> = () => {
         });
 
         updateSettings(formData)
-            .then((response : QueryResponse) => {
+            .then((response: QueryResponse) => {
                 setSettings(response.data || []);
                 toast.success("Cập nhật cài đặt thành công!", {
                     position: "top-right",
@@ -141,7 +146,7 @@ export const GeneralSettings: FC<Props> = () => {
                             />
                             <label
                                 className="btn btn-secondary btn-sm"
-                                style={{ padding: "5px 10px" }}
+                                style={{padding: "5px 10px"}}
                                 onClick={() => document.getElementById(`file-input-${setting.key}`)?.click()}
                             >
                                 {setting.uploadFile ? "Đổi hình ảnh" : "Chọn hình ảnh"}
@@ -149,7 +154,7 @@ export const GeneralSettings: FC<Props> = () => {
                             {setting.uploadFile && (
                                 <label
                                     className="btn btn-danger btn-sm ms-2"
-                                    style={{ padding: "5px 10px" }}
+                                    style={{padding: "5px 10px"}}
                                     onClick={() => handleRemoveImage(setting.key || "")}
                                 >
                                     Xoá ảnh
@@ -158,7 +163,7 @@ export const GeneralSettings: FC<Props> = () => {
                             <input
                                 type="file"
                                 id={`file-input-${setting.key}`}
-                                style={{ display: "none" }}
+                                style={{display: "none"}}
                                 accept="image/*"
                                 onChange={(e) => {
                                     if (e.target.files && e.target.files[0]) {
@@ -169,6 +174,25 @@ export const GeneralSettings: FC<Props> = () => {
                             />
                         </div>
                     </>
+                );
+            case "ckeditor":
+                return (
+                    <CKEditor
+                        editor={ClassicEditor}
+                        config={{
+                            // Custom toolbar configuration, or leave as default for full capabilities
+                            toolbar: [
+                                'heading', '|', 'bold', 'italic', 'link', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed',
+                                'bulletedList', 'numberedList', 'undo', 'redo', 'alignment'
+                            ],
+                            // Add additional plugins if needed
+                        }}
+                        data={typeof setting.value === "string" ? setting.value : ""}
+                        onChange={(event, editor) => {
+                            const data = editor.getData();
+                            handleInputChange(setting.key || "", data);
+                        }}
+                    />
                 );
             default:
                 return null;

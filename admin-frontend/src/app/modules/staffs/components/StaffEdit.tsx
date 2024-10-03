@@ -1,10 +1,10 @@
 import {ShowroomModel, Staff} from "../core/models";
 import React, {FC, useEffect, useState} from "react";
 import {Link, Outlet, useNavigate, useParams} from 'react-router-dom'
-import {getRoles, getShowrooms, getStaff, updateStaff} from "../core/requests";
+import {getRoles, getShowrooms, getStaff, updateStaff, updateStaffAvatar} from "../core/requests";
 import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
-import {KTIcon, toAbsoluteUrl} from "../../../../_metronic/helpers";
+import {KTIcon} from "../../../../_metronic/helpers";
 import {RoleModel} from "../../auth";
 
 type Props = {};
@@ -16,8 +16,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
     const [error, setError] = useState(false);
     const [roles, setRoles] = useState<RoleModel[]>([]);
     const [showrooms, setShowrooms] = useState<ShowroomModel[]>([]);
-
-    useEffect(() => {
+    const getStaffData = () => {
         if (id) {
             getStaff(id)
                 .then((response: QueryResponse) => {
@@ -51,6 +50,12 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 })
                 .finally(() => setLoading(false));
         }
+
+    }
+    useEffect(() => {
+        if (id) {
+            getStaffData();
+        }
         getRoles()
             .then((response: QueryResponse) => {
                 setRoles(response.data || []);
@@ -82,16 +87,19 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 });
             });
     }, [id, navigate]);
-    
+    const handleRefreshClick = () => {
+        if (id) {
+            getStaffData();
+        }
+    }
     const handleUpdate = () => {
         if (staff && id) {
             updateStaff(id, staff)
                 .then((response) => {
                     const staffData = response.data;
                     if (staffData && !Array.isArray(staffData)) {
-                        setStaff(staffData); // Đặt dữ liệu nhân viên vào state
+                        setStaff(staffData);
                         setStaff({...staff, password: ""})
-
                         toast.success('Cập nhật thông tin thành công', {
                             position: "top-right",
                             autoClose: 3000,
@@ -131,6 +139,57 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 });
         }
     };
+    const handleImageClick = () => {
+        document.getElementById('file-input-avatar')?.click();
+    };
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];  // Use optional chaining to safely access the file
+        if (file) {
+            uploadAvatar(file);
+        }
+    };
+
+    const uploadAvatar = (file: File) => {
+        const formData = new FormData();
+        formData.append('avatar_url', file);
+        updateStaffAvatar(id, formData)
+            .then((response) => {
+                const staffData = response.data;
+
+                if (staffData && !Array.isArray(staffData)) {
+                    setStaff((prevStaff) => ({
+                        ...prevStaff, // Spread the existing staff properties
+                        avatar_url: staffData['avatar_url'] || "" // Only update avatar_url
+                    }));
+                }
+
+
+                toast.success('Cập nhật hình ảnh thành công', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            })
+            .catch((error) => {
+                const errorMessage = error && error.response && error.response.data && error.response.data.error
+                    ? error.response.data.error
+                    : "Cập nhật hình ảnh thất bại, vui lòng thử lại!";
+                toast.error(errorMessage, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            });
+
+    };
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -149,12 +208,21 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 <div className='card-body pt-9 pb-0'>
                     <div className='d-flex flex-wrap flex-sm-nowrap mb-3'>
                         <div className='me-7 mb-4'>
-                            <div className='symbol symbol-800px symbol-lg-100px symbol-fixed position-relative'>
-                                <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='Metronic'/>
+                            <div className='symbol symbol-100px symbol-lg-150px symbol-fixed position-relative'>
+                                <img src={staff?.avatar_url || '/media/avatars/default-avatar.jpg'} alt='Avatar'
+                                     onClick={handleImageClick}/>
+                                <input
+                                    type="file"
+                                    id="file-input-avatar"
+                                    style={{display: 'none'}}
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
                                 <div
                                     className='position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px'></div>
                             </div>
                         </div>
+
 
                         <div className='flex-grow-1'>
                             <div className='d-flex justify-content-between align-items-start flex-wrap mb-2'>
@@ -196,14 +264,14 @@ export const StaffEdit: FC<Props> = ({...props}) => {
 
                                 <div className='d-flex my-4'>
 
-                                    {/*<a*/}
-                                    {/*    href='#'*/}
-                                    {/*    className='btn btn-sm btn-danger me-3'*/}
-                                    {/*    data-bs-toggle='modal'*/}
-                                    {/*    data-bs-target='#kt_modal_offer_a_deal'*/}
-                                    {/*>*/}
-                                    {/*    Delete*/}
-                                    {/*</a>*/}
+                                    <button
+                                        className='btn btn-sm btn-primary me-3'
+                                        data-bs-toggle='modal'
+                                        data-bs-target='#kt_modal_offer_a_deal'
+                                        onClick={handleRefreshClick}
+                                    >
+                                        Refresh
+                                    </button>
 
                                 </div>
                             </div>

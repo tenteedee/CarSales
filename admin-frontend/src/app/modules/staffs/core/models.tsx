@@ -12,6 +12,7 @@ export type Staff = {
     created_at?: string
     role?: RoleModel
     role_id?: number
+    avatar_url ?: string
     showroom_id ?: number
 }
 export type ShowroomModel = {

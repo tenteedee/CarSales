@@ -23,7 +23,6 @@ export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
         });
         return response; // Trả về response sau khi xóa thành công
     } catch (error) {
-        console.error('Lỗi khi xóa:', error);
         toast.error('Có lỗi xảy ra khi xoá', {
             position: "top-right",  // Sử dụng chuỗi trực tiếp
             autoClose: 3000, // Đóng thông báo sau 3 giây

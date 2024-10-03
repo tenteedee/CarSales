@@ -42,3 +42,12 @@ export const getShowrooms = (): Promise<QueryResponse> => {
         .get(`${API_URL}/showrooms`)
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 }
+export const updateStaffAvatar = (id: string | undefined, formData: FormData): Promise<QueryResponse> => {
+    return axios
+        .post(`${STAFF_URL}/${id}/avatar`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((response: AxiosResponse<QueryResponse>) => response.data);
+}

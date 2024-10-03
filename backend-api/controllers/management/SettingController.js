@@ -33,7 +33,7 @@ export const updateSettings = async (req, res) => {
     }
     for (let fileKey in files) {
       const file = files[fileKey];
-      const filePath = `/assets/${file.filename}`;
+      const filePath = APP_URL + `assets/images/${file.filename}`;
 
       let setting = await Setting.findOne({ where: { key: file.fieldname } });
 
