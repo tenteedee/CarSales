@@ -1,8 +1,6 @@
 import {ChangeEvent, FC, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Staff} from "../../staffs/core/models";
 import {Category} from "../core/models";
-import {createStaff} from "../../staffs/core/requests";
 import {toast} from "react-toastify";
 import {createCategory} from "../core/requests";
 
@@ -32,7 +30,7 @@ export const CategoryCreate: FC<Props> = ({...props}) => {
                     draggable: true,
                     progress: undefined
                 });
-                navigate('/categories'); // Điều hướng đến /staffs sau khi tạo thành công
+                navigate('/categories', {state: {reload: true}});
             })
             .catch((error) => {
                 const errorMessage = error && error.response && error.response.data && error.response.data.error

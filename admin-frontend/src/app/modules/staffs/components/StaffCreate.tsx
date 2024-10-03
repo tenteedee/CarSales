@@ -67,7 +67,7 @@ export const StaffCreate: FC<Props> = () => {
                     draggable: true,
                     progress: undefined
                 });
-                navigate('/staffs'); // Điều hướng đến /staffs sau khi tạo thành công
+                navigate('/staffs', {state: {reload: true}});
             })
             .catch((error) => {
                 const errorMessage = error && error.response && error.response.data && error.response.data.error

@@ -26,23 +26,69 @@ import {
   updateCategory,
   createCategory,
 } from "../../controllers/management/CategoryController.js";
+import {
+  createStaffValidation,
+  updateStaffValidation,
+} from "../../helper/ValidationHelper.js";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(process.cwd(), "uploads");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const date = new Date().getTime();
+    const filename = file.originalname.replace(/\s+/g, "-");
+    const ext = path.extname(file.originalname);
+
+    //const newFilename = `${date}-${filename}`;
+    const newFilename = `${uuidv4()}${ext}`;
+
+    cb(null, newFilename);
+  },
+});
+
+const imageFileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/gif" ||
+    file.mimetype === "image/webp"
+  ) {
+    cb(null, true);
+  } else {
+    req.fileValidationError = "Chỉ có thể upload hình ảnh";
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: imageFileFilter,
+});
 const router = express.Router();
 
-// Define a base route for management API
 router.get("/", (req, res) => {
   res.send("worked management api");
 });
 
-// Define authRouter for authentication routes
 const authRouter = express.Router();
-// Define routes in authRouter
 authRouter.post("/login", validateLogin, login);
 authRouter.post("/verify_token", verifyStaffToken([]), verify_token);
-// Use authRouter with /auth prefix
 router.use("/auth", authRouter);
 
-// Define users for authentication routes
 const userRouter = express.Router();
 userRouter.get("/query", query);
 router.use("/users", verifyStaffToken(["Director"]), userRouter);
@@ -50,9 +96,9 @@ router.use("/users", verifyStaffToken(["Director"]), userRouter);
 const staffRoute = express.Router();
 staffRoute.get("/query", queryStaff);
 staffRoute.delete("/delete", deleteStaff);
-staffRoute.post("/create", createStaff);
+staffRoute.post("/create", createStaffValidation, createStaff);
 staffRoute.get("/:id", getStaff);
-staffRoute.post("/:id", updateStaff);
+staffRoute.post("/:id", updateStaffValidation, updateStaff);
 router.use("/staffs", verifyStaffToken(["Director"]), staffRoute);
 
 const roleRoute = express.Router();
@@ -65,7 +111,7 @@ router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
 
 const settingsRoute = express.Router();
 settingsRoute.get("/", querySettings);
-settingsRoute.post("/", updateSettings);
+settingsRoute.post("/", upload.any(), updateSettings);
 router.use("/settings", verifyStaffToken(["Director"]), settingsRoute);
 
 const categoriesRoute = express.Router();

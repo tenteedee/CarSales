@@ -16,6 +16,14 @@ const Setting = db.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    type: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    attribute: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
   },
   {
     tableName: "settings",
