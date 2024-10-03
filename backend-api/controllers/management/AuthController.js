@@ -1,13 +1,14 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { validationResult } from 'express-validator';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 import {
   handleErrors,
   handleValidationErrors,
-} from '../../helper/ValidationHelper.js';
-import Staff from '../../models/Staff.js';
-import StaffRole from '../../models/StaffRole.js';
-import { JWT_SECRET } from '../../config/Config.js';
+} from "../../helper/ValidationHelper.js";
+import Staff from "../../models/Staff.js";
+import StaffRole from "../../models/StaffRole.js";
+import { JWT_SECRET } from "../../config/Config.js";
+import Showroom from "../../models/Showroom.js";
 
 export const verify_token = async (req, res) => {
   let errors = {};
@@ -18,8 +19,13 @@ export const verify_token = async (req, res) => {
       include: [
         {
           model: StaffRole,
-          as: 'role',
-          attributes: ['id', 'name'],
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["id", "name"],
         },
       ],
     });
@@ -30,11 +36,11 @@ export const verify_token = async (req, res) => {
       staffData.api_token = token;
       res.status(200).json(staffData);
     } else {
-      errors.error = 'Unauthorized';
+      errors.error = "Unauthorized";
       res.status(401).json(handleErrors(errors), errors.error);
     }
   } catch (err) {
-    errors.error = err.message || 'Exception error';
+    errors.error = err.message || "Exception error";
     res.status(500).json(errors);
   }
 };
@@ -53,13 +59,13 @@ export const login = async (req, res) => {
       include: [
         {
           model: StaffRole,
-          as: 'role',
-          attributes: ['id', 'name'],
+          as: "role",
+          attributes: ["id", "name"],
         },
       ],
     });
     if (!staff) {
-      errors.email = 'Email is not registered';
+      errors.email = "Email is not registered";
       return res.status(422).json(handleErrors(errors, errors.email));
     }
 
@@ -67,7 +73,7 @@ export const login = async (req, res) => {
     //const isMatch = password == staffData.password;
     const isMatch = await bcrypt.compare(password, staffData.password);
     if (!isMatch) {
-      errors.password = 'Password is incorrect';
+      errors.password = "Password is incorrect";
       return res.status(422).json(handleErrors(errors, errors.password));
     }
 
@@ -76,7 +82,7 @@ export const login = async (req, res) => {
     staffData.api_token = token;
     res.status(200).json(staffData);
   } catch (err) {
-    errors.error = err.message || 'Exception error';
+    errors.error = err.message || "Exception error";
     res.status(500).json(errors);
   }
 };

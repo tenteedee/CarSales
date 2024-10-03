@@ -812,7 +812,7 @@ const Home = () => {
                                 </div>
                             </address>
                             <address className="b-info__map">
-                                <a href="contacts.html">{t('OPEN_LOCATION_MAP')}</a>
+                                <a href="/contacts">{t('OPEN_LOCATION_MAP')}</a>
                             </address>
                         </div>
                     </div>

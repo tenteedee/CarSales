@@ -1,61 +1,56 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from 'clsx'
-import {useState} from 'react'
 import {KTIcon} from '../../../../helpers'
-import {CreateAppModal, Dropdown1} from '../../../../partials'
 import {useLayout} from '../../../core'
+import {Link, useLocation} from "react-router-dom";
+import {useAuth} from "../../../../../app/modules/auth";
 
 const ToolbarClassic = () => {
-  const {config} = useLayout()
-  const [showCreateAppModal, setShowCreateAppModal] = useState<boolean>(false)
-  const daterangepickerButtonClass = config.app?.toolbar?.fixed?.desktop
-    ? 'btn-light'
-    : 'bg-body btn-color-gray-700 btn-active-color-primary'
+    const {config} = useLayout()
+    const daterangepickerButtonClass = config.app?.toolbar?.fixed?.desktop
+        ? 'btn-light'
+        : 'bg-body btn-color-gray-700 btn-active-color-primary'
+    const location = useLocation();
+    const {hasRole} = useAuth()
+    const createButtonLinks = [
+        {path: '/staffs', role: 'Director'},
+        {path: '/categories', role: 'Director'},
+    ];
+    const currentPath = location.pathname;
+    const shouldShowCreateButton = createButtonLinks.some(
+        (link) =>
+            hasRole(link.role) &&
+            currentPath.startsWith(link.path) &&
+            !currentPath.endsWith('/create')
+    );
 
-  return (
-    <div className='d-flex align-items-center gap-2 gap-lg-3'>
-      {config.app?.toolbar?.filterButton && (
-        <div className='m-0'>
-          <a
-            href='#'
-            className={clsx('btn btn-sm btn-flex fw-bold', daterangepickerButtonClass)}
-            data-kt-menu-trigger='click'
-            data-kt-menu-placement='bottom-end'
-          >
-            <KTIcon iconName='filter' className='fs-6 text-muted me-1' />
-            Filter
-          </a>
-          <Dropdown1 />
+    return (
+        <div className='d-flex align-items-center gap-2 gap-lg-3'>
+
+            {config.app?.toolbar?.daterangepickerButton && (
+                <div
+                    data-kt-daterangepicker='true'
+                    data-kt-daterangepicker-opens='left'
+                    className={clsx(
+                        'btn btn-sm fw-bold  d-flex align-items-center px-4',
+                        daterangepickerButtonClass
+                    )}
+                >
+                    <div className='text-gray-600 fw-bold'>Loading date range...</div>
+                    <KTIcon iconName='calendar-8' className='fs-1 ms-2 me-0'/>
+                </div>
+            )}
+
+            {shouldShowCreateButton && (
+                <Link
+                    to={`${currentPath}/create`}
+                    className='btn btn-sm fw-bold btn-primary'
+                >
+                    Create
+                </Link>
+            )}
         </div>
-      )}
-
-      {config.app?.toolbar?.daterangepickerButton && (
-        <div
-          data-kt-daterangepicker='true'
-          data-kt-daterangepicker-opens='left'
-          className={clsx(
-            'btn btn-sm fw-bold  d-flex align-items-center px-4',
-            daterangepickerButtonClass
-          )}
-        >
-          <div className='text-gray-600 fw-bold'>Loading date range...</div>
-          <KTIcon iconName='calendar-8' className='fs-1 ms-2 me-0' />
-        </div>
-      )}
-
-
-      {config.app?.toolbar?.primaryButton && (
-        <a
-          href='#'
-          onClick={() => setShowCreateAppModal(true)}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          Create
-        </a>
-      )}
-      <CreateAppModal show={showCreateAppModal} handleClose={() => setShowCreateAppModal(false)} />
-    </div>
-  )
+    )
 }
 
 export {ToolbarClassic}

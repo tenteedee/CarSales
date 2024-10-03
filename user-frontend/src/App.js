@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
 import TestDrive from './pages/TestDrive/TestDrive';
+import Contacts from './pages/Contacts/Contacts';
 
 function App() {
     const token = useSelector((state) => state.auth.token);
@@ -44,6 +45,7 @@ function App() {
                 />
                 <Route path="/car/detail/:id" element={<CarDetail />} />
                 <Route path="/test-drive" element={<TestDrive />} />
+                <Route path="/contacts" element={<Contacts />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/404" element={<NotFound />} />
             </Routes>
