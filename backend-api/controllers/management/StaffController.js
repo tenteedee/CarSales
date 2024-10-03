@@ -4,15 +4,19 @@ import Staff from "../../models/Staff.js";
 import StaffRole from "../../models/StaffRole.js";
 import { Op } from "sequelize";
 import bcrypt from "bcrypt";
+import { validationResult } from "express-validator";
+
 export const createStaff = async (req, res) => {
   const { fullname, email, role_id, showroom_id, password, phone_number } =
     req.body;
-
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: errors.array()[0].msg || "Dữ liệu đầu vào không hợp lệ",
+      errors: errors.array(),
+    });
+  }
   try {
-    if (!fullname || !email || !password) {
-      return res.status(400).json({ error: "Vui lòng điền đầy đủ thông tin" });
-    }
-
     const existingStaff = await Staff.findOne({ where: { email } });
     if (existingStaff) {
       return res.status(400).json({ error: "Email đã được sử dụng" });
@@ -70,7 +74,13 @@ export const updateStaff = async (req, res) => {
   const { id } = req.params;
   const { fullname, email, role_id, showroom_id, password, phone_number } =
     req.body;
-
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: errors.array()[0].msg || "Dữ liệu đầu vào không hợp lệ",
+      errors: errors.array(),
+    });
+  }
   try {
     const staff = await Staff.findOne({
       where: { id },
@@ -91,7 +101,10 @@ export const updateStaff = async (req, res) => {
     if (!staff) {
       return res.status(404).json({ error: "Nhân viên không tồn tại" });
     }
-
+    const existingStaff = await Staff.findOne({ where: { email } });
+    if (existingStaff) {
+      return res.status(400).json({ error: "Email đã được sử dụng" });
+    }
     staff.fullname = fullname || staff.fullname;
     staff.email = email || staff.email;
     staff.phone_number = phone_number || staff.phone_number;

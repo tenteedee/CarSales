@@ -4,6 +4,9 @@ export type Settings = {
     id?: ID
     name ?: string
     key ?: string
-    value ?: string
+    value ?: string | File
+    attribute ?: string
+    type ?: string
+    uploadFile?: File | null;
 
 }

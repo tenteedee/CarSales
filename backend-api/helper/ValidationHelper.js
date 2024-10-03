@@ -12,7 +12,31 @@ export const validateLogin = [
     .isLength({ min: 4 })
     .withMessage("Password must be at least 4 characters long."),
 ];
-
+export const createStaffValidation = [
+  body("fullname").notEmpty().withMessage("Vui lòng điền họ tên"),
+  body("email").isEmail().withMessage("Email không hợp lệ"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Mật khẩu phải có ít nhất 6 ký tự"),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Số điện thoại không hợp lệ"),
+  body("role_id").optional().isInt().withMessage("Vai trò không hợp lệ"),
+  body("showroom_id").optional().isInt().withMessage("Showroom không hợp lệ"),
+];
+export const updateStaffValidation = [
+  body("fullname").notEmpty().withMessage("Vui lòng điền họ tên"),
+  body("email").isEmail().withMessage("Email không hợp lệ"),
+  body("password")
+    .optional({ checkFalsy: true })
+    .isLength({ min: 6 })
+    .withMessage("Mật khẩu phải có ít nhất 6 ký tự"),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Số điện thoại không hợp lệ"),
+  body("role_id").optional().isInt().withMessage("Vai trò không hợp lệ"),
+  body("showroom_id").optional().isInt().withMessage("Showroom không hợp lệ"),
+];
 export const validateRegister = [
   check("fullname", "Fullname is required").not().isEmpty(),
   check("email", "Please provide a valid email").isEmail(),
