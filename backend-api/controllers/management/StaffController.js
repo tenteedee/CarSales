@@ -5,7 +5,59 @@ import StaffRole from "../../models/StaffRole.js";
 import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
+import { APP_URL } from "../../config/Config.js";
+export const updateStaffAvatar = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const staff = await Staff.findOne({
+      where: { id },
+      include: [
+        {
+          model: StaffRole,
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["id", "name"],
+        },
+      ],
+    });
 
+    if (!staff) {
+      return res.status(404).json({ error: "Nhân viên không tồn tại" });
+    }
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    const avatarUrl = APP_URL + `assets/images/${file.filename}`;
+    staff.avatar_url = avatarUrl;
+    await staff.save();
+
+    const updatedStaff = await Staff.findOne({
+      where: { id },
+      include: [
+        {
+          model: StaffRole,
+          as: "role",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+          attributes: ["id", "name"],
+        },
+      ],
+    });
+    const staffData = updatedStaff.toJSON();
+    staffData.password = "";
+    return res.status(200).json({ data: staffData });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
 export const createStaff = async (req, res) => {
   const { fullname, email, role_id, showroom_id, password, phone_number } =
     req.body;

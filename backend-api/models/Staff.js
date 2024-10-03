@@ -39,6 +39,10 @@ const Staff = db.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    avatar_url: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
