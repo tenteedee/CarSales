@@ -1,14 +1,14 @@
-import React, { FC, useEffect, useState } from "react";
-import { QueryResponse } from "../../../utils/model/models";
-import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
-import { getCategory, updateCategory } from "../core/requests";
+import React, {FC, useEffect, useState} from "react";
+import {QueryResponse} from "../../../utils/model/models";
+import {toast} from "react-toastify";
+import {useNavigate, useParams} from "react-router-dom";
+import {getCategory, updateCategory} from "../core/requests";
 import {Category} from "../core/models"; // Import updateCategory function
 
 type Props = {};
 
-export const CategoryEdit: FC<Props> = ({ ...props }) => {
-    const { id } = useParams(); // Get ID from URL
+export const CategoryEdit: FC<Props> = ({...props}) => {
+    const {id} = useParams(); // Get ID from URL
     const navigate = useNavigate();
     const [category, setCategory] = useState<Category | null>(null); // Initialize category state
     const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ export const CategoryEdit: FC<Props> = ({ ...props }) => {
                 .then((response: QueryResponse) => {
                     const categoryData = response.data;
                     if (categoryData && !Array.isArray(categoryData)) {
-                        setCategory(categoryData); // Set the fetched data into the state
+                        setCategory(categoryData);
                     } else {
                         setError(true);
                         toast.error('Không tìm thấy dữ liệu nhân viên hoặc dữ liệu không hợp lệ', {
@@ -35,9 +35,12 @@ export const CategoryEdit: FC<Props> = ({ ...props }) => {
                         });
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
                     setError(true);
-                    toast.error('Có lỗi xảy ra khi lấy dữ liệu', {
+                    const errorMessage = error && error.response && error.response.data && error.response.data.error
+                        ? error.response.data.error
+                        : 'Có lỗi xảy ra khi lấy dữ liệu';
+                    toast.error(errorMessage, {
                         position: "top-right",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -51,11 +54,10 @@ export const CategoryEdit: FC<Props> = ({ ...props }) => {
         }
     }, [id, navigate]);
 
-    // Handle input change and update the state
     const handleInputChange = (key: string, value: string) => {
         setCategory((prevCategory) => {
             if (!prevCategory) return null;
-            return { ...prevCategory, [key]: value };
+            return {...prevCategory, [key]: value};
         });
     };
 
@@ -75,8 +77,11 @@ export const CategoryEdit: FC<Props> = ({ ...props }) => {
                     });
                     navigate("/categories"); // Redirect to the category list page after success
                 })
-                .catch(() => {
-                    toast.error('Có lỗi xảy ra khi cập nhật', {
+                .catch((error) => {
+                    const errorMessage = error && error.response && error.response.data && error.response.data.error
+                        ? error.response.data.error
+                        : 'Có lỗi xảy ra khi cập nhật';
+                    toast.error(errorMessage, {
                         position: "top-right",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -89,14 +94,18 @@ export const CategoryEdit: FC<Props> = ({ ...props }) => {
         }
     };
 
-    // Display loading state
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    // Display error state
     if (error) {
-        return <div>Không thể tải dữ liệu</div>;
+        return (
+            <>
+                <div className='fw-semibold fs-6 text-gray-500 mb-7'>
+                    Something went wrong! Please try again later.
+                </div>
+            </>
+        );
     }
 
     return (

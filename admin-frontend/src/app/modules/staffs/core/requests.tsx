@@ -12,7 +12,7 @@ export const getStaffs = (query: string): Promise<QueryResponse> => {
 export const deleteStaff = (staffIds: Array<ID>): Promise<QueryResponse> => {
     return axios
         .delete(`${STAFF_URL}/delete`, {
-            data: {ids: staffIds} // Chuyển mảng ID trong payload (nếu API yêu cầu)
+            data: {ids: staffIds}
         })
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 };

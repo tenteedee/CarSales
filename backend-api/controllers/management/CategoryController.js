@@ -3,7 +3,6 @@ import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
 export const createCategory = async (req, res) => {
   const { name, description } = req.body;
-
   try {
     const existingCategory = await Category.findOne({ where: { name } });
     if (existingCategory) {
@@ -23,6 +22,9 @@ export const createCategory = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   const { name, description } = req.body;
 
   try {
@@ -45,6 +47,9 @@ export const updateCategory = async (req, res) => {
 
 export const getCategory = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   try {
     const category = await Category.findOne({
       where: { id },
@@ -64,6 +69,8 @@ export const deleteCategories = async (req, res) => {
   if (!categoryIds || categoryIds.length === 0) {
     res.status(500).json({ error: "Danh sách ID không hợp lệ" });
   }
+  categoryIds = categoryIds.filter((id) => !isNaN(id));
+
   try {
     const deletedCount = await Category.destroy({
       where: {

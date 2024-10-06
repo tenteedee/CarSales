@@ -1,10 +1,10 @@
 import {PageLink, PageTitle} from "../../../_metronic/layout/core";
 import {Navigate, Outlet, Route, Routes} from "react-router-dom";
-import {NewsWrapper} from "./News";
+import {NewsListWrapper} from "./News";
 
 const newsBreadcrumbs: Array<PageLink> = [
     {
-        title: 'New',
+        title: 'News',
         path: '/news',
         isSeparator: false,
         isActive: false,
@@ -25,8 +25,8 @@ const NewsPage = () => {
                     index
                     element={
                         <>
-                            <PageTitle breadcrumbs={newsBreadcrumbs}>News</PageTitle>
-                            <NewsWrapper/>
+                            <PageTitle breadcrumbs={newsBreadcrumbs}>News List</PageTitle>
+                            <NewsListWrapper/>
                         </>
                     }
                 />
