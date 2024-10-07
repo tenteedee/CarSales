@@ -6,10 +6,12 @@ import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {KTIcon} from "../../../../_metronic/helpers";
 import {RoleModel} from "../../auth";
+import {Error500} from "../../errors/components/Error500";
+import {ErrorsLayout} from "../../errors/ErrorsLayout";
 
 type Props = {};
 export const StaffEdit: FC<Props> = ({...props}) => {
-    const {id} = useParams(); // Lấy ID từ URL
+    const {id} = useParams();
     const navigate = useNavigate();
     const [staff, setStaff] = useState<Staff | null>(null);
     const [loading, setLoading] = useState(true);
@@ -22,7 +24,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                 .then((response: QueryResponse) => {
                     const staffData = response.data;
                     if (staffData && !Array.isArray(staffData)) {
-                        setStaff(staffData); // Đặt dữ liệu nhân viên vào state
+                        setStaff(staffData);
                     } else {
                         setError(true);
                         toast.error('Không tìm thấy dữ liệu nhân viên hoặc dữ liệu không hợp lệ', {
@@ -36,11 +38,14 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                         });
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
                     setError(true);
-                    toast.error('Có lỗi xảy ra khi lấy dữ liệu', {
-                        position: "top-right",  // Sử dụng chuỗi trực tiếp
-                        autoClose: 3000, // Đóng thông báo sau 3 giây
+                    const errorMessage = error && error.response && error.response.data && error.response.data.error
+                        ? error.response.data.error
+                        : 'Có lỗi xảy ra khi lấy dữ liệu';
+                    toast.error(errorMessage, {
+                        position: "top-right",
+                        autoClose: 3000,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -60,8 +65,11 @@ export const StaffEdit: FC<Props> = ({...props}) => {
             .then((response: QueryResponse) => {
                 setRoles(response.data || []);
             })
-            .catch(() => {
-                toast.error('Có lỗi xảy ra khi lấy danh sách vai trò', {
+            .catch((error) => {
+                const errorMessage = error && error.response && error.response.data && error.response.data.error
+                    ? error.response.data.error
+                    : 'Có lỗi xảy ra khi lấy dữ liệu';
+                toast.error(errorMessage, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -75,8 +83,11 @@ export const StaffEdit: FC<Props> = ({...props}) => {
             .then((response: QueryResponse) => {
                 setShowrooms(response.data || []);
             })
-            .catch(() => {
-                toast.error('Có lỗi xảy ra khi lấy danh sách showrooms', {
+            .catch((error) => {
+                const errorMessage = error && error.response && error.response.data && error.response.data.error
+                    ? error.response.data.error
+                    : 'Có lỗi xảy ra khi lấy dữ liệu';
+                toast.error(errorMessage, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -197,7 +208,9 @@ export const StaffEdit: FC<Props> = ({...props}) => {
     if (error) {
         return (
             <>
-
+                <div className='fw-semibold fs-6 text-gray-500 mb-7'>
+                    Something went wrong! Please try again later.
+                </div>
             </>
         );
     }

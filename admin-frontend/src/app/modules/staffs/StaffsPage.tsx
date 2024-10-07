@@ -44,11 +44,10 @@ const StaffsPage = () => {
                     element={
                         <>
                             <PageTitle breadcrumbs={staffsBreadcrumbs}>Edit Staff</PageTitle>
-                            <StaffEditWrapper/>
+                            <StaffEditWrapper />
                         </>
                     }
                 />
-
                 <Route path='*' element={<Navigate to='/error/404'/>}/>
 
             </Route>

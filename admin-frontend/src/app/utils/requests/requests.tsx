@@ -1,23 +1,50 @@
 import {ID} from "../../../_metronic/helpers";
+import axios, {AxiosResponse} from "axios";
+import {toast} from "react-toastify";
+
 export async function updateState(
     table: string,
     column: string,
     id: ID,
     checked: boolean
-): Promise<void> {
+): Promise<AxiosResponse<any>> {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     try {
-        // Simulate an API request or DB update
-        // You would replace this part with your actual update logic (e.g., API call)
-        console.log(`Updating ${table}.${column} for id: ${id} with value: ${checked}`);
+        const response = await axios.post(API_URL + `/home/update-state`, {
+            table,
+            column,
+            id,
+            checked,
+        });
 
-        // Example of a possible update function (Replace this with your real logic)
-        // const response = await apiUpdateCall(table, column, id, checked);
-        // if (response.status !== 200) {
-        //   throw new Error('Update failed');
-        // }
-        return Promise.resolve();
+        toast.success("Cập nhật thông tin thành công", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
 
-    } catch (error) {
-        return Promise.reject(error);
+        return response;
+    } catch (error: any) {
+        const errorMessage =
+            error.response && error.response.data && error.response.data.error
+                ? error.response.data.error
+                : "Cập nhật thất bại, vui lòng thử lại!";
+
+        toast.error(errorMessage, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+
+        return Promise.reject(error); // Trả về lỗi
     }
 }

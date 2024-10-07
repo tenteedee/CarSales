@@ -1,16 +1,15 @@
-import Category from "../../models/Category.js";
+import NewsCategory from "../../models/NewsCategory.js";
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
 export const createCategory = async (req, res) => {
   const { name, description } = req.body;
-
   try {
-    const existingCategory = await Category.findOne({ where: { name } });
+    const existingCategory = await NewsCategory.findOne({ where: { name } });
     if (existingCategory) {
       return res.status(400).json({ error: "Danh mục đã tồn tại" });
     }
 
-    const newCategory = await Category.create({
+    const newCategory = await NewsCategory.create({
       name,
       description,
     });
@@ -23,10 +22,13 @@ export const createCategory = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   const { name, description } = req.body;
 
   try {
-    const category = await Category.findOne({ where: { id } });
+    const category = await NewsCategory.findOne({ where: { id } });
 
     if (!category) {
       return res.status(404).json({ error: "Danh mục không tồn tại" });
@@ -45,8 +47,11 @@ export const updateCategory = async (req, res) => {
 
 export const getCategory = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   try {
-    const category = await Category.findOne({
+    const category = await NewsCategory.findOne({
       where: { id },
     });
 
@@ -64,8 +69,10 @@ export const deleteCategories = async (req, res) => {
   if (!categoryIds || categoryIds.length === 0) {
     res.status(500).json({ error: "Danh sách ID không hợp lệ" });
   }
+  categoryIds = categoryIds.filter((id) => !isNaN(id));
+
   try {
-    const deletedCount = await Category.destroy({
+    const deletedCount = await NewsCategory.destroy({
       where: {
         id: categoryIds,
       },
@@ -101,11 +108,11 @@ export const queryCategories = async (req, res) => {
       });
     }
 
-    const totalCategory = await Category.count({
+    const totalCategory = await NewsCategory.count({
       where: searchConditions,
     });
 
-    const categoriesList = await Category.findAll({
+    const categoriesList = await NewsCategory.findAll({
       where: searchConditions,
       offset: (currentPage - 1) * perPage,
       limit: perPage,
@@ -117,9 +124,8 @@ export const queryCategories = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(totalCategory / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${
-        req.path
-      }?page=${Math.ceil(totalCategory / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${req.path
+        }?page=${Math.ceil(totalCategory / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -127,19 +133,17 @@ export const queryCategories = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(totalCategory / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage + 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
+          }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage - 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
+          }`
           : null,
-      to: currentPage * perPage,
+      to: currentPage * perPage < totalCategory ? currentPage * perPage : totalCategory,
       total: totalCategory,
     };
 

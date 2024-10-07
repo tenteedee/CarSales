@@ -17,28 +17,28 @@ export const staffFilters: Array<Filters> = [
         name: 'phone_number',
         label: 'Phone',
     },
-    // {
-    //     name: 'role',
-    //     label: 'Role',
-    //     type: 'select',
-    //     options: [
-    //         {
-    //             value: 1,
-    //             label: 'Technical',
-    //         },
-    //         {
-    //             value: 2,
-    //             label: 'Sale',
-    //         },
-    //         {
-    //             value: 3,
-    //             label: "Insurance"
-    //         },
-    //         {
-    //             value: 4,
-    //             label: "Director"
-    //         }
-    //     ],
-    // },
+    {
+        name: 'role_id',
+        label: 'Role',
+        type: 'select',
+        options: [
+            {
+                value: 1,
+                label: 'Technical',
+            },
+            {
+                value: 2,
+                label: 'Sale',
+            },
+            {
+                value: 3,
+                label: "Insurance"
+            },
+            {
+                value: 4,
+                label: "Director"
+            }
+        ],
+    },
 
 ]

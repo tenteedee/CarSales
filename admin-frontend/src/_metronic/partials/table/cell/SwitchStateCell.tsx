@@ -7,7 +7,7 @@ type Props = {
     id: ID
     table: string
     column: string
-    value: boolean
+    value?: boolean
 }
 
 const SwitchStateCell: FC<Props> = ({table, column, id, value}) => {
@@ -35,7 +35,7 @@ const SwitchStateCell: FC<Props> = ({table, column, id, value}) => {
                     type='checkbox'
                     checked={state}
                     onChange={(e) => handleChange(e.target.checked)}
-                    disabled={!hasRole('Administrator')}
+                    disabled={!hasRole('Director')}
                 />
                 <label className='form-check-label'></label>
             </div>

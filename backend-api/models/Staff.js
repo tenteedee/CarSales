@@ -30,10 +30,18 @@ const Staff = db.define(
     role_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: StaffRole,
+        key: "id",
+      },
     },
     showroom_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: Showroom,
+        key: "id",
+      },
     },
     address: {
       type: DataTypes.STRING(255),

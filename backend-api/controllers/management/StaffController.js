@@ -8,6 +8,9 @@ import { validationResult } from "express-validator";
 import { APP_URL } from "../../config/Config.js";
 export const updateStaffAvatar = async (req, res) => {
   const id = req.params.id;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   try {
     const staff = await Staff.findOne({
       where: { id },
@@ -124,6 +127,9 @@ export const createStaff = async (req, res) => {
 };
 export const updateStaff = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   const { fullname, email, role_id, showroom_id, password, phone_number } =
     req.body;
   const errors = validationResult(req);
@@ -208,9 +214,16 @@ export const updateStaff = async (req, res) => {
 
 export const getStaff = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
   try {
     const staff = await Staff.findOne({
-      where: { id },
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+      },
       include: [
         {
           model: StaffRole,
@@ -240,7 +253,10 @@ export const deleteStaff = async (req, res) => {
   if (!staffIds || staffIds.length === 0) {
     res.status(500).json({ error: "Danh sách ID không hợp lệ" });
   }
-  staffIds = staffIds.filter((id) => id !== 1);
+  staffIds = staffIds.filter((id) => !isNaN(id) && id !== 1);
+  if (staffIds.length === 0) {
+    return res.status(400).json({ error: "Không có ID hợp lệ để xóa" });
+  }
   try {
     const deletedCount = await Staff.destroy({
       where: {
@@ -306,9 +322,8 @@ export const queryStaff = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(totalStaff / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${
-        req.path
-      }?page=${Math.ceil(totalStaff / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${req.path
+        }?page=${Math.ceil(totalStaff / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -316,17 +331,15 @@ export const queryStaff = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(totalStaff / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage + 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
+          }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage - 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
+          }`
           : null,
       to: currentPage * perPage,
       total: totalStaff,

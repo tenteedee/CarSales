@@ -12,8 +12,8 @@ const SelectField: React.FC<SelectFieldProps> = ({ options, defaultValue, onChan
         <Select
             options={options}
             defaultValue={defaultValue}
-            isMulti={true} // Enabling multi-select
-            onChange={onChange} // Handle changes
+            isMulti={false}
+            onChange={onChange}
             className="basic-multi-select"
             classNamePrefix="select"
         />

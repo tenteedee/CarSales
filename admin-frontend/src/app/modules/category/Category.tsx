@@ -22,8 +22,11 @@ export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
             progress: undefined,
         });
         return response;
-    } catch (error) {
-        toast.error('Có lỗi xảy ra khi xoá', {
+    } catch (error : any) {
+        const errorMessage = error && error.response && error.response.data && error.response.data.error
+            ? error.response.data.error
+            : 'Có lỗi xảy ra khi xoá';
+        toast.error(errorMessage, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -32,7 +35,7 @@ export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
             draggable: true,
             progress: undefined,
         });
-        throw error; // Ném lỗi để xử lý ở nơi khác nếu cần
+        throw error;
     }
 };
 const CategoryListWrapper = () => {
