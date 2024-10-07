@@ -1,0 +1,432 @@
+.car-loan-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.car-loan-page h1,
+.car-loan-page h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.loan-procedures,
+.loan-calculator,
+.registration-options,
+.registration-form {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.results {
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+.schedule {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.schedule th,
+.schedule td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.schedule th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+}
+
+.registration-options button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.registration-options button:hover {
+    background-color: #0056b3;
+}
+
+.registration-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.registration-buttons .btn {
+    flex: 0 0 48%;
+}
+
+.registration-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-form button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+}
+
+.registration-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 768px) {
+    .car-loan-page {
+        padding: 10px;
+    }
+
+    .registration-options button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+#loan-procedures {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#loan-procedures h2 {
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.loan-steps {
+    padding-left: 20px;
+}
+
+.loan-steps li {
+    margin-bottom: 20px;
+}
+
+.loan-steps h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.loan-steps p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.loan-note {
+    background-color: #e9f5ff;
+    border-left: 4px solid #007bff;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+.loan-note h4 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.more-info {
+    margin-top: 20px;
+    font-style: italic;
+}
+
+.more-info a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.more-info a:hover {
+    text-decoration: underline;
+}
+
+#loan-calculator .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#loan-calculator .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.results {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.results h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.result-value {
+    font-weight: bold;
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    #loan-calculator .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.calculator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.input-section {
+    width: 100%;
+    max-width: 500px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    position: relative;
+    display: inline-block;
+}
+
+.input-with-unit input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding-right: 25px;
+    /* Để tránh chồng lấn với đơn vị */
+}
+
+.unit {
+    min-width: 50px;
+}
+
+.result-item {
+    margin-bottom: 15px;
+}
+
+.result-value {
+    font-size: 24px;
+    color: #0088cc;
+}
+
+.result-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.result-buttons button {
+    width: 48%;
+}
+
+.results-section {
+    margin-top: 30px;
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.results-section h3 {
+    margin-bottom: 20px;
+}
+
+.result-item {
+    margin-bottom: 15px;
+}
+
+.result-item label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.result-value {
+    font-size: 24px;
+    color: #0088cc;
+}
+
+.amount-in-words {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+    display: block;
+}
+
+.input-unit {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    /* Để có thể click xuyên qua */
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+.current-highlight {
+    background-color: orange;
+}
+
+
+/* 90s button */
+/* ... existing styles ... */
+
+.apply-loan-button-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btn-90s {
+    position: relative;
+    padding: 15px 30px;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+    background-size: 400% 400%;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    animation: gradientBG 5s ease infinite, pulse 2s infinite;
+    transition: all 0.3s ease;
+}
+
+.btn-90s:hover {
+    transform: scale(1.05) rotate(-2deg);
+    animation: gradientBG 2s ease infinite, pulse 1s infinite;
+}
+
+.btn-90s:active {
+    transform: scale(0.95);
+}
+
+.btn-90s-text {
+    position: relative;
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.btn-90s::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+    background-size: 400% 400%;
+    filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: inherit;
+    z-index: -1;
+    animation: gradientBG 5s ease infinite;
+}
+
+.btn-90s:hover::before {
+    opacity: 1;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+}

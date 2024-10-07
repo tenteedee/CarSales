@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CarFilter from './CarFilter';
 import Slider from './Slider';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const { t } = useTranslation(); // Initialize translation function
@@ -13,7 +14,7 @@ const Home = () => {
 
     return (
         <div>
-            <Slider/>
+            <Slider />
 
             <CarFilter />
 
@@ -182,12 +183,14 @@ const Home = () => {
                             <div className="col-md-3 col-xs-12">
                                 <div className="row">
                                     <div className="col-xs-12 m-padding">
-                                        <div className="b-welcome__services-auto wow zoomInLeft" data-wow-delay="0.3s">
-                                            <div className="b-welcome__services-img m-auto">
-                                                <span className="fa fa-cab"></span>
+                                        <Link to="/car-loan" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <div className="b-welcome__services-auto wow zoomInLeft" data-wow-delay="0.3s">
+                                                <div className="b-welcome__services-img m-auto">
+                                                    <span className="fa fa-cab"></span>
+                                                </div>
+                                                <h3>{t('AUTO_LOANS')}</h3>
                                             </div>
-                                            <h3>{t('AUTO_LOANS')}</h3>
-                                        </div>
+                                        </Link>
                                     </div>
                                     <div className="col-xs-12 text-right visible-md visible-lg">
                                         <div className="m-circle wow slideInRight" data-wow-delay="0.3s">
