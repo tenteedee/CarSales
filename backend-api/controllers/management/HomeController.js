@@ -2,7 +2,7 @@ import db from "../../config/Database.js";
 import { checkStaffRole } from "../../helper/RoleHelper.js";
 
 const allowedTables = ["news", "users"];
-const allowedColumns = ["status"];
+const allowedColumns = ["status","is_pin"];
 
 const tableRoles = {
   news: ["Director"],

@@ -12,4 +12,5 @@ export type News = {
     posted ?: Staff
     status ?: boolean
     content ?: string
+    is_pin ?: boolean
 }

@@ -6,6 +6,7 @@ import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
 export const updateNews = async (req, res) => {
   const { id } = req.params;
+  
   if (isNaN(id)) {
     return res.status(400).json({ error: "ID không hợp lệ" });
   }
@@ -123,7 +124,6 @@ export const queryNews = async (req, res) => {
 
     const newsList = await News.findAll({
       where: searchConditions,
-
       offset: (currentPage - 1) * perPage,
       limit: perPage,
       include: [
@@ -168,7 +168,7 @@ export const queryNews = async (req, res) => {
               currentPage - 1
             }`
           : null,
-      to: currentPage * perPage,
+      to: currentPage * perPage < totalNews ? currentPage * perPage : totalNews,
       total: totalNews,
     };
 

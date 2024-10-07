@@ -74,7 +74,7 @@ export const CategoryEdit: FC<Props> = ({...props}) => {
                         draggable: true,
                         progress: undefined,
                     });
-                    navigate("/categories"); // Redirect to the category list page after success
+                    navigate('/categories', {state: {reload: true}});
                 })
                 .catch((error) => {
                     const errorMessage = error && error.response && error.response.data && error.response.data.error

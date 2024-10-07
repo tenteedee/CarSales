@@ -19,15 +19,14 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             return <SelectionCell id={news.id}/>;
         },
     },
-    {
-        Header: (props) => <TableHeader tableProps={props} title='Name'/>,
-        id: 'id',
-        Cell: ({...props}) => {
-            const news = props.data[props.row.index] as News;
-            return <CopyTextCell className='text-dark' value={`${news.id}`}/>;
-
-        },
-    },
+    // {
+    //     Header: (props) => <TableHeader tableProps={props} title='Title'/>,
+    //     id: 'id',
+    //     Cell: ({...props}) => {
+    //         const news = props.data[props.row.index] as News;
+    //         return <CopyTextCell className='text-dark' value={`${news.id}`}/>;
+    //     },
+    // },
     {
         Header: (props) => <TableHeader tableProps={props} title='Title'/>,
         id: 'title',
@@ -35,7 +34,6 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             const news = props.data[props.row.index] as News;
             return (
                 <>
-                    {/*<CopyTextCell className='text-dark' value={`${news.title}`}/>;*/}
                     <Link className='menu-link px-3' to={`/news/edit/${news.id}`}>
                         {news.title}
                     </Link>
@@ -65,7 +63,9 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             const news = props.data[props.row.index] as News;
             return (
                 <>
-                    <CopyTextCell className='text-dark' value={`${news.posted?.fullname}`}/>
+                    <Link className='menu-link px-3' to={`/staffs/edit/${news.posted?.id}`}>
+                        {news.posted?.fullname}
+                    </Link>
                 </>
             )
         },
@@ -78,6 +78,18 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             return (
                 <>
                     <SwitchStateCell value={news?.status} table={"news"} column={"status"} id={news.id}/>
+                </>
+            )
+        },
+    },
+    {
+        Header: (props) => <TableHeader tableProps={props} title='Pin'/>,
+        id: 'is_pin',
+        Cell: ({...props}) => {
+            const news = props.data[props.row.index] as News;
+            return (
+                <>
+                    <SwitchStateCell value={news?.is_pin} table={"news"} column={"is_pin"} id={news.id}/>
                 </>
             )
         },

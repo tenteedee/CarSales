@@ -124,9 +124,8 @@ export const queryCategories = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(totalCategory / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${
-        req.path
-      }?page=${Math.ceil(totalCategory / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${req.path
+        }?page=${Math.ceil(totalCategory / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -134,19 +133,17 @@ export const queryCategories = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(totalCategory / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage + 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
+          }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage - 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
+          }`
           : null,
-      to: currentPage * perPage,
+      to: currentPage * perPage < totalCategory ? currentPage * perPage : totalCategory,
       total: totalCategory,
     };
 

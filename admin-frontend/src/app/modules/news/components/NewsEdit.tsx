@@ -19,7 +19,7 @@ export const NewsEdit: FC<Props> = ({...props}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
-    const getData = () =>{
+    const getData = () => {
         if (id) {
             getNewsID(id)
                 .then((response: QueryResponse) => {
@@ -97,7 +97,7 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                         draggable: true,
                         progress: undefined,
                     });
-                    navigate("/news"); // Redirect to the category list page after success
+                    navigate('/news', {state: {reload: true}});
                 })
                 .catch((error) => {
                     const errorMessage = error && error.response && error.response.data && error.response.data.error
@@ -135,12 +135,12 @@ export const NewsEdit: FC<Props> = ({...props}) => {
             <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
                 <div className='card-header cursor-pointer'>
                     <div className='card-title m-0'>
-                        <h3 className='fw-bolder m-0'>Cập nhật danh mục</h3>
+                        <h3 className='fw-bolder m-0'>Update News</h3>
                     </div>
                 </div>
                 <div className='card-body p-9'>
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Tiêu đề</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Title</label>
                         <div className='col-lg-8'>
                             <input
                                 type='text'
@@ -152,7 +152,7 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                         </div>
                     </div>
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Danh mục</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Category</label>
                         <div className='col-lg-8'>
                             <select
                                 className='form-control'
@@ -171,20 +171,27 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                             </select>
                         </div>
                     </div>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        config={{
-                            toolbar: [
-                                'heading', '|', 'bold', 'italic', 'link', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed',
-                                'bulletedList', 'numberedList', 'undo', 'redo', 'alignment'
-                            ],
-                        }}
-                        data={news?.content }
-                        onChange={(event, editor) => {
-                            const data = editor.getData();
-                            handleInputChange("content" || "", data);
-                        }}
-                    />
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Content</label>
+                        <div className='col-lg-8'>
+                            <CKEditor
+                                editor={ClassicEditor}
+                                config={{
+                                    toolbar: [
+                                        'heading', '|', 'bold', 'italic', 'link', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed',
+                                        'bulletedList', 'numberedList', 'undo', 'redo', 'alignment'
+                                    ],
+                                }}
+                                data={news?.content}
+                                onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    handleInputChange("content" || "", data);
+                                }}
+                            />
+                        </div>
+                    </div>
+
+
                     <div className='d-flex my-4'>
                         <button className='btn btn-primary' onClick={handleUpdate}>Cập nhật</button>
                     </div>

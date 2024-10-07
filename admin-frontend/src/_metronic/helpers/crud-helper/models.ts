@@ -4,84 +4,95 @@ import {QueryResponse} from "../../../app/utils/model/models";
 export type ID = undefined | null | number
 
 export type PaginationState = {
-  page: number
-  items_per_page: 10 | 30 | 50 | 100
-  links?: Array<{label: string; active: boolean; url: string | null; page: number | null}>
+    page: number
+    items_per_page?: number
+    from?: number
+    to?: number
+    total?: number
+    links?: Array<{ label: string; active: boolean; url: string | null; page: number | null }>
 }
 
 export type SortState = {
-  sort?: string
-  order?: 'asc' | 'desc'
+    sort?: string
+    order?: 'asc' | 'desc'
 }
 
 export type FilterState = {
-  filter?: unknown
+    filter?: unknown
 }
 
 export type SearchState = {
-  search?: string
+    search?: string
 }
 
 export type Response<T> = {
-  data?: T
-  payload?: {
-    message?: string
-    errors?: {
-      [key: string]: Array<string>
+    data?: T
+    payload?: {
+        message?: string
+        errors?: {
+            [key: string]: Array<string>
+        }
+        pagination?: PaginationState
     }
-    pagination?: PaginationState
-  }
 }
 
 export type QueryState = PaginationState & SortState & FilterState & SearchState
 
 export type QueryRequestContextProps = {
-  state: QueryState
-  updateState: (updates: Partial<QueryState>) => void
+    state: QueryState
+    updateState: (updates: Partial<QueryState>) => void
 }
 
 export const initialQueryState: QueryState = {
-  page: 1,
-  items_per_page: 10,
+    page: 1,
+    items_per_page: 10,
 }
 
 export const initialQueryRequest: QueryRequestContextProps = {
-  state: initialQueryState,
-  updateState: () => {},
+    state: initialQueryState,
+    updateState: () => {
+    },
 }
 
 export type QueryResponseContextProps<T> = {
-  response?: Response<Array<T>> | undefined
-  refetch: () => void
-  isLoading: boolean
-  query: string
+    response?: Response<Array<T>> | undefined
+    refetch: () => void
+    isLoading: boolean
+    query: string
 }
 
-export const initialQueryResponse = {refetch: () => {}, isLoading: false, query: ''}
+export const initialQueryResponse = {
+    refetch: () => {
+    }, isLoading: false, query: ''
+}
 
 export type ListViewContextProps = {
-  selected: Array<ID>
-  onSelect: (selectedId: ID) => void
-  onSelectAll: () => void
-  onDelete?: () => Promise<QueryResponse> | undefined;  // Ensure it returns Promise<void>
-  clearSelected: () => void
-  // NULL => (CREATION MODE) | MODAL IS OPENED
-  // NUMBER => (EDIT MODE) | MODAL IS OPENED
-  // UNDEFINED => MODAL IS CLOSED
-  itemIdForUpdate?: ID
-  setItemIdForUpdate: Dispatch<SetStateAction<ID>>
-  isAllSelected: boolean
-  disabled: boolean
+    selected: Array<ID>
+    onSelect: (selectedId: ID) => void
+    onSelectAll: () => void
+    onDelete?: () => Promise<QueryResponse> | undefined;  // Ensure it returns Promise<void>
+    clearSelected: () => void
+    // NULL => (CREATION MODE) | MODAL IS OPENED
+    // NUMBER => (EDIT MODE) | MODAL IS OPENED
+    // UNDEFINED => MODAL IS CLOSED
+    itemIdForUpdate?: ID
+    setItemIdForUpdate: Dispatch<SetStateAction<ID>>
+    isAllSelected: boolean
+    disabled: boolean
 }
 
 export const initialListView: ListViewContextProps = {
-  selected: [],
-  onSelect: () => {},
-  onSelectAll: () => {},
-  //onDelete: async () => Promise.resolve({} as QueryResponse), // Returning a mock QueryResponse
-  clearSelected: () => {},
-  setItemIdForUpdate: () => {},
-  isAllSelected: false,
-  disabled: false,
+    selected: [],
+    onSelect: () => {
+    },
+    onSelectAll: () => {
+    },
+    //onDelete: async () => Promise.resolve({} as QueryResponse), // Returning a mock QueryResponse
+    clearSelected: () => {
+    },
+    setItemIdForUpdate: () => {
+    },
+    isAllSelected: false,
+    disabled: false,
 }
 

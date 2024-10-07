@@ -24,7 +24,7 @@ const News = db.define(
       type: DataTypes.ENUM("draft", "published", "archived"), // Giả sử enum có các giá trị này
       allowNull: false,
     },
-    sort: {
+    is_pin: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
