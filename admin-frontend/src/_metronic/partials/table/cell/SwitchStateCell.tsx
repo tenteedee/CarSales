@@ -7,7 +7,7 @@ type Props = {
     id: ID
     table: string
     column: string
-    value: boolean
+    value?: boolean
 }
 
 const SwitchStateCell: FC<Props> = ({table, column, id, value}) => {

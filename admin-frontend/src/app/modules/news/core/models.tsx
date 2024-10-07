@@ -8,6 +8,8 @@ export type News = {
     created_at?: string
     updated_at?: string
     category ?: Category
+    category_id ?: number
     posted ?: Staff
-    status : boolean
+    status ?: boolean
+    content ?: string
 }

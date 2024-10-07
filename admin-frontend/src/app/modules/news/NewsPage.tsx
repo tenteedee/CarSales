@@ -1,6 +1,7 @@
 import {PageLink, PageTitle} from "../../../_metronic/layout/core";
 import {Navigate, Outlet, Route, Routes} from "react-router-dom";
-import {NewsListWrapper} from "./News";
+import {NewsEditWrapper, NewsListWrapper} from "./News";
+import {CategoryEditWrapper} from "../category/Category";
 
 const newsBreadcrumbs: Array<PageLink> = [
     {
@@ -27,6 +28,15 @@ const NewsPage = () => {
                         <>
                             <PageTitle breadcrumbs={newsBreadcrumbs}>News List</PageTitle>
                             <NewsListWrapper/>
+                        </>
+                    }
+                />
+                <Route
+                    path="edit/:id"
+                    element={
+                        <>
+                            <PageTitle breadcrumbs={newsBreadcrumbs}>Edit Category</PageTitle>
+                            <NewsEditWrapper/>
                         </>
                     }
                 />

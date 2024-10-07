@@ -4,6 +4,74 @@ import Staff from "../../models/Staff.js";
 
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
+export const updateNews = async (req, res) => {
+  const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
+  const { title, content, category_id } = req.body;
+  try {
+    const news = await News.findOne({ where: { id } });
+
+    if (!news) {
+      return res.status(404).json({ error: "Danh mục không tồn tại" });
+    }
+    if (category_id) {
+      const category = await NewsCategory.findOne({
+        where: { id: category_id },
+      });
+      if (!category) {
+        return res.status(400).json({ error: "Danh mục không tồn tại" });
+      }
+      await news.setCategory(category);
+    }
+    news.title = title || news.title;
+    news.content = content || news.content;
+
+    await news.save();
+
+    return res.status(200).json({ data: news });
+  } catch (error) {
+    return res.status(500).json({ error: error || "Lỗi máy chủ" });
+  }
+};
+export const getNews = async (req, res) => {
+  const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
+  try {
+    const news = await News.findOne({
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+      },
+      include: [
+        {
+          model: NewsCategory,
+          as: "category",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Staff,
+          as: "posted",
+          attributes: ["id", "fullname"],
+        },
+      ],
+    });
+
+    if (!news) {
+      return res.status(404).json({ error: "Tin tức không tồn tại" });
+    }
+    const newsData = news.toJSON();
+    newsData.password = "";
+    return res.status(200).json({ data: newsData });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
+
 export const deleteNews = async (req, res) => {
   let newsIds = req.body.ids;
   if (!newsIds || newsIds.length === 0) {

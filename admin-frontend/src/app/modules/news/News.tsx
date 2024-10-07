@@ -6,6 +6,7 @@ import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider"
 import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
 import {deleteNews, getNews} from "./core/requests";
 import {NewsList} from "./components/NewsList";
+import {NewsEdit} from "./components/NewsEdit";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -20,7 +21,7 @@ export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
             progress: undefined,
         });
         return response;
-    } catch (error : any) {
+    } catch (error: any) {
         const errorMessage = error && error.response && error.response.data && error.response.data.error
             ? error.response.data.error
             : 'Có lỗi xảy ra khi xoá';
@@ -49,4 +50,11 @@ const NewsListWrapper = () => {
         </>
     );
 }
-export {NewsListWrapper}
+const NewsEditWrapper = () => {
+    return (
+        <>
+            <NewsEdit/>
+        </>
+    );
+}
+export {NewsListWrapper, NewsEditWrapper}
