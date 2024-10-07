@@ -81,7 +81,7 @@ const Navbar = () => {
                                                     <Link to="/listings">{t('TRẢ GÓP')}</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="/listingsTwo">{t('DỰ TOÁN CHI PHÍ')}</Link>
+                                                    <Link to="/car-loan">{t('DỰ TOÁN CHI PHÍ')}</Link>
                                                 </li>
                                             </ul>
                                         )}
