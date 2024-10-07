@@ -1,0 +1,36 @@
+.flashy-button {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: yellow;
+    background-color: red;
+    border: 3px outset #ff6600;
+    padding: 10px 20px;
+    cursor: pointer;
+    animation: blink 0.2s steps(2, start) infinite;
+    text-shadow: 2px 2px 4px #000000;
+    box-shadow: 0 0 10px #ff00ff;
+    transition: transform 0.1s;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.flashy-button:hover {
+    background-color: #ff6600;
+    color: #ffffff;
+}
+
+.flashy-button:active {
+    border-style: inset;
+    transform: scale(0.95);
+}

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import axios from '../../axios';
 import './CarLoan.css';
 import { numberToWords } from '../../utils/numberToWords';
-import CarLoan90sButton from './CarLoan90sButton';
+import FlashyButton from './FlashyButton';
 
 const CarLoanPage = () => {
     const { t } = useTranslation();
@@ -362,7 +362,7 @@ const CarLoanPage = () => {
                                                         min="1"
                                                         step="1"
                                                     />
-                                                    <span className="input-unit">{t('YEAR')}</span>
+
                                                 </div>
                                             </div>
                                             <div className="input-group">
@@ -390,9 +390,9 @@ const CarLoanPage = () => {
                                                 </select>
                                             </div>
                                             <div className="apply-loan-button-container">
-                                                <CarLoan90sButton onClick={handleApplyLoan}>
+                                                <FlashyButton onClick={handleApplyLoan}>
                                                     {t('LOAN.APPLY_FOR_LOAN')}
-                                                </CarLoan90sButton>
+                                                </FlashyButton>
                                             </div>
                                         </div>
                                     </div>
