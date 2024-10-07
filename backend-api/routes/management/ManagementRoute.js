@@ -28,6 +28,12 @@ import {
   createCategory,
 } from "../../controllers/management/CategoryController.js";
 import {
+  queryNews,
+  deleteNews,
+} from "../../controllers/management/NewsController.js";
+import { updateState } from "../../controllers/management/HomeController.js";
+
+import {
   createStaffValidation,
   updateStaffValidation,
 } from "../../helper/ValidationHelper.js";
@@ -85,6 +91,10 @@ router.get("/", (req, res) => {
   res.send("worked management api");
 });
 
+const homeRouter = express.Router();
+homeRouter.post("/update-state", verifyStaffToken([]), updateState);
+router.use("/home", homeRouter);
+
 const authRouter = express.Router();
 authRouter.post("/login", validateLogin, login);
 authRouter.post("/verify_token", verifyStaffToken([]), verify_token);
@@ -101,7 +111,6 @@ staffRoute.post("/create", createStaffValidation, createStaff);
 staffRoute.get("/:id", getStaff);
 staffRoute.post("/:id", updateStaffValidation, updateStaff);
 staffRoute.post("/:id/avatar", upload.single("avatar_url"), updateStaffAvatar);
-
 router.use("/staffs", verifyStaffToken(["Director"]), staffRoute);
 
 const roleRoute = express.Router();
@@ -123,6 +132,14 @@ categoriesRoute.delete("/delete", deleteCategories);
 categoriesRoute.post("/create", createCategory);
 categoriesRoute.get("/:id", getCategory);
 categoriesRoute.post("/:id", updateCategory);
-
 router.use("/categories", verifyStaffToken(["Director"]), categoriesRoute);
+
+const newsRoute = express.Router();
+newsRoute.get("/query", queryNews);
+newsRoute.delete("/delete", deleteNews);
+// newsRoute.post("/create", createCategory);
+// newsRoute.get("/:id", getCategory);
+// newsRoute.post("/:id", updateCategory);
+router.use("/news", verifyStaffToken(["Director"]), newsRoute);
+
 export default router;

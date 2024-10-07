@@ -1,11 +1,35 @@
-import Showroom from "../../models/Showroom.js";
+import News from "../../models/News.js";
+import NewsCategory from "../../models/NewsCategory.js";
+import Staff from "../../models/Staff.js";
+
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
-export const queryShowrooms = async (req, res) => {
-  // const showrooms = await Showroom.findAll({});
-  // res.json({
-  //   data: showrooms,
-  // });
+export const deleteNews = async (req, res) => {
+  let newsIds = req.body.ids;
+  if (!newsIds || newsIds.length === 0) {
+    res.status(500).json({ error: "Danh sách ID không hợp lệ" });
+  }
+  newsIds = newsIds.filter((id) => !isNaN(id));
+  if (newsIds.length === 0) {
+    return res.status(400).json({ error: "Không có ID hợp lệ để xóa" });
+  }
+  try {
+    const deletedCount = await News.destroy({
+      where: {
+        id: newsIds,
+      },
+    });
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ error: "Không tìm thấy news để xóa" });
+    }
+
+    res.status(200).json({ error: "Xóa thành công", deletedCount });
+  } catch (error) {
+    res.status(500).json({ error: "Lỗi máy chủ khi xóa news" });
+  }
+};
+export const queryNews = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
   const currentPage = parseInt(req.query.page) || 1;
   const sortColumn = req.query.sort || "id";
@@ -25,15 +49,27 @@ export const queryShowrooms = async (req, res) => {
       });
     }
 
-    const totalShowroom = await Showroom.count({
+    const totalNews = await News.count({
       where: searchConditions,
     });
 
-    const showroomList = await Showroom.findAll({
+    const newsList = await News.findAll({
       where: searchConditions,
+
       offset: (currentPage - 1) * perPage,
       limit: perPage,
-
+      include: [
+        {
+          model: NewsCategory,
+          as: "category",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Staff,
+          as: "posted",
+          attributes: ["id", "fullname"],
+        },
+      ],
       order: [[sortColumn, sortOrder.toUpperCase()]],
     });
 
@@ -41,17 +77,17 @@ export const queryShowrooms = async (req, res) => {
       current_page: currentPage,
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
-      last_page: Math.ceil(totalShowroom / perPage),
+      last_page: Math.ceil(totalNews / perPage),
       last_page_url: `${req.protocol}://${req.get("host")}${
         req.path
-      }?page=${Math.ceil(totalShowroom / perPage)}`,
+      }?page=${Math.ceil(totalNews / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
-        Math.ceil(totalShowroom / perPage)
+        Math.ceil(totalNews / perPage)
       ),
       next_page_url:
-        currentPage < Math.ceil(totalShowroom / perPage)
+        currentPage < Math.ceil(totalNews / perPage)
           ? `${req.protocol}://${req.get("host")}${req.path}?page=${
               currentPage + 1
             }`
@@ -65,16 +101,17 @@ export const queryShowrooms = async (req, res) => {
             }`
           : null,
       to: currentPage * perPage,
-      total: totalShowroom,
+      total: totalNews,
     };
 
     res.json({
       payload: {
         pagination: pagination,
       },
-      data: showroomList,
+      data: newsList,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error || "Something went wrong" });
   }
 };

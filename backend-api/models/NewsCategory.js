@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import db from "../config/Database.js";
 
-const Category = db.define(
-  "category",
+const NewsCategory = db.define(
+  "news_category",
   {
     name: {
       type: DataTypes.STRING(100),
@@ -23,4 +23,4 @@ const Category = db.define(
   }
 );
 
-export default Category;
+export default NewsCategory;

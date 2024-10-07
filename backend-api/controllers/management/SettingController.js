@@ -1,4 +1,5 @@
 import Setting from "../../models/Setting.js";
+import { APP_URL } from "../../config/Config.js";
 
 export const querySettings = async (req, res) => {
   const settings = await Setting.findAll({});
