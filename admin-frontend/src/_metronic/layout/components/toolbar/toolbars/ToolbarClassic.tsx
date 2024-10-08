@@ -15,6 +15,7 @@ const ToolbarClassic = () => {
     const createButtonLinks = [
         {path: '/staffs', role: 'Director'},
         {path: '/categories', role: 'Director'},
+        {path: '/news', role: 'Director'},
     ];
     const currentPath = location.pathname;
     const shouldShowCreateButton = createButtonLinks.some(

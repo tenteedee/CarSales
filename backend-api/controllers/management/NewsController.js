@@ -4,9 +4,32 @@ import Staff from "../../models/Staff.js";
 
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
+export const createNews = async (req, res) => {
+  const { title, content, category_id } = req.body;
+  try {
+    const existingCategory = await NewsCategory.findOne({
+      where: { id: category_id },
+    });
+    if (!existingCategory) {
+      return res.status(400).json({ error: "Danh mục không tồn tại" });
+    }
+    const newCategory = await News.create({
+      title,
+      content,
+      category_id,
+      is_pin: 0,
+      status: 0,
+      posted_by: req.user.id,
+    });
+
+    return res.status(201).json({ data: newCategory });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
 export const updateNews = async (req, res) => {
   const { id } = req.params;
-  
+
   if (isNaN(id)) {
     return res.status(400).json({ error: "ID không hợp lệ" });
   }
