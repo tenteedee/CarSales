@@ -32,6 +32,7 @@ import {
   deleteNews,
   getNews,
   updateNews,
+  createNews,
 } from "../../controllers/management/NewsController.js";
 import { updateState } from "../../controllers/management/HomeController.js";
 
@@ -139,7 +140,7 @@ router.use("/categories", verifyStaffToken(["Director"]), categoriesRoute);
 const newsRoute = express.Router();
 newsRoute.get("/query", queryNews);
 newsRoute.delete("/delete", deleteNews);
-// newsRoute.post("/create", createCategory);
+newsRoute.post("/create", createNews);
 newsRoute.get("/:id", getNews);
 newsRoute.post("/:id", updateNews);
 router.use("/news", verifyStaffToken(["Director"]), newsRoute);
