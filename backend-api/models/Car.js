@@ -3,6 +3,7 @@ import db from '../config/Database.js';
 import CarImage from './CarImage.js';
 import Brand from './Brand.js';
 import CarType from './CarType.js';
+import TestDriveRequest from './TestDriveRequest.js';
 
 const Car = db.define(
   'car',
@@ -53,39 +54,5 @@ const Car = db.define(
     updatedAt: 'updated_at',
   }
 );
-
-Car.hasMany(CarImage, {
-  foreignKey: 'car_id',
-  as: 'images',
-});
-
-CarImage.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
-
-Car.hasOne(Brand, {
-  foreignKey: 'id',
-  sourceKey: 'brand_id',
-  as: 'brand',
-});
-
-Brand.belongsTo(Car, {
-  foreignKey: 'id',
-  targetKey: 'brand_id',
-  as: 'car',
-});
-
-Car.hasOne(CarType, {
-  foreignKey: 'id',
-  sourceKey: 'type_id',
-  as: 'type',
-});
-
-CarType.belongsTo(Car, {
-  foreignKey: 'id',
-  targetKey: 'type_id',
-  as: 'car',
-});
 
 export default Car;

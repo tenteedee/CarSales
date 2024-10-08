@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
+import TestDriveRequest from './TestDriveRequest.js';
 
 const Customer = db.define(
   'customer',
@@ -15,7 +16,7 @@ const Customer = db.define(
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING(100),

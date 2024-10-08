@@ -15,18 +15,10 @@ const TestDriveRequest = db.define(
     customer_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Customer,
-        key: 'id',
-      },
     },
     car_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Car,
-        key: 'id',
-      },
     },
     test_drive_date: {
       type: DataTypes.DATE,
@@ -35,10 +27,6 @@ const TestDriveRequest = db.define(
     sales_staff_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: Staff,
-        key: 'id',
-      },
     },
     status: {
       type: DataTypes.ENUM('pending', 'approved', 'completed'),

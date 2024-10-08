@@ -4,13 +4,16 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import db from './config/Database.js';
-import shopRoutes from './routes/shop/ShopRoute.js';
+import shopRoutes from './routes/shop/index.js';
 import staffRoutes from './routes/management/ManagementRoute.js';
+import { setupAssociations } from './helper/SetupAssociations.js';
 import { API_PORT, SESSION_SECRET } from './config/Config.js';
 import session from 'express-session';
 import passport from './config/PassportConfig.js';
 
 dotenv.config();
+setupAssociations();
+
 const app = express();
 app.use(cors());
 app.use(express.json());

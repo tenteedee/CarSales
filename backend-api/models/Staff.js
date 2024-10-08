@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import db from "../config/Database.js";
-import StaffRole from "./StaffRole.js"; // Import the StaffRole model
-import Showroom from "./Showroom.js";
+import { DataTypes } from 'sequelize';
+import db from '../config/Database.js';
+import StaffRole from './StaffRole.js'; // Import the StaffRole model
+import Showroom from './Showroom.js';
 
 const Staff = db.define(
-  "staff",
+  'staff',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -49,16 +49,12 @@ const Staff = db.define(
     },
   },
   {
-    tableName: "staffs",
+    tableName: 'staffs',
     timestamps: true,
     underscored: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );
-
-// Define the relationship with StaffRole
-Staff.belongsTo(StaffRole, { foreignKey: "role_id", as: "role" });
-Staff.belongsTo(Showroom, { foreignKey: "showroom_id", as: "showroom" });
 
 export default Staff;
