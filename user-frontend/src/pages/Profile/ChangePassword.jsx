@@ -11,9 +11,9 @@ const ChangePassword = () => {
     const handlePasswordChange = async (e) => {
         e.preventDefault();
 
-        const passwordRegex = /^[^\s]{6,}$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
         if (!passwordRegex.test(newPassword)) {
-            setMessage('Invalid Password! Make a strong password');
+            setMessage('Invalid Password! Must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.');
             return;
         }
         if (newPassword !== confirmPassword) {

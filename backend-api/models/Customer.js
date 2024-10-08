@@ -20,6 +20,10 @@ const Customer = db.define(
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     phone_number: {
       type: DataTypes.STRING(20),

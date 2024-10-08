@@ -7,10 +7,15 @@ import {
 } from '../../helper/ValidationHelper.js';
 import Customer from '../../models/Customer.js';
 import { OAuth2Client } from 'google-auth-library';
-import { GOOGLE_CLIENT_ID, JWT_SECRET } from '../../config/Config.js';
+import {
+  GOOGLE_CLIENT_ID,
+  JWT_SECRET,
+  FRONTEND_PORT,
+} from '../../config/Config.js';
 import moment from 'moment';
 
 import dotenv from 'dotenv';
+import passport from '../../config/PassportConfig.js';
 dotenv.config();
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
@@ -23,18 +28,6 @@ export const verify_token = async (req, res) => {
     errors.error = err.message || 'Exception error';
     res.status(500).json(errors);
   }
-};
-export const loginWithGoogle = async (req, res) => {
-  let errors = {};
-  try {
-    const { token } = req.body;
-    // Verify the token received from the client
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: GOOGLE_CLIENT_ID, // Verify the audience matches your Google client ID
-    });
-    const { email, name } = ticket.getPayload();
-  } catch (e) {}
 };
 
 export const login = async (req, res) => {
@@ -148,4 +141,30 @@ export const changePassword = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+export const googleAuthInit = () => {
+  return passport.authenticate('google', { scope: ['profile', 'email'] });
+};
+
+export const googleAuthCallback = async (req, res, next) => {
+  try {
+    passport.authenticate('google', {
+      failureRedirect: '/login',
+      session: true,
+    })(req, res, next);
+
+    res.redirect(`http://localhost:${FRONTEND_PORT}/`);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const logout = (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
+  });
 };

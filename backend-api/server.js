@@ -6,7 +6,9 @@ import helmet from 'helmet';
 import db from './config/Database.js';
 import shopRoutes from './routes/shop/ShopRoute.js';
 import staffRoutes from './routes/management/ManagementRoute.js';
-import { API_PORT } from './config/Config.js';
+import { API_PORT, SESSION_SECRET } from './config/Config.js';
+import session from 'express-session';
+import passport from './config/PassportConfig.js';
 
 dotenv.config();
 const app = express();
@@ -47,6 +49,19 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 //app.use("/auth", authRoutes);
 app.use('/api/shop', shopRoutes);
 app.use('/api/management', staffRoutes);
+
+// Cấu hình session
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Khởi tạo passport và sử dụng session
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res) => {
   res.status(404).json({ success: false, status: 404, message: 'Not found' });

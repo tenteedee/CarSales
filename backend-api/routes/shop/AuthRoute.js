@@ -6,17 +6,21 @@ import {
 import { verifyToken } from '../../middleware/Auth.js';
 import {
   login,
-  loginWithGoogle,
   verify_token,
   register,
   changePassword,
+  googleAuthInit,
+  googleAuthCallback,
+  logout,
 } from '../../controllers/shop/AuthController.js';
 
-const route = express.Router();
-route.post('/register', validateRegister, register);
-route.post('/login', validateLogin, login);
-route.post('/change-password', verifyToken, changePassword);
-route.post('/verify_token', verifyToken, verify_token);
-route.post('/google/callback', loginWithGoogle);
+const router = express.Router();
+router.post('/register', validateRegister, register);
+router.post('/login', validateLogin, login);
+router.post('/change-password', verifyToken, changePassword);
+router.post('/verify_token', verifyToken, verify_token);
+router.get('/google', googleAuthInit);
+router.get('/google/callback', googleAuthCallback);
+router.get('/logout', logout);
 
-export default route;
+export default router;
