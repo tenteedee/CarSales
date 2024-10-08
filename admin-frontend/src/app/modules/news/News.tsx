@@ -7,6 +7,7 @@ import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestP
 import {deleteNews, getNews} from "./core/requests";
 import {NewsList} from "./components/NewsList";
 import {NewsEdit} from "./components/NewsEdit";
+import {NewsCreate} from "./components/NewsCreate";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -57,4 +58,11 @@ const NewsEditWrapper = () => {
         </>
     );
 }
-export {NewsListWrapper, NewsEditWrapper}
+const NewsCreateWrapper = () => {
+    return (
+        <>
+            <NewsCreate/>
+        </>
+    );
+}
+export {NewsListWrapper, NewsEditWrapper, NewsCreateWrapper}
