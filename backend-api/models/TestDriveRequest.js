@@ -1,56 +1,49 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
-import Car from './Car.js';
-import Customer from './Customer.js';
-import Staff from './Staff.js';
 
-const TestDriveRequest = db.define(
-  'test_drive_request',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    customer_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Customer,
-        key: 'id',
-      },
-    },
-    car_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Car,
-        key: 'id',
-      },
-    },
-    test_drive_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    sales_staff_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: Staff,
-        key: 'id',
-      },
-    },
-    status: {
-      type: DataTypes.ENUM('pending', 'approved', 'completed'),
-      allowNull: false,
-      defaultValue: 'pending',
-    },
+const TestDriveRequest = db.define('test_drive_request', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  {
-    tableName: 'test_drive_requests',
-    timestamps: true,
-    underscored: true,
-  }
-);
+  customer_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  car_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  test_drive_date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  sales_staff_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.ENUM('pending', 'approved', 'completed', 'cancelled'),
+    allowNull: false,
+    defaultValue: 'pending',
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
+}, {
+  tableName: 'test_drive_requests',
+  timestamps: true,
+  underscored: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+});
 
 export default TestDriveRequest;

@@ -1,4 +1,4 @@
-import {DataTypes} from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 
 const StaffRole = db.define('staff_role', {

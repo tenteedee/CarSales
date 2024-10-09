@@ -1,6 +1,9 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 
+import TestDriveRequest from './TestDriveRequest.js';
+import Orders from './Orders.js';
+
 const Customer = db.define(
   'customer',
   {
@@ -50,5 +53,23 @@ const Customer = db.define(
     updatedAt: 'updated_at',
   }
 );
+
+Customer.hasMany(Orders, {
+  foreignKey: 'customer_id',
+  as: 'orders',
+});
+Orders.belongsTo(Customer, {
+  foreignKey: 'customer_id',
+  as: 'customer',
+});
+
+Customer.hasMany(TestDriveRequest, {
+  foreignKey: 'customer_id',
+  as: 'test_drive_requests',
+});
+TestDriveRequest.belongsTo(Customer, {
+  foreignKey: 'customer_id',
+  as: 'customer',
+});
 
 export default Customer;
