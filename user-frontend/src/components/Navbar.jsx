@@ -35,8 +35,8 @@ const Navbar = () => {
                             data-wow-delay="0.3s"
                         >
                             <Link to="/">
-                                <h3><a href="home-2.html">Auto<span>Club</span></a></h3>
-                                <h2><a href="home-2.html">AUTO DEALER TEMPLATE</a></h2>
+                                <h3><a href="/">Auto<span>Club</span></a></h3>
+                                <h2><a href="/">AUTO DEALER TEMPLATE</a></h2>
                             </Link>
                         </div>
                     </div>

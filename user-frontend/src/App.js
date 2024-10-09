@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
 import TestDrive from './pages/TestDrive/TestDrive';
+import TestDriveHistory from './pages/TestDrive/TestDriveHistory';
 import Contacts from './pages/Contacts/Contacts';
 
 function App() {
@@ -44,7 +45,16 @@ function App() {
                     element={token ? <UserProfile /> : <Navigate to="/" />}
                 />
                 <Route path="/car/detail/:id" element={<CarDetail />} />
-                <Route path="/test-drive" element={<TestDrive />} />
+                <Route
+                    path="/test-drive"
+                    element={token ? <TestDrive /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/test-drive/history"
+                    element={
+                        token ? <TestDriveHistory /> : <Navigate to="/login" />
+                    }
+                />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/404" element={<NotFound />} />
