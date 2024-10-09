@@ -3,6 +3,9 @@ import db from '../config/Database.js';
 import CarImage from './CarImage.js';
 import Brand from './Brand.js';
 import CarType from './CarType.js';
+import OrderDetails from './OrderDetails.js';
+import Orders from './Orders.js';
+import TestDriveRequest from './TestDriveRequest.js';
 
 const Car = db.define(
   'car',
@@ -87,5 +90,35 @@ CarType.belongsTo(Car, {
   targetKey: 'type_id',
   as: 'car',
 });
+Car.hasMany(OrderDetails, {
+  foreignKey: 'car_id',
+  as: 'order_details',
+});
+
+OrderDetails.belongsTo(Car, {
+  foreignKey: 'car_id',
+  as: 'car',
+});
+
+Car.hasMany(Orders, {
+  foreignKey: 'car_id',
+  as: 'orders',
+});
+
+Orders.belongsTo(Car, {
+  foreignKey: 'car_id',
+  as: 'car',
+});
+
+Car.hasMany(TestDriveRequest, {
+  foreignKey: 'car_id',
+  as: 'test_drives_request',
+});
+
+TestDriveRequest.belongsTo(Car, {
+  foreignKey: 'car_id',
+  as: 'car',
+});
+
 
 export default Car;
