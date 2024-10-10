@@ -10,6 +10,11 @@ const Customer = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     fullname: {
       type: DataTypes.STRING(255),
       allowNull: false,

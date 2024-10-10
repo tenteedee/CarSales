@@ -9,9 +9,7 @@ import {
   verify_token,
   register,
   changePassword,
-  googleAuthInit,
-  googleAuthCallback,
-  logout,
+  loginGoogle,
 } from '../../controllers/shop/AuthController.js';
 
 const router = express.Router();
@@ -19,8 +17,9 @@ router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);
 router.post('/change-password', verifyToken, changePassword);
 router.post('/verify_token', verifyToken, verify_token);
-router.get('/google', googleAuthInit);
-router.get('/google/callback', googleAuthCallback);
-router.get('/logout', logout);
+router.post('/google', loginGoogle);
+// router.post('/google', googleAuthInit);
+// router.get('/google/callback', googleAuthCallback);
+// router.get('/logout', logout);
 
 export default router;

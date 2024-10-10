@@ -143,28 +143,58 @@ export const changePassword = async (req, res) => {
   }
 };
 
-export const googleAuthInit = () => {
-  return passport.authenticate('google', { scope: ['profile', 'email'] });
-};
+// export const googleAuthInit = () => {
+//   return passport.authenticate('google', { scope: ['profile', 'email'] });
+// };
 
-export const googleAuthCallback = async (req, res, next) => {
+// export const googleAuthCallback = async (req, res, next) => {
+//   try {
+//     passport.authenticate('google', {
+//       failureRedirect: '/login',
+//       session: true,
+//     })(req, res, next);
+
+//     res.redirect(`http://localhost:${FRONTEND_PORT}/`);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+// export const logout = (req, res) => {
+//   req.logout((err) => {
+//     if (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
+//     res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
+//   });
+// };
+
+export const loginGoogle = async (req, res) => {
+  const { token } = req.body;
+
   try {
-    passport.authenticate('google', {
-      failureRedirect: '/login',
-      session: true,
-    })(req, res, next);
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-    res.redirect(`http://localhost:${FRONTEND_PORT}/`);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    const payload = ticket.getPayload();
+    const { sub, email, name, picture } = payload;
 
-export const logout = (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
+    let customer = await Customer.findOne({ where: { googleId: sub } });
+
+    if (!customer) {
+      customer = await Customer.create({
+        googleId: sub,
+        fullname: name,
+        email,
+      });
     }
-    res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
-  });
+    const customerData = customer.toJSON();
+
+    res.status(200).json({ user: customerData, token });
+  } catch (error) {
+    console.error('Error verifying Google token:', error);
+    res.status(401).send('Invalid token');
+  }
 };
