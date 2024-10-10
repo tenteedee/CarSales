@@ -101,7 +101,7 @@ router.use("/home", homeRouter);
 
 const authRouter = express.Router();
 authRouter.post("/login", validateLogin, login);
-authRouter.post("/google-login", loginWithGoogle);
+authRouter.post("/login-google", loginWithGoogle);
 authRouter.post("/verify_token", verifyStaffToken([]), verify_token);
 router.use("/auth", authRouter);
 
