@@ -62,8 +62,15 @@ export const updateStaffAvatar = async (req, res) => {
   }
 };
 export const createStaff = async (req, res) => {
-  const { fullname, email, role_id, showroom_id, password, phone_number } =
-    req.body;
+  const {
+    fullname,
+    email,
+    role_id,
+    showroom_id,
+    password,
+    phone_number,
+    address,
+  } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -84,6 +91,7 @@ export const createStaff = async (req, res) => {
       fullname,
       email,
       phone_number,
+      address,
       password: hashedPassword,
     });
 
@@ -130,8 +138,15 @@ export const updateStaff = async (req, res) => {
   if (isNaN(id)) {
     return res.status(400).json({ error: "ID không hợp lệ" });
   }
-  const { fullname, email, role_id, showroom_id, password, phone_number } =
-    req.body;
+  const {
+    fullname,
+    email,
+    role_id,
+    showroom_id,
+    password,
+    phone_number,
+    address,
+  } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -159,13 +174,19 @@ export const updateStaff = async (req, res) => {
     if (!staff) {
       return res.status(404).json({ error: "Nhân viên không tồn tại" });
     }
-    const existingStaff = await Staff.findOne({ where: { email } });
+    const existingStaff = await Staff.findOne({
+      where: {
+        email,
+        id: { [Op.ne]: id },
+      },
+    });
     if (existingStaff) {
       return res.status(400).json({ error: "Email đã được sử dụng" });
     }
     staff.fullname = fullname || staff.fullname;
     staff.email = email || staff.email;
     staff.phone_number = phone_number || staff.phone_number;
+    staff.address = address || staff.address;
 
     if (role_id && id != 1) {
       const role = await StaffRole.findOne({ where: { id: role_id } });
@@ -322,8 +343,9 @@ export const queryStaff = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(totalStaff / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${req.path
-        }?page=${Math.ceil(totalStaff / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${
+        req.path
+      }?page=${Math.ceil(totalStaff / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -331,15 +353,17 @@ export const queryStaff = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(totalStaff / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
-          }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
+              currentPage + 1
+            }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
-          }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
+              currentPage - 1
+            }`
           : null,
       to: currentPage * perPage,
       total: totalStaff,
