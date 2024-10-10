@@ -2,9 +2,8 @@ import {QueryResponse} from "../../../utils/model/models";
 import axios, {AxiosResponse} from "axios";
 import {ID} from "../../../../_metronic/helpers";
 import {Category} from "./models";
-import {Staff} from "../../staffs/core/models";
-const API_URL = process.env.REACT_APP_API_URL
 
+const API_URL = process.env.REACT_APP_API_URL
 export const getCategories = (query: string): Promise<QueryResponse> => {
     return axios.get(`${API_URL}/categories?${query}`).then((d: AxiosResponse<QueryResponse>) => d.data)
 }
