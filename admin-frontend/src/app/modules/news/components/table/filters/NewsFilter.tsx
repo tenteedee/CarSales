@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Filters } from "../../../../../utils/model/models";
-import { getCategories } from "../../../../category/core/requests";
+import {useEffect, useState} from 'react';
+import {Filters} from "../../../../../utils/model/models";
+import {getCategories} from "../../../../category/core/requests";
 import {TableFilter} from "../../../../../../_metronic/partials/table/filter/TableFilter";
 
 export const NewsFiltersComponent = () => {
@@ -9,12 +9,15 @@ export const NewsFiltersComponent = () => {
         try {
             const response = await getCategories("");
             if (response && response.data) {
-                return response.data.map((category: any) => ({
+                const categoryOptions = response.data.map((category: any) => ({
                     value: category.id,
                     label: category.name,
                 }));
+                return [
+                    { value: '', label: 'Chọn category' },
+                    ...categoryOptions
+                ];
             } else {
-                console.error('No data found in the response');
                 return [];
             }
         } catch (error) {
@@ -26,7 +29,7 @@ export const NewsFiltersComponent = () => {
     useEffect(() => {
         const loadOptions = async () => {
             const options = await fetchCategoryOptions();
-            setCategoryOptions(options); // Cập nhật options sau khi tải xong
+            setCategoryOptions(options);
         };
 
         loadOptions();
@@ -41,13 +44,32 @@ export const NewsFiltersComponent = () => {
             name: 'category_id',
             label: 'Category',
             type: 'select',
-            options: categoryOptions, // Sử dụng state chứa options từ API
+            options: categoryOptions,
+        },
+        {
+            name: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+                {
+                    label: "Chọn status",
+                    value: ""
+                },
+                {
+                    label: "Show",
+                    value: 1
+                },
+                {
+                    label: "Hide",
+                    value: 0
+                }
+            ],
         },
     ];
 
     return (
         <div>
-            <TableFilter filters={newsFilters} /> {/* Chỉ render khi newsFilters đã có */}
+            <TableFilter filters={newsFilters}/> {/* Chỉ render khi newsFilters đã có */}
         </div>
     );
 };
