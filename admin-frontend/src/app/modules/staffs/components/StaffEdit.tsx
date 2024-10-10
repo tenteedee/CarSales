@@ -6,8 +6,6 @@ import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {KTIcon} from "../../../../_metronic/helpers";
 import {RoleModel} from "../../auth";
-import {Error500} from "../../errors/components/Error500";
-import {ErrorsLayout} from "../../errors/ErrorsLayout";
 
 type Props = {};
 export const StaffEdit: FC<Props> = ({...props}) => {
@@ -356,7 +354,6 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                         <label className='col-lg-4 fw-bold text-muted'>
                             Email
                         </label>
-
                         <div className='col-lg-8 d-flex align-items-center'>
                             <input
                                 type='email'
@@ -365,7 +362,19 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 onChange={(e) => setStaff({...staff, email: e.target.value})}
                             />
                         </div>
-
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>
+                            Address
+                        </label>
+                        <div className='col-lg-8 d-flex align-items-center'>
+                            <input
+                                type='text'
+                                className='form-control'
+                                value={staff?.address || ''}
+                                onChange={(e) => setStaff({...staff, address: e.target.value})}
+                            />
+                        </div>
                     </div>
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>Role</label>

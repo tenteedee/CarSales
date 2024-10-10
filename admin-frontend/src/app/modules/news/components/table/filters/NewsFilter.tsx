@@ -31,7 +31,6 @@ export const NewsFiltersComponent = () => {
             const options = await fetchCategoryOptions();
             setCategoryOptions(options);
         };
-
         loadOptions();
     }, []);
 
@@ -69,7 +68,7 @@ export const NewsFiltersComponent = () => {
 
     return (
         <div>
-            <TableFilter filters={newsFilters}/> {/* Chỉ render khi newsFilters đã có */}
+            <TableFilter filters={newsFilters}/>
         </div>
     );
 };

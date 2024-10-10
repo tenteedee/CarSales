@@ -14,6 +14,7 @@ export const StaffCreate: FC<Props> = () => {
         phone_number: "",
         email: "",
         password: "",
+        address : "",
         role_id: 0,
         showroom_id: 0
     });
@@ -129,6 +130,18 @@ export const StaffCreate: FC<Props> = () => {
                                 name="email"
                                 className='form-control'
                                 value={staff.email || ''}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Address</label>
+                        <div className='col-lg-8'>
+                            <input
+                                type="text"
+                                name="address"
+                                className='form-control'
+                                value={staff.address || ''}
                                 onChange={handleInputChange}
                             />
                         </div>
