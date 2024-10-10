@@ -3,6 +3,7 @@ import { verifyStaffToken } from "../../middleware/Auth.js";
 import { validateLogin } from "../../helper/ValidationHelper.js";
 import {
   login,
+  loginWithGoogle,
   verify_token,
 } from "../../controllers/management/AuthController.js";
 import { query } from "../../controllers/management/UserController.js";
@@ -100,6 +101,7 @@ router.use("/home", homeRouter);
 
 const authRouter = express.Router();
 authRouter.post("/login", validateLogin, login);
+authRouter.post("/google-login", loginWithGoogle);
 authRouter.post("/verify_token", verifyStaffToken([]), verify_token);
 router.use("/auth", authRouter);
 

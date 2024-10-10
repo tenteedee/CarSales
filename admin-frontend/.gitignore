@@ -30,3 +30,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+.env
+backend-api/.env
+admin-frontend/.env
+user-frontend/.env
