@@ -170,11 +170,11 @@ export const changePassword = async (req, res) => {
 // };
 
 export const loginGoogle = async (req, res) => {
-  const { token } = req.body;
+  const { idToken } = req.body;
 
   try {
     const ticket = await client.verifyIdToken({
-      idToken: token,
+      idToken,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
 
@@ -191,7 +191,7 @@ export const loginGoogle = async (req, res) => {
       });
     }
     const customerData = customer.toJSON();
-
+    const token = jwt.sign({ id: customer.id }, JWT_SECRET);
     res.status(200).json({ user: customerData, token });
   } catch (error) {
     console.error('Error verifying Google token:', error);

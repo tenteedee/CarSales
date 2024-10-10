@@ -4,9 +4,9 @@ import { setLogin } from '../../reduxStore/authSlice';
 import { useDispatch } from 'react-redux';
 import axios from '../../axios';
 import './auth.css';
+import GoogleLoginButton from './GoogleLoginButton';
 //a@gmail.com.' or 1  = 1
 function Login() {
-    const BACKEND_URL = 'http://localhost:3001/api/shop';
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -65,10 +65,6 @@ function Login() {
         }
     };
 
-    const handleGoogleLogin = () => {
-        window.location.href = `${BACKEND_URL}/auth/google`;
-    };
-
     return (
         <div className="login-container">
             <div className="login-box">
@@ -108,12 +104,7 @@ function Login() {
                     </button>
                 </form>
 
-                <button
-                    onClick={handleGoogleLogin}
-                    className="google-login-button"
-                >
-                    Login with Google
-                </button>
+                <GoogleLoginButton/>
 
                 <div className="redirect">
                     <span>Don't have an account? </span>
