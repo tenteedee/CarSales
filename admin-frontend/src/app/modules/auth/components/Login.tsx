@@ -4,10 +4,10 @@ import * as Yup from 'yup'
 import clsx from 'clsx'
 import {Link} from 'react-router-dom'
 import {useFormik} from 'formik'
-import {GET_USER_BY_ACCESSTOKEN_URL, getUserByToken, login} from '../core/_requests'
+import {getUserByToken, login, LOGIN_WITH_GOOGLE_URL} from '../core/_requests'
 import {useAuth} from '../core/Auth'
 import axios from "axios";
-import {AuthModel, UserModel} from "../core/_models";
+import {AuthModel} from "../core/_models";
 import {GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";
 
 const loginSchema = Yup.object().shape({
@@ -53,18 +53,13 @@ export function Login() {
     })
     const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
     const handleLoginSuccess = async (credentialResponse: any) => {
-        const API_URL = process.env.REACT_APP_API_URL
         try {
             const token = credentialResponse.credential;
-            const {data: auth} = await axios.post<AuthModel>(API_URL + '/auth/google-login', {
+            const {data: auth} = await axios.post<AuthModel>(LOGIN_WITH_GOOGLE_URL, {
                 token: token,
             });
             saveAuth(auth);
-            const {data: user} = await axios.post<UserModel>(GET_USER_BY_ACCESSTOKEN_URL, {
-                headers: {
-                    Authorization: `Bearer ${auth.api_token}`,
-                },
-            });
+            const {data: user} = await getUserByToken(auth.api_token)
             setCurrentUser(user);
         } catch (error) {
             saveAuth(undefined)
