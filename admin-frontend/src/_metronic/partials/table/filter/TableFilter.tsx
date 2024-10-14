@@ -38,9 +38,15 @@ const TableFilter: FC<Props> = ({filters}) => {
             const searchTerm: any[] = []
             Object.entries(search).forEach((item: any) => {
                 if (item[1] !== '') {
-                    searchTerm.push(`${item[0]}=${item[1]}`)
+                    if (Array.isArray(item[1])) {
+                        const values = item[1].map((obj: any) => obj.value);
+                        searchTerm.push(`${item[0]}=${values.join(',')}`);
+                    } else {
+                        searchTerm.push(`${item[0]}=${item[1]}`);
+                    }
                 }
-            })
+            });
+
             updateState({search: searchTerm.join('|'), ...initialQueryState})
         }
     }, [debouncedSearchTerm])
@@ -86,12 +92,12 @@ const TableFilter: FC<Props> = ({filters}) => {
                                             <div style={{marginTop: '-0.5rem'}}>
                                                 <SelectField
                                                     options={filter.options}
-                                                    defaultValue={{
-                                                        value: -1,
-                                                        label: `Chọn ${filter.label.toLowerCase()}`,
-                                                    }}
+                                                    // defaultValue={{
+                                                    //     value: -1,
+                                                    //     label: `Chọn ${filter.label.toLowerCase()}`,
+                                                    // }}
                                                     onChange={(newValue: any) => {
-                                                        formik.setFieldValue(filter.name, newValue.value)
+                                                        formik.setFieldValue(filter.name, newValue)
                                                         }
                                                     }
                                                 ></SelectField>

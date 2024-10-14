@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 interface SelectFieldProps {
     options: { value: number; label: string }[];
-    defaultValue: { value: number; label: string };
+    defaultValue?: { value: number; label: string };
     onChange: (value: any) => void;
 }
 
@@ -12,7 +12,7 @@ const SelectField: React.FC<SelectFieldProps> = ({ options, defaultValue, onChan
         <Select
             options={options}
             defaultValue={defaultValue}
-            isMulti={false}
+            isMulti={true}
             onChange={onChange}
             className="basic-multi-select"
             classNamePrefix="select"

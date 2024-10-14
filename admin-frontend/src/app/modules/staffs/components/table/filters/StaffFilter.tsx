@@ -23,10 +23,6 @@ export const staffFilters: Array<Filters> = [
         type: 'select',
         options: [
             {
-                value: "",
-                label: 'Chọn role',
-            },
-            {
                 value: 1,
                 label: 'Technical',
             },
