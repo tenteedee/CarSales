@@ -14,7 +14,6 @@ export const NewsFiltersComponent = () => {
                     label: category.name,
                 }));
                 return [
-                    { value: '', label: 'Chọn category' },
                     ...categoryOptions
                 ];
             } else {
@@ -50,10 +49,6 @@ export const NewsFiltersComponent = () => {
             label: 'Status',
             type: 'select',
             options: [
-                {
-                    label: "Chọn status",
-                    value: ""
-                },
                 {
                     label: "Show",
                     value: 1
