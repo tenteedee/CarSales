@@ -29,7 +29,7 @@ const SidebarMenuMain = () => {
             { (hasRole("Director") || hasRole("Sale")) && (
                 <SidebarMenuItem
                     to='/test-drive'
-                    icon='menu'
+                    icon='ghost'
                     title='Test Drive'
                     fontIcon='bi-layers'
                 />
