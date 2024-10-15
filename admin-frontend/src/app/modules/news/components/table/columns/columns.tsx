@@ -19,14 +19,6 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             return <SelectionCell id={news.id}/>;
         },
     },
-    // {
-    //     Header: (props) => <TableHeader tableProps={props} title='Title'/>,
-    //     id: 'id',
-    //     Cell: ({...props}) => {
-    //         const news = props.data[props.row.index] as News;
-    //         return <CopyTextCell className='text-dark' value={`${news.id}`}/>;
-    //     },
-    // },
     {
         Header: (props) => <TableHeader tableProps={props} title='Title'/>,
         id: 'title',

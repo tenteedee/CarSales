@@ -46,6 +46,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { queryTestDrive } from "../../controllers/management/TestDriveController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -146,5 +147,17 @@ newsRoute.post("/create", createNews);
 newsRoute.get("/:id", getNews);
 newsRoute.post("/:id", updateNews);
 router.use("/news", verifyStaffToken(["Director"]), newsRoute);
+
+const testDriveRoute = express.Router();
+testDriveRoute.get("/query", queryTestDrive);
+// testDriveRoute.delete("/delete", deleteNews);
+// testDriveRoute.post("/create", createNews);
+// testDriveRoute.get("/:id", getNews);
+// testDriveRoute.post("/:id", updateNews);
+router.use(
+  "/test-drive",
+  verifyStaffToken(["Director", "Sale"]),
+  testDriveRoute
+);
 
 export default router;
