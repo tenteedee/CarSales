@@ -64,7 +64,7 @@ const TestDrive = () => {
             console.log(customerData);
             console.log(carInfo);
             console.log(testDriveDate);
-            const response = await axios.post('/test-drive-request', {
+            const response = await axios.post('/test-drive/request', {
                 customer_id: customerData.id,
                 car_id: carInfo.id,
                 test_drive_date: testDriveDate

@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
-
 import TestDriveRequest from './TestDriveRequest.js';
 import Orders from './Orders.js';
 
@@ -12,17 +11,26 @@ const Customer = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     fullname: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     phone_number: {
       type: DataTypes.STRING(20),

@@ -57,44 +57,6 @@ const Car = db.define(
   }
 );
 
-Car.hasMany(CarImage, {
-  foreignKey: 'car_id',
-  as: 'images',
-});
-
-CarImage.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
-
-Car.hasOne(Brand, {
-  foreignKey: 'id',
-  sourceKey: 'brand_id',
-  as: 'brand',
-});
-
-Brand.belongsTo(Car, {
-  foreignKey: 'id',
-  targetKey: 'brand_id',
-  as: 'car',
-});
-
-Car.hasOne(CarType, {
-  foreignKey: 'id',
-  sourceKey: 'type_id',
-  as: 'type',
-});
-
-CarType.belongsTo(Car, {
-  foreignKey: 'id',
-  targetKey: 'type_id',
-  as: 'car',
-});
-Car.hasMany(OrderDetails, {
-  foreignKey: 'car_id',
-  as: 'order_details',
-});
-
 OrderDetails.belongsTo(Car, {
   foreignKey: 'car_id',
   as: 'car',
@@ -110,15 +72,6 @@ Orders.belongsTo(Car, {
   as: 'car',
 });
 
-Car.hasMany(TestDriveRequest, {
-  foreignKey: 'car_id',
-  as: 'test_drives_request',
-});
-
-TestDriveRequest.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
 
 
 export default Car;

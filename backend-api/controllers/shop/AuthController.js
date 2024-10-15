@@ -21,18 +21,6 @@ export const verify_token = async (req, res) => {
     res.status(500).json(errors);
   }
 };
-export const loginWithGoogle = async (req, res) => {
-  let errors = {};
-  try {
-    const { token } = req.body;
-    // Verify the token received from the client
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: GOOGLE_CLIENT_ID, // Verify the audience matches your Google client ID
-    });
-    const { email, name } = ticket.getPayload();
-  } catch (e) {}
-};
 
 export const login = async (req, res) => {
   let errors = {};
@@ -144,5 +132,61 @@ export const changePassword = async (req, res) => {
     res.status(200).json({ message: "Password updated successfully." });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+// export const googleAuthInit = () => {
+//   return passport.authenticate('google', { scope: ['profile', 'email'] });
+// };
+
+// export const googleAuthCallback = async (req, res, next) => {
+//   try {
+//     passport.authenticate('google', {
+//       failureRedirect: '/login',
+//       session: true,
+//     })(req, res, next);
+
+//     res.redirect(`http://localhost:${FRONTEND_PORT}/`);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+// export const logout = (req, res) => {
+//   req.logout((err) => {
+//     if (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
+//     res.redirect(`http://localhost:${FRONTEND_PORT}/login`);
+//   });
+// };
+
+export const loginGoogle = async (req, res) => {
+  const { idToken } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub, email, name, picture } = payload;
+
+    let customer = await Customer.findOne({ where: { googleId: sub } });
+
+    if (!customer) {
+      customer = await Customer.create({
+        googleId: sub,
+        fullname: name,
+        email,
+      });
+    }
+    const customerData = customer.toJSON();
+    const token = jwt.sign({ id: customer.id }, JWT_SECRET);
+    res.status(200).json({ user: customerData, token });
+  } catch (error) {
+    console.error('Error verifying Google token:', error);
+    res.status(401).send('Invalid token');
   }
 };

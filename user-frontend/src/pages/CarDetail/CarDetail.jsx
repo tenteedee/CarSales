@@ -60,10 +60,9 @@ const CarDetail = () => {
     }
 
     const handleRequestTestDrive = () => {
-        localStorage.setItem('carInfo', JSON.stringify(carInfo));
+        localStorage.setItem('selectedCar', JSON.stringify(carInfo));
         navigate('/test-drive');
     };
-    // Lưu thông tin xe từ trang này rồi truyền sang trang orders để giảm thiểu request
     const handleMakeOrder = () => {
         const carData = {
             ...carInfo,
@@ -89,8 +88,8 @@ const CarDetail = () => {
     const Breadcrumb = ({ brand, model }) => (
         <nav aria-label="breadcrumb" className="breadcrumb-container">
             <ol className="breadcrumb">
-                <li className="breadcrumb-item"><a href="/">Trang Chủ</a></li>
-                <li className="breadcrumb-item"><a href="/cars">Ô tô</a></li>
+                <li className="breadcrumb-item"><a href="/">Home</a></li>
+                <li className="breadcrumb-item"><a href="/cars">Car Detail</a></li>
                 {brand && <li className="breadcrumb-item"><a href={`/cars/${brand}`}>{brand}</a></li>}
                 {model && <li className="breadcrumb-item active" aria-current="page">{model}</li>}
             </ol>
@@ -125,8 +124,8 @@ const CarDetail = () => {
                         <h2>{carInfo ? `${carInfo.brand.name} ${carInfo.model}` : 'Car Name'}</h2>
                         <div className="d-flex align-items-center mb-2">
                             <span className="me-2">4.4 ★★★★☆</span>
-                            <span className="me-2">1.8k Đánh Giá</span>
-                            <span>5.7k Đã Bán</span>
+                            <span className="me-2">1.8k Feedback</span>
+                            <span>5.7k Sold</span>
                         </div>
                         <div className="price-container">
                             <span className="original-price">
@@ -135,36 +134,35 @@ const CarDetail = () => {
                             <span className="discounted-price">
                                 {formatPrice(carInfo?.price)}
                             </span>
-                            <span className="discount-badge">20% GIẢM</span>
+                            <span className="discount-badge">20% Discount</span>
                         </div>
                         <div className="mb-3">
-                            <span className="badge bg-danger me-2"> THƯƠNG HIỆU</span>
-                            <span>Chỉ từ {formatPrice(carInfo?.price * 0.9)}</span>
+                            <span className="badge bg-danger me-2"> Authentic </span>
+                            <span>Just from {formatPrice(carInfo?.price * 0.9)}</span>
                         </div>
                         <div className="mb-3">
-                            <h6>Mã Giảm Giá Của Shop</h6>
+                            <h6>Shop Voucher</h6>
                             {/* Add shop voucher details here */}
                         </div>
                         <div className="mb-3">
-                            <h6>Vận Chuyển</h6>
-                            <span>Miễn phí vận chuyển</span>
+                            <span>{carInfo?.description}</span>
                         </div>
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <h6>Size</h6>
-                            {/* Add size options here */}
-                        </div>
+                            
+                        </div> */}
                         <div className="quantity-section">
-                            <div className="quantity-label">Số Lượng</div>
+                            <div className="quantity-label">Quantity</div>
                             <div className="quantity-control">
                                 <button className="quantity-btn" onClick={decreaseQuantity}>-</button>
                                 <input type="text" value={quantity} readOnly className="quantity-input" />
                                 <button className="quantity-btn" onClick={increaseQuantity}>+</button>
                             </div>
-                            <div className="stock-info">{carInfo?.stock || 0} sản phẩm có sẵn</div>
+                            <div className="stock-info">{carInfo?.stock || 0} products available</div>
                         </div>
                         <div className="action-buttons">
-                            <button className="btn btn-primary add-to-cart" onClick={handleMakeOrder}>Mua Ngay</button>
-                            <button className="btn btn-danger buy-now" onClick={handleRequestTestDrive}>Yêu Cầu Lái Thử</button>
+                            <button className="btn btn-primary add-to-cart" onClick={handleMakeOrder}>Buy now!</button>
+                            <button className="btn btn-danger buy-now" onClick={handleRequestTestDrive}>Request test drive</button>
                         </div>
                     </div>
                 </div>

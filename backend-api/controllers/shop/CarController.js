@@ -36,7 +36,6 @@ export const getAllCars = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const getCarById = async (req, res) => {
   try {
     const carId = req.params.id;

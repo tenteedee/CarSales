@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setLogin } from '../../reduxStore/authSlice';
 import { useDispatch } from 'react-redux';
 import axios from '../../axios';
-import "./auth.css"
+import './auth.css';
+import GoogleLoginButton from './GoogleLoginButton';
 //a@gmail.com.' or 1  = 1
 function Login() {
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -33,7 +35,10 @@ function Login() {
 
         setIsLoading(true);
         try {
-            const response = await axios.post('auth/login', { email, password });
+            const response = await axios.post('auth/login', {
+                email,
+                password,
+            });
             localStorage.setItem('token', response.data.token);
             dispatch(
                 setLogin({
@@ -60,17 +65,12 @@ function Login() {
         }
     };
 
-
     return (
         <div className="login-container">
             <div className="login-box">
                 <h2 className="login-title">Login to Your Account</h2>
 
-                {showError && (
-                    <div className="error-message">
-                        {error}
-                    </div>
-                )}
+                {showError && <div className="error-message">{error}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
@@ -103,6 +103,8 @@ function Login() {
                         {isLoading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
+
+                <GoogleLoginButton/>
 
                 <div className="redirect">
                     <span>Don't have an account? </span>
