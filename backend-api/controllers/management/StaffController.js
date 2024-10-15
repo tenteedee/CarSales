@@ -308,13 +308,21 @@ export const queryStaff = async (req, res) => {
       searchQuery.split("|").forEach((condition) => {
         const [key, value] = condition.split("=");
         if (key && value) {
-          searchConditions[key] = {
-            [Op.like]: `%${value}%`,
-          };
+          if (value.includes(",")) {
+            const values = value.split(",").map((v) => ({
+              [Op.like]: `%${v}%`,
+            }));
+            searchConditions[key] = {
+              [Op.or]: values,
+            };
+          } else {
+            searchConditions[key] = {
+              [Op.like]: `%${value}%`,
+            };
+          }
         }
       });
     }
-
     const totalStaff = await Staff.count({
       where: searchConditions,
     });
