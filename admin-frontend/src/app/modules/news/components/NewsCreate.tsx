@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {News} from "../core/models";
 import {QueryResponse} from "../../../utils/model/models";
@@ -6,8 +6,8 @@ import {toast} from "react-toastify";
 import {createNews} from "../core/requests";
 import {Category} from "../../category/core/models";
 import {getCategories} from "../../category/core/requests";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import {CKEditor} from "@ckeditor/ckeditor5-react";
+import {uploadImage} from "../../../utils/requests/requests";
+import {CKEditorForm} from "../../../../_metronic/partials/form/ckfinder/CKEditorForm";
 
 type Props = {};
 
@@ -15,6 +15,7 @@ export const NewsCreate: FC<Props> = ({...props}) => {
     const navigate = useNavigate();
     const [news, setNews] = useState<Partial<News>>({
         title: "",
+        heading: "",
         content: "",
         category_id: 0,
     });
@@ -42,10 +43,10 @@ export const NewsCreate: FC<Props> = ({...props}) => {
     useEffect(() => {
         getData()
     }, [navigate]);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (key: string, value: string) => {
         setNews({
             ...news,
-            [e.target.name]: e.target.value
+            [key]: value
         });
     };
     const handleCreate = () => {
@@ -77,6 +78,27 @@ export const NewsCreate: FC<Props> = ({...props}) => {
                 });
             });
     };
+    const handleImageUpload = (event: any) => {
+        const file = event.target.files[0];
+        uploadImage(file)
+            .then((url) => {
+                setNews({...news, image: url});
+            })
+            .catch((error) => {
+                const errorMessage = error && error.response && error.response.data && error.response.data.error
+                    ? error.response.data.error
+                    : "Image upload error";
+                toast.error(errorMessage, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                });
+            });
+    };
     return (
         <>
             <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
@@ -87,14 +109,42 @@ export const NewsCreate: FC<Props> = ({...props}) => {
                 </div>
                 <div className='card-body p-9'>
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Title</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Image</label>
                         <div className='col-lg-8'>
                             <input
-                                type='text'
+                                type="file"
+                                className="form-control"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                            />
+                            {news?.image && (
+                                <div className="mt-3">
+                                    <img src={news.image} alt="Uploaded" style={{maxWidth: "50%", height: "auto"}}/>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Title</label>
+                        <div className='col-lg-8'>
+                            <textarea
+                                rows={5}
                                 name="title"
                                 className='form-control'
                                 value={news?.title || ""}
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange("title", e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Heading</label>
+                        <div className='col-lg-8'>
+                            <textarea
+                                rows={5}
+                                name="heading"
+                                className='form-control'
+                                value={news?.heading || ""}
+                                onChange={(e) => handleInputChange("heading", e.target.value)}
                             />
                         </div>
                     </div>
@@ -118,27 +168,17 @@ export const NewsCreate: FC<Props> = ({...props}) => {
                             </select>
                         </div>
                     </div>
+
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>Content</label>
                         <div className='col-lg-8'>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                config={{
-                                    toolbar: [
-                                        'heading', '|', 'bold', 'italic', 'link', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed',
-                                        'bulletedList', 'numberedList', 'undo', 'redo', 'alignment'
-                                    ],
-                                }}
-                                data={news?.content}
-                                onChange={(event, editor) => {
-                                    const data = editor.getData();
-                                    setNews({...news, content: data});
-                                    ;
-                                }}
+                            <CKEditorForm
+                                data={{content: news?.content ?? ""}}
+                                setData={(updatedData) => setNews({...news, content: updatedData.content})}
+                                fieldName="content"
                             />
                         </div>
                     </div>
-
 
                     <div className='d-flex my-4'>
                         <button className='btn btn-primary' onClick={handleCreate}>Cập nhật</button>

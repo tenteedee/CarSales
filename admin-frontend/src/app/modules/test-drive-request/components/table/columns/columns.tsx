@@ -68,6 +68,42 @@ const testDrivesColumns: ReadonlyArray<Column<TestDrive>> = [
         },
     },
     {
+        Header: (props) => <TableHeader tableProps={props} title='Status'/>,
+        id: 'status',
+        Cell: ({...props}) => {
+            const testDrive = props.data[props.row.index] as TestDrive;
+            let status = "";
+            let label = "";
+            switch (testDrive.status) {
+                case "pending" : {
+                    status = "warning"
+                    label = "Pending"
+                    break;
+                }
+                case "approved" : {
+                    status = "info"
+                    label = "Approved"
+                    break;
+                }
+                case "completed" : {
+                    status = "success"
+                    label = "Completed"
+                    break;
+                }
+                case "cancelled" : {
+                    status = "danger"
+                    label = "Cancelled"
+                    break;
+                }
+            }
+            return (
+                <>
+                    <span className={`badge bg-${status}`}>{label}</span>
+                </>
+            )
+        },
+    },
+    {
         Header: (props) => <TableHeader tableProps={props} title='Created At'/>,
         id: 'created_at',
         Cell: ({...props}) => {

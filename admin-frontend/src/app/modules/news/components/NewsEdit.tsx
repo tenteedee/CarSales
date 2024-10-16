@@ -9,6 +9,9 @@ import {getRoles} from "../../staffs/core/requests";
 import {getCategories} from "../../category/core/requests";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
+import axios from "axios";
+import {uploadImage} from "../../../utils/requests/requests";
+import {CKEditorForm} from "../../../../_metronic/partials/form/ckfinder/CKEditorForm";
 
 type Props = {};
 
@@ -84,6 +87,8 @@ export const NewsEdit: FC<Props> = ({...props}) => {
             return {...prevCategory, [key]: value};
         });
     };
+
+
     const handleUpdate = () => {
         if (news && id) {
             updateNews(id, news)
@@ -115,7 +120,16 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                 });
         }
     };
-
+    const handleImageUpload = (event: any) => {
+        const file = event.target.files[0];
+        uploadImage(file)
+            .then((url) => {
+                handleInputChange("image",url);
+            })
+            .catch((error) => {
+                console.error("Image upload error:", error);
+            });
+    };
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -140,17 +154,47 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                 </div>
                 <div className='card-body p-9'>
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Title</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Image</label>
                         <div className='col-lg-8'>
                             <input
-                                type='text'
+                                type="file"
+                                className="form-control"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                            />
+                            {news?.image && (
+                                <div className="mt-3">
+                                    <img src={news.image} alt="Uploaded" style={{ maxWidth: "50%", height: "auto" }} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Title</label>
+                        <div className='col-lg-8'>
+                            <textarea
                                 name="title"
                                 className='form-control'
                                 value={news?.title || ""}
+                                rows={5}
                                 onChange={(e) => handleInputChange("title", e.target.value)}
                             />
                         </div>
                     </div>
+
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Heading</label>
+                        <div className='col-lg-8'>
+                            <textarea
+                                name="heading"
+                                className='form-control'
+                                value={news?.heading || ""}
+                                rows={5}
+                                onChange={(e) => handleInputChange("heading", e.target.value)}
+                            />
+                        </div>
+                    </div>
+
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>Category</label>
                         <div className='col-lg-8'>
@@ -174,24 +218,13 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>Content</label>
                         <div className='col-lg-8'>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                config={{
-                                    toolbar: [
-                                        'heading', '|', 'bold', 'italic', 'link', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed',
-                                        'bulletedList', 'numberedList', 'undo', 'redo', 'alignment'
-                                    ],
-                                }}
-                                data={news?.content}
-                                onChange={(event, editor) => {
-                                    const data = editor.getData();
-                                    handleInputChange("content" || "", data);
-                                }}
+                            <CKEditorForm
+                                data={{content: news?.content ?? ""}}
+                                setData={(updatedData) => setNews({...news, content: updatedData.content})}
+                                fieldName="content"
                             />
                         </div>
                     </div>
-
-
                     <div className='d-flex my-4'>
                         <button className='btn btn-primary' onClick={handleUpdate}>Cập nhật</button>
                     </div>

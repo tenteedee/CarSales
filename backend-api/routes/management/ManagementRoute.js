@@ -35,7 +35,10 @@ import {
   updateNews,
   createNews,
 } from "../../controllers/management/NewsController.js";
-import { updateState } from "../../controllers/management/HomeController.js";
+import {
+  updateState,
+  uploadFile,
+} from "../../controllers/management/HomeController.js";
 
 import {
   createStaffValidation,
@@ -47,6 +50,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import { queryTestDrive } from "../../controllers/management/TestDriveController.js";
+import { queryCars } from "../../controllers/management/CarController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -97,6 +101,7 @@ router.get("/", (req, res) => {
 });
 
 const homeRouter = express.Router();
+homeRouter.post("/uploads", upload.single("upload"), uploadFile);
 homeRouter.post("/update-state", verifyStaffToken([]), updateState);
 router.use("/home", homeRouter);
 
@@ -159,5 +164,11 @@ router.use(
   verifyStaffToken(["Director", "Sale"]),
   testDriveRoute
 );
-
+const carRoute = express.Router();
+carRoute.get("/query", queryCars);
+// testDriveRoute.delete("/delete", deleteNews);
+// testDriveRoute.post("/create", createNews);
+// testDriveRoute.get("/:id", getNews);
+// testDriveRoute.post("/:id", updateNews);
+router.use("/cars", verifyStaffToken(["Director"]), carRoute);
 export default router;

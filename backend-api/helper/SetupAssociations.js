@@ -34,4 +34,13 @@ export function setupAssociations() {
   Brand.belongsTo(Car, { foreignKey: "id", targetKey: "brand_id", as: "car" });
   Car.hasOne(CarType, { foreignKey: "id", sourceKey: "type_id", as: "type" });
   CarType.belongsTo(Car, { foreignKey: "id", targetKey: "type_id", as: "car" });
+  // CarColors.hasMany(OrderDetails, {
+  //   foreignKey: "car_color_id",
+  //   as: "order_details",
+  // });
+
+  // OrderDetails.belongsTo(CarColors, {
+  //   foreignKey: "car_color_id",
+  //   as: "car_color",
+  // });
 }
