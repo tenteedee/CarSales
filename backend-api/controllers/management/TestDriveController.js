@@ -4,14 +4,49 @@ import Staff from "../../models/Staff.js";
 import TestDriveRequest from "../../models/TestDriveRequest.js";
 import Car from "../../models/Car.js";
 import Customer from "../../models/Customer.js";
+export const getTestDrive = async (req, res) => {
+  const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
+  try {
+    const category = await TestDriveRequest.findOne({
+      where: { id },
+      include: [
+        {
+          model: Car,
+          as: "car",
+          attributes: ["id", "model"],
+        },
+        {
+          model: Staff,
+          as: "staff",
+          attributes: ["id", "fullname"],
+        },
+        {
+          model: Customer,
+          as: "customer",
+          attributes: ["id", "fullname"],
+        },
+      ],
+    });
 
+    if (!category) {
+      return res.status(404).json({ error: "Danh mục không tồn tại" });
+    }
+    const data = category.toJSON();
+    return res.status(200).json({ data: data });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};
 export const queryTestDrive = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
   const currentPage = parseInt(req.query.page) || 1;
   const sortColumn = req.query.sort || "id";
   const sortOrder = req.query.order || "desc";
   const searchQuery = req.query.search || "";
-
+  const staff = req.user;
   try {
     const searchConditions = {};
     if (searchQuery) {
@@ -32,6 +67,9 @@ export const queryTestDrive = async (req, res) => {
           }
         }
       });
+    }
+    if (staff.role.name !== "Director") {
+      searchConditions.sales_staff_id = staff.id;
     }
     const totalTestDriveRequest = await TestDriveRequest.count({
       where: searchConditions,
