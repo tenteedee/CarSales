@@ -49,7 +49,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
-import { queryTestDrive } from "../../controllers/management/TestDriveController.js";
+import {
+  getTestDrive,
+  queryTestDrive,
+} from "../../controllers/management/TestDriveController.js";
 import { queryCars } from "../../controllers/management/CarController.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -157,7 +160,7 @@ const testDriveRoute = express.Router();
 testDriveRoute.get("/query", queryTestDrive);
 // testDriveRoute.delete("/delete", deleteNews);
 // testDriveRoute.post("/create", createNews);
-// testDriveRoute.get("/:id", getNews);
+testDriveRoute.get("/:id", getTestDrive);
 // testDriveRoute.post("/:id", updateNews);
 router.use(
   "/test-drive",
