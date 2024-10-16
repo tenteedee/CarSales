@@ -171,8 +171,6 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                         avatar_url: staffData['avatar_url'] || "" // Only update avatar_url
                     }));
                 }
-
-
                 toast.success('Cập nhật hình ảnh thành công', {
                     position: "top-right",
                     autoClose: 3000,

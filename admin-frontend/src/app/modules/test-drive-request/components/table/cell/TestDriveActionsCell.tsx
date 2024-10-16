@@ -10,7 +10,7 @@ import {handleDelete} from "../../../TestDrive";
 
 type Props = {
     id: ID;
-    value?: string; // Assuming "value" may be passed in
+    value?: string;
 };
 
 const TestDriveActionsCell: FC<Props> = ({id, value, ...props}) => {
@@ -46,7 +46,7 @@ const TestDriveActionsCell: FC<Props> = ({id, value, ...props}) => {
             >
                 {/* begin::Menu item */}
                 <div className='menu-item px-3'>
-                    <Link className='menu-link px-3' to={`/staffs/edit/${id}`}>
+                    <Link className='menu-link px-3' to={`/test-drive/edit/${id}`}>
                         Edit
                     </Link>
                 </div>

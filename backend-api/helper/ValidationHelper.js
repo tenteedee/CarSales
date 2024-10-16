@@ -16,8 +16,12 @@ export const createStaffValidation = [
   body("fullname").notEmpty().withMessage("Vui lòng điền họ tên"),
   body("email").isEmail().withMessage("Email không hợp lệ"),
   body("password")
-    .isLength({ min: 6 })
-    .withMessage("Mật khẩu phải có ít nhất 6 ký tự"),
+    .isLength({ min: 6, max: 30 })
+    .withMessage("Mật khẩu phải có từ 6 đến 30 ký tự")
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
+    .withMessage(
+      "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
+    ),
   body("phone_number")
     .isMobilePhone()
     .withMessage("Số điện thoại không hợp lệ"),
@@ -30,7 +34,11 @@ export const updateStaffValidation = [
   body("password")
     .optional({ checkFalsy: true })
     .isLength({ min: 6 })
-    .withMessage("Mật khẩu phải có ít nhất 6 ký tự"),
+    .withMessage("Mật khẩu phải có ít nhất 6 ký tự")
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
+    .withMessage(
+      "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
+    ),
   body("phone_number")
     .isMobilePhone()
     .withMessage("Số điện thoại không hợp lệ"),

@@ -1,14 +1,28 @@
+import { APP_URL } from "../../config/Config.js";
 import db from "../../config/Database.js";
 import { checkStaffRole } from "../../helper/RoleHelper.js";
 
 const allowedTables = ["news", "users"];
-const allowedColumns = ["status","is_pin"];
+const allowedColumns = ["status", "is_pin"];
 
 const tableRoles = {
   news: ["Director"],
   users: ["Director"],
 };
-
+export const uploadFile = async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    const urlUploaded = APP_URL + `assets/images/${file.filename}`;
+    return res
+      .status(200)
+      .json({ message: "Upload thành công", url: urlUploaded });
+  } catch (err) {
+    return res.status(500).json({ error: err.message || "Lỗi máy chủ" });
+  }
+};
 export const updateState = async (req, res) => {
   try {
     const { table, column, id, checked } = req.body;

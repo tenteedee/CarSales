@@ -5,7 +5,7 @@ import Staff from "../../models/Staff.js";
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
 export const createNews = async (req, res) => {
-  const { title, content, category_id } = req.body;
+  const { title, content, category_id, heading, image } = req.body;
   try {
     const existingCategory = await NewsCategory.findOne({
       where: { id: category_id },
@@ -14,7 +14,9 @@ export const createNews = async (req, res) => {
       return res.status(400).json({ error: "Danh mục không tồn tại" });
     }
     const newCategory = await News.create({
+      image,
       title,
+      heading,
       content,
       category_id,
       is_pin: 0,
@@ -24,7 +26,7 @@ export const createNews = async (req, res) => {
 
     return res.status(201).json({ data: newCategory });
   } catch (error) {
-    return res.status(500).json({ error: "Lỗi máy chủ" });
+    return res.status(500).json({ error: "Lỗi máy chủ", e: error });
   }
 };
 export const updateNews = async (req, res) => {
@@ -33,7 +35,7 @@ export const updateNews = async (req, res) => {
   if (isNaN(id)) {
     return res.status(400).json({ error: "ID không hợp lệ" });
   }
-  const { title, content, category_id } = req.body;
+  const { title, content, category_id, heading, image } = req.body;
   try {
     const news = await News.findOne({ where: { id } });
 
@@ -50,7 +52,9 @@ export const updateNews = async (req, res) => {
       await news.setCategory(category);
     }
     news.title = title || news.title;
+    news.heading = heading || news.heading;
     news.content = content || news.content;
+    news.image = image || news.image;
 
     await news.save();
 
@@ -130,21 +134,33 @@ export const queryNews = async (req, res) => {
 
   try {
     const searchConditions = {};
+    const specialKeys = ["title", "heading"]; // Các key mà bạn muốn tìm kiếm chuỗi con
+
     if (searchQuery) {
       searchQuery.split("|").forEach((condition) => {
         const [key, value] = condition.split("=");
+
         if (key && value) {
-          if (value.includes(",")) {
-            const values = value.split(",").map((v) => ({
-              [Op.like]: `%${v}%`,
-            }));
+          if (specialKeys.includes(key)) {
+            // Xử lý trường hợp tìm kiếm theo chuỗi con
+            const modifiedValue = `%${value.split(" ").join("%")}%`;
             searchConditions[key] = {
-              [Op.or]: values,
+              [Op.like]: modifiedValue, // Tìm kiếm dựa trên chuỗi đã thay đổi
             };
           } else {
-            searchConditions[key] = {
-              [Op.like]: `%${value}%`,
-            };
+            // Xử lý khi có nhiều giá trị, ví dụ: value=1,2,3
+            if (value.includes(",")) {
+              const values = value.split(",").map((v) => ({
+                [Op.like]: `%${v}%`,
+              }));
+              searchConditions[key] = {
+                [Op.or]: values,
+              };
+            } else {
+              searchConditions[key] = {
+                [Op.like]: `%${value}%`,
+              };
+            }
           }
         }
       });
