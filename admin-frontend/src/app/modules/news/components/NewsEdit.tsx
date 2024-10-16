@@ -5,11 +5,7 @@ import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {getNewsID, updateNews} from "../core/requests";
 import {Category} from "../../category/core/models";
-import {getRoles} from "../../staffs/core/requests";
 import {getCategories} from "../../category/core/requests";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import {CKEditor} from "@ckeditor/ckeditor5-react";
-import axios from "axios";
 import {uploadImage} from "../../../utils/requests/requests";
 import {CKEditorForm} from "../../../../_metronic/partials/form/ckfinder/CKEditorForm";
 
@@ -124,7 +120,7 @@ export const NewsEdit: FC<Props> = ({...props}) => {
         const file = event.target.files[0];
         uploadImage(file)
             .then((url) => {
-                handleInputChange("image",url);
+                handleInputChange("image", url);
             })
             .catch((error) => {
                 console.error("Image upload error:", error);
@@ -164,7 +160,7 @@ export const NewsEdit: FC<Props> = ({...props}) => {
                             />
                             {news?.image && (
                                 <div className="mt-3">
-                                    <img src={news.image} alt="Uploaded" style={{ maxWidth: "50%", height: "auto" }} />
+                                    <img src={news.image} alt="Uploaded" style={{maxWidth: "50%", height: "auto"}}/>
                                 </div>
                             )}
                         </div>

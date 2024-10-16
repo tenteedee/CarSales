@@ -1,6 +1,6 @@
 import {Navigate, Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import {TestDriveListWrapper} from "./TestDrive";
+import {TestDriveEditWrapper, TestDriveListWrapper} from "./TestDrive";
 
 const testDriveBreadcrumbs: Array<PageLink> = [
     {
@@ -34,7 +34,7 @@ const TestDrivePage = () => {
                     path="create"
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Create Staff</PageTitle>
+                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Create Test Drive</PageTitle>
                         </>
                     }
                 />
@@ -42,7 +42,8 @@ const TestDrivePage = () => {
                     path="edit/:id"
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Edit Staff</PageTitle>
+                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Edit Test Drive</PageTitle>
+                            <TestDriveEditWrapper/>
                         </>
                     }
                 />

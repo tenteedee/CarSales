@@ -60,7 +60,6 @@ export const CategoryEdit: FC<Props> = ({...props}) => {
         });
     };
 
-    // Handle update button click
     const handleUpdate = () => {
         if (category && id) {
             updateCategory(id, category)

@@ -147,19 +147,18 @@ export const StaffCreate: FC<Props> = () => {
                         </div>
                     </div>
 
-                    {/* Password */}
-                    <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Password</label>
-                        <div className='col-lg-8'>
-                            <input
-                                type="password"
-                                name="password"
-                                className='form-control'
-                                value={staff.password || ''}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                    </div>
+                    {/*<div className='row mb-7'>*/}
+                    {/*    <label className='col-lg-4 fw-bold text-muted'>Password</label>*/}
+                    {/*    <div className='col-lg-8'>*/}
+                    {/*        <input*/}
+                    {/*            type="password"*/}
+                    {/*            name="password"*/}
+                    {/*            className='form-control'*/}
+                    {/*            value={staff.password || ''}*/}
+                    {/*            onChange={handleInputChange}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     {/* Role */}
                     <div className='row mb-7'>

@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
 //mail config
-export const MAIL_MAILER = process.env.APP_URL || "";
-export const MAIL_HOST = process.env.APP_URL || "";
-export const MAIL_PORT = process.env.APP_URL || 587;
-export const MAIL_USERNAME = process.env.APP_URL || "";
-export const MAIL_PASSWORD = process.env.APP_URL || "";
-export const MAIL_ENCRYPTION = process.env.APP_URL || "tls";
-export const MAIL_FROM_ADDRESS = process.env.APP_URL || "";
-export const MAIL_FROM_NAME = process.env.APP_URL || "";
+export const MAIL_MAILER = process.env.MAIL_MAILER || "";
+export const MAIL_HOST = process.env.MAIL_HOST || "";
+export const MAIL_PORT = process.env.MAIL_PORT || 465;
+export const MAIL_USERNAME = process.env.MAIL_USERNAME || "";
+export const MAIL_PASSWORD = process.env.MAIL_PASSWORD || "";
+export const MAIL_ENCRYPTION = process.env.MAIL_ENCRYPTION || "tls";
+export const MAIL_FROM_ADDRESS = process.env.MAIL_FROM_ADDRESS || "";
+export const MAIL_FROM_NAME = process.env.MAIL_FROM_NAME || "";
 
 // app config
 export const API_PORT = process.env.API_PORT || 3001;
