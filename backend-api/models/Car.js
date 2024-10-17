@@ -62,15 +62,7 @@ OrderDetails.belongsTo(Car, {
   as: 'car',
 });
 
-Car.hasMany(Orders, {
-  foreignKey: 'car_id',
-  as: 'orders',
-});
 
-Orders.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
 
 
 

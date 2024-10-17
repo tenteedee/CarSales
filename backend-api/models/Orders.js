@@ -1,7 +1,9 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
+import Customer from './Customer.js';
+import Car from './Car.js';
+import Showroom from './Showroom.js';
 
-import OrderDetails from './OrderDetails.js';
 
 const Orders = db.define(
   'orders',
@@ -13,37 +15,27 @@ const Orders = db.define(
     },
     customer_id: {
       type: DataTypes.INTEGER,
+
+      primaryKey: true,
     },
     car_id: {
       type: DataTypes.INTEGER,
+
+      primaryKey: true,
     },
     payment_price: {
       type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
     },
     total_price: {
       type: DataTypes.DECIMAL(15, 2),
-    },
-    sales_staff_id: {
-      type: DataTypes.INTEGER,
-    },
-    technical_staff_id: {
-      type: DataTypes.INTEGER,
-    },
-    insurance_staff_id: {
-      type: DataTypes.INTEGER,
-    },
-    order_status: {
-      type: DataTypes.ENUM('pending', 'completed', 'cancelled'), // Giả định các trạng thái có thể
+      allowNull: false,
     },
 
-    showroom_id: {
-      type: DataTypes.INTEGER,
-    },
-    loan_id: {
-      type: DataTypes.INTEGER,
-    },
-    discount_id: {
-      type: DataTypes.INTEGER,
+    order_status: {
+      type: DataTypes.ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled'),
+      allowNull: false,
+      defaultValue: 'pending',
     },
     created_at: {
       type: DataTypes.DATE,
@@ -53,8 +45,16 @@ const Orders = db.define(
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-  },
+    showroom_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: false,
+    },
+    loan_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
 
+  },
   {
     tableName: 'orders',
     timestamps: true,
@@ -63,15 +63,5 @@ const Orders = db.define(
     updatedAt: 'updated_at',
   }
 );
-
-Orders.hasMany(OrderDetails, {
-  foreignKey: 'order_id',
-  as: 'orderDetails',
-});
-
-OrderDetails.belongsTo(Orders, {
-  foreignKey: 'order_id',
-  as: 'order',
-});
 
 export default Orders;

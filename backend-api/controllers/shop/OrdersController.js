@@ -27,11 +27,11 @@ export const getOrderById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 export const createOrder = async (req, res) => {
     try {
         const newOrder = await Orders.create(req.body);
-        res.status(201).json(newOrder);
+        // Assuming you have a route to handle confirmation page in your frontend
+        res.status(201).json({ newOrder, message: 'Order placed successfully', redirect: '/order-confirmation/' + newOrder.id });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -60,6 +60,20 @@ export const deleteOrder = async (req, res) => {
         });
         if (deleted) {
             res.status(204).send("Order deleted");
+        } else {
+            res.status(404).json({ message: 'Order not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+export const getOrderConfirmation = async (req, res) => {
+    try {
+        const order = await Orders.findByPk(req.params.id, {
+            include: [{ model: OrderDetails, as: 'orderDetails' }, { model: Car, as: 'car' }]
+        });
+        if (order) {
+            res.status(200).json(order);
         } else {
             res.status(404).json({ message: 'Order not found' });
         }

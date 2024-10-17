@@ -4,7 +4,7 @@ import {
   getTestDriveRequestByCustomerId,
   getTestDriveRequestById,
   requestTestDrive,
-} from '../../controllers/shop/TestDrive.js';
+} from '../../controllers/shop/TestDriveController.js';
 
 const router = express.Router();
 router.route('/request').post(requestTestDrive);

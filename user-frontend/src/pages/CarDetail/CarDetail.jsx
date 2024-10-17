@@ -1,37 +1,66 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from '../../axios';
 import './CarDetail.css';
 
+import { useSelector } from 'react-redux';
+
 const CarDetail = () => {
     const navigate = useNavigate();
-    const { id: carId } = useParams();
+    const { id } = useParams();
+    console.log('carId from params:', id);
+    const carId = id; // Đảm bảo carId luôn có giá trị
+    const user = useSelector((state) => state.auth.user);
     const [carInfo, setCarInfo] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);  
     const [quantity, setQuantity] = useState(1);
     const [selectedVariant, setSelectedVariant] = useState(null);
-
+    const [showroomId, setShowroomId] = useState(null);
+    const [selectedShowroom, setSelectedShowroom] = useState('');
+    const [showrooms, setShowrooms] = useState([]);
     useEffect(() => {
         const fetchCarInfo = async () => {
+            if (!id) {
+                console.error('Car ID is undefined in fetchCarInfo');
+                setError('Không thể tải thông tin xe. ID xe không hợp lệ.');
+                setIsLoading(false);
+                return;
+            }
             try {
-                const response = await axios.get(`car/detail/${carId}`);
+                console.log('Fetching car info for carId:', id);
+                const response = await axios.get(`car/detail/${id}`);
+                console.log('axios Response:', response);
                 setCarInfo(response.data);
-                console.log(response.data);
             } catch (err) {
-                setError('Error fetching car information');
+                console.error('Error fetching car info:', err);
+                setError('Lỗi khi tải thông tin xe');
                 navigate('/404');
-                console.error(err.response.data.error);
             } finally {
                 setIsLoading(false);
             }
         };
 
-        if (carId) {
-            fetchCarInfo();
-        }
-    }, [carId]);
+        const fetchShowrooms = async () => {
+            try {
+                const response = await axios.get(`/showroom/all`);
+                console.log('Showrooms fetched:', response.data); // Log the response to check its structure
+                if (response.data && Array.isArray(response.data)) {
+                    setShowrooms(response.data);
+                    setSelectedShowroom(response.data[0]?.id); // Default to the first showroom
+                } else {
+                    throw new Error('Invalid showroom data');
+                }
+            } catch (error) {
+                console.error('Error fetching showrooms:', error);
+                toast.error('Error fetching showrooms');
+            }
+        };
+        fetchCarInfo();
+        fetchShowrooms();
+    }, [id, navigate]);
 
     const prevImage = () => {
         setCurrentImageIndex((prevIndex) =>
@@ -45,31 +74,91 @@ const CarDetail = () => {
         );
     };
 
-    if (isLoading) {
-        return <div className="text-center py-8">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="text-center py-8 text-red-600">{error}</div>;
-    }
-
-    if (!carInfo) {
-        return (
-            <div className="text-center py-8">No car information available</div>
-        );
-    }
-
+    const fetchCarInfo = async () => {
+        if (!carId) {
+            console.error('carId is undefined');
+            setError('Không thể tải thông tin xe. ID xe không hợp lệ.');
+            setIsLoading(false);
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const response = await axios.get(`car/detail/${carId}`);
+            console.log('axios Response:', response); // Log the entire response
+            if (response && response.data) {
+                setCarInfo(response.data);
+            } else {
+                throw new Error('Invalid response structure');
+            }
+        } catch (error) {
+            console.error('Error fetching car info:', error);
+            setError('Failed to load car information. Please try again later.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
     const handleRequestTestDrive = () => {
         localStorage.setItem('selectedCar', JSON.stringify(carInfo));
         navigate('/test-drive');
     };
-    const handleMakeOrder = () => {
-        const carData = {
-            ...carInfo,
-            selectedImageIndex: currentImageIndex
-        };
-        localStorage.setItem('carInfo', JSON.stringify(carData));
-        navigate('/orders');
+    // Lưu thông tin xe từ trang này rồi truyền sang trang orders để giảm thiểu request
+    const handleMakeOrder = async () => {
+        try {
+            if (!user) {
+                toast.error("Vui lòng đăng nhập để đặt hàng", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                });
+                return;
+            }
+
+            console.log('Car Info:', carInfo); // Log the entire carInfo object
+            const showroomId = carInfo?.showroom_id;
+            const colorId = carInfo?.color_id;
+            console.log('Showroom ID:', showroomId); // Debugging line
+
+            if (!showroomId) {
+                throw new Error('Invalid showroom ID');
+            }
+
+            const response = await axios.post('orders', {
+                customer_id: user.id,
+                car_id: carInfo.id,
+                payment_price: carInfo.price,
+                total_price: carInfo.price,
+                order_status: 'pending',
+                showroom_id: 1,
+            });
+
+            if (response.data && response.data.id) {
+                await axios.post('orders-details', {
+                    order_id: response.data.id,
+                    car_id: carInfo.id,
+                    quantity: 1,
+                    price: carInfo.price,
+                    color_id: colorId,
+                });
+
+                navigate(`/orders-confirmation/${response.data.id}`);
+            } else {
+                throw new Error('Không thể tạo đơn hàng');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tạo đơn hàng:', error.response?.data || error.message);
+            if (error.response?.status === 404) {
+                toast.error("Không tìm thấy endpoint tạo đơn hàng. Vui lòng kiểm tra lại cấu hình axios.");
+            } else if (error.response?.status === 401) {
+                toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+                // Thêm logic để đăng xuất người dùng và chuyển hướng đến trang đăng nhập
+            } else {
+                toast.error("Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại sau.");
+            }
+        }
     };
 
     const decreaseQuantity = () => {
@@ -88,8 +177,8 @@ const CarDetail = () => {
     const Breadcrumb = ({ brand, model }) => (
         <nav aria-label="breadcrumb" className="breadcrumb-container">
             <ol className="breadcrumb">
-                <li className="breadcrumb-item"><a href="/">Home</a></li>
-                <li className="breadcrumb-item"><a href="/cars">Car Detail</a></li>
+                <li className="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+                <li className="breadcrumb-item"><a href="/cars">Ô tô</a></li>
                 {brand && <li className="breadcrumb-item"><a href={`/cars/${brand}`}>{brand}</a></li>}
                 {model && <li className="breadcrumb-item active" aria-current="page">{model}</li>}
             </ol>
@@ -124,8 +213,8 @@ const CarDetail = () => {
                         <h2>{carInfo ? `${carInfo.brand.name} ${carInfo.model}` : 'Car Name'}</h2>
                         <div className="d-flex align-items-center mb-2">
                             <span className="me-2">4.4 ★★★★☆</span>
-                            <span className="me-2">1.8k Feedback</span>
-                            <span>5.7k Sold</span>
+                            <span className="me-2">a Đánh Giá</span>
+                            <span>b Đã Bán</span>
                         </div>
                         <div className="price-container">
                             <span className="original-price">
@@ -134,35 +223,51 @@ const CarDetail = () => {
                             <span className="discounted-price">
                                 {formatPrice(carInfo?.price)}
                             </span>
-                            <span className="discount-badge">20% Discount</span>
+                            <span className="discount-badge">20% GIẢM</span>
                         </div>
                         <div className="mb-3">
-                            <span className="badge bg-danger me-2"> Authentic </span>
-                            <span>Just from {formatPrice(carInfo?.price * 0.9)}</span>
+                            <span className="badge bg-danger me-2"> THƯƠNG HIỆU</span>
+                            <span>Chỉ từ {formatPrice(carInfo?.price * 0.9)}</span>
                         </div>
                         <div className="mb-3">
-                            <h6>Shop Voucher</h6>
+                            <h6>Mã Giảm Giá Của Shop</h6>
                             {/* Add shop voucher details here */}
                         </div>
                         <div className="mb-3">
-                            <span>{carInfo?.description}</span>
+                            <h6>Vận Chuyển</h6>
+                            <span>Miễn phí vận chuyển</span>
                         </div>
-                        {/* <div className="mb-3">
+                        <div className="mb-3">
                             <h6>Size</h6>
-                            
-                        </div> */}
+                            {/* Add size options here */}
+                        </div>
                         <div className="quantity-section">
-                            <div className="quantity-label">Quantity</div>
+                            <div className="quantity-label">Số Lượng</div>
                             <div className="quantity-control">
                                 <button className="quantity-btn" onClick={decreaseQuantity}>-</button>
                                 <input type="text" value={quantity} readOnly className="quantity-input" />
                                 <button className="quantity-btn" onClick={increaseQuantity}>+</button>
                             </div>
-                            <div className="stock-info">{carInfo?.stock || 0} products available</div>
+                            <div className="stock-info">{carInfo?.stock || 0} sản phẩm có sẵn</div>
                         </div>
                         <div className="action-buttons">
-                            <button className="btn btn-primary add-to-cart" onClick={handleMakeOrder}>Buy now!</button>
-                            <button className="btn btn-danger buy-now" onClick={handleRequestTestDrive}>Request test drive</button>
+                            <button className="btn btn-primary add-to-cart" onClick={handleMakeOrder}>Mua Ngay</button>
+                            <button className="btn btn-danger buy-now" onClick={handleRequestTestDrive}>Yêu Cầu Lái Thử</button>
+                        </div>
+                        <div className="showroom-selection">
+                            <label htmlFor="showroomSelect">Choose a Showroom:</label>
+                            <select
+                                id="showroomSelect"
+                                value={selectedShowroom}
+                                onChange={(e) => setSelectedShowroom(e.target.value)}
+                            >
+                                <option value="">Select a showroom</option>
+                                {showrooms.map(showroom => (
+                                    <option key={showroom.id} value={showroom.id}>
+                                        {showroom.name} - {showroom.address}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                 </div>
