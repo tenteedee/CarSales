@@ -1,5 +1,28 @@
 import { body, check } from "express-validator";
-
+export const validateCreateShowroom = [
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email."),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Please provide a valid phone number"),
+  body("name").notEmpty().withMessage("Name showroom is required."),
+  body("address").notEmpty().withMessage("Name showroom is required."),
+];
+export const validateUpdateShowroom = [
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email."),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Please provide a valid phone number"),
+  body("name").notEmpty().withMessage("Name showroom is required."),
+  body("address").notEmpty().withMessage("Name showroom is required."),
+];
 export const validateLogin = [
   body("email")
     .notEmpty()
@@ -13,8 +36,8 @@ export const validateLogin = [
     .withMessage("Password must be at least 4 characters long."),
 ];
 export const createStaffValidation = [
-  body("fullname").notEmpty().withMessage("Vui lòng điền họ tên"),
-  body("email").isEmail().withMessage("Email không hợp lệ"),
+  body("fullname").notEmpty().withMessage("Please provide a valid name"),
+  body("email").isEmail().withMessage("Please provide a valid email"),
   // body("password")
   //   .isLength({ min: 6, max: 30 })
   //   .withMessage("Mật khẩu phải có từ 6 đến 30 ký tự")
@@ -24,24 +47,24 @@ export const createStaffValidation = [
   //   ),
   body("phone_number")
     .isMobilePhone()
-    .withMessage("Số điện thoại không hợp lệ"),
+    .withMessage("Please provide a valid phone number"),
   body("role_id").optional().isInt().withMessage("Vai trò không hợp lệ"),
   body("showroom_id").optional().isInt().withMessage("Showroom không hợp lệ"),
 ];
 export const updateStaffValidation = [
-  body("fullname").notEmpty().withMessage("Vui lòng điền họ tên"),
-  body("email").isEmail().withMessage("Email không hợp lệ"),
+  body("fullname").notEmpty().withMessage("Please provide a valid name"),
+  body("email").isEmail().withMessage("Please provide a valid email"),
   body("password")
     .optional({ checkFalsy: true })
     .isLength({ min: 6 })
-    .withMessage("Mật khẩu phải có ít nhất 6 ký tự")
+    .withMessage("Password must be at least 6 characters long")
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
     .withMessage(
       "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
     ),
   body("phone_number")
     .isMobilePhone()
-    .withMessage("Số điện thoại không hợp lệ"),
+    .withMessage("Please provide a valid phone number"),
   body("role_id").optional().isInt().withMessage("Vai trò không hợp lệ"),
   body("showroom_id").optional().isInt().withMessage("Showroom không hợp lệ"),
 ];

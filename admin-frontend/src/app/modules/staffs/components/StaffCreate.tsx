@@ -1,9 +1,11 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import {createStaff, getRoles, getShowrooms} from "../core/requests";
-import {ShowroomModel, Staff} from "../core/models";
+import {createStaff, getRoles} from "../core/requests";
+import {Staff} from "../core/models";
 import {toast} from "react-toastify";
 import {RoleModel} from "../../auth";
 import {useNavigate} from "react-router-dom";
+import {Showroom} from "../../showroom/core/models";
+import {getShowrooms} from "../../showroom/core/requests";
 
 type Props = {};
 export const StaffCreate: FC<Props> = () => {
@@ -14,21 +16,17 @@ export const StaffCreate: FC<Props> = () => {
         phone_number: "",
         email: "",
         password: "",
-        address : "",
+        address: "",
         role_id: 0,
         showroom_id: 0
     });
 
     const [roles, setRoles] = useState<RoleModel[]>([]);
-    const [showrooms, setShowrooms] = useState<ShowroomModel[]>([]);
+    const [showrooms, setShowrooms] = useState<Showroom[]>([]);
 
-    // Fetch roles and showrooms when component mounts
     React.useEffect(() => {
-        // Fetch roles
         getRoles().then((response) => setRoles(response.data || []));
-
-        // Fetch showrooms
-        getShowrooms().then((response) => setShowrooms(response.data || []));
+        getShowrooms("").then((response) => setShowrooms(response.data || []));
     }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -190,7 +188,7 @@ export const StaffCreate: FC<Props> = () => {
                             >
                                 <option value=''>Chọn showroom</option>
                                 {showrooms.map((showroom) => (
-                                    <option key={showroom.id} value={showroom.id}>
+                                    <option key={showroom.id} value={showroom.id || ""}>
                                         {showroom.name}
                                     </option>
                                 ))}

@@ -37,11 +37,7 @@ export const getRoles = (): Promise<QueryResponse> => {
         .get(`${API_URL}/roles`)
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 }
-export const getShowrooms = (): Promise<QueryResponse> => {
-    return axios
-        .get(`${API_URL}/showrooms`)
-        .then((response: AxiosResponse<QueryResponse>) => response.data);
-}
+
 export const updateStaffAvatar = (id: string | undefined, formData: FormData): Promise<QueryResponse> => {
     return axios
         .post(`${STAFF_URL}/${id}/avatar`, formData, {

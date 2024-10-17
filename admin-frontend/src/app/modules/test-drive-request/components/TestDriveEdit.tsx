@@ -226,7 +226,25 @@ export const TestDriveEdit: FC<Props> = ({...props}) => {
                             />
                         </div>
                     </div>
-
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Status</label>
+                        <div className='col-lg-8'>
+                            <select
+                                className='form-control'
+                                value={testDrive?.status || ''}
+                                onChange={(e) => {
+                                    const selected = e.target.value;
+                                    setTestDrive({...testDrive, status: selected});
+                                }}
+                            >
+                                <option value=''>Select Car</option>
+                                <option key={testDrive?.id} value={"pending"}>Pending</option>
+                                <option key={testDrive?.id} value={"approved"}>Approved</option>
+                                <option key={testDrive?.id} value={"completed"}>Completed</option>
+                                <option key={testDrive?.id} value={"cancelled"}>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
                     <div className='d-flex my-4'>
                         <button className='btn btn-primary' onClick={handleUpdate}>Cập nhật</button>
                     </div>

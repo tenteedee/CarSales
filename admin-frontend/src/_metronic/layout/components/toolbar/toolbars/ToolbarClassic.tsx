@@ -16,12 +16,16 @@ const ToolbarClassic = () => {
         {path: '/staffs', role: 'Director'},
         {path: '/categories', role: 'Director'},
         {path: '/news', role: 'Director'},
+        {path: '/showrooms', role: 'Director'},
     ];
     const currentPath = location.pathname;
     const shouldShowCreateButton = createButtonLinks.some(
         (link) =>
             hasRole(link.role) &&
-            currentPath.startsWith(link.path) &&
+            currentPath.startsWith(link.path)
+            &&
+            !currentPath.includes('/edit')
+            &&
             !currentPath.endsWith('/create')
     );
 

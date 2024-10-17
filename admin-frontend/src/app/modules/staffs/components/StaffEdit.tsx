@@ -1,11 +1,13 @@
-import {ShowroomModel, Staff} from "../core/models";
+import {Staff} from "../core/models";
 import React, {FC, useEffect, useState} from "react";
 import {Link, Outlet, useNavigate, useParams} from 'react-router-dom'
-import {getRoles, getShowrooms, getStaff, updateStaff, updateStaffAvatar} from "../core/requests";
+import {getRoles, getStaff, updateStaff, updateStaffAvatar} from "../core/requests";
 import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {KTIcon} from "../../../../_metronic/helpers";
 import {RoleModel} from "../../auth";
+import {Showroom} from "../../showroom/core/models";
+import {getShowrooms} from "../../showroom/core/requests";
 
 type Props = {};
 export const StaffEdit: FC<Props> = ({...props}) => {
@@ -15,7 +17,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [roles, setRoles] = useState<RoleModel[]>([]);
-    const [showrooms, setShowrooms] = useState<ShowroomModel[]>([]);
+    const [showrooms, setShowrooms] = useState<Showroom[]>([]);
     const getStaffData = () => {
         if (id) {
             getStaff(id)
@@ -77,7 +79,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                     progress: undefined,
                 });
             });
-        getShowrooms()
+        getShowrooms("")
             .then((response: QueryResponse) => {
                 setShowrooms(response.data || []);
             })
@@ -409,7 +411,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                             >
                                 <option value=''>Select Showroom</option>
                                 {showrooms.map((showroom) => (
-                                    <option key={showroom.id} value={showroom.id}>
+                                    <option key={showroom?.id} value={showroom?.id || ""}>
                                         {showroom.name}
                                     </option>
                                 ))}
