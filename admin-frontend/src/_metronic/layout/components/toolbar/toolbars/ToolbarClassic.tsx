@@ -22,11 +22,7 @@ const ToolbarClassic = () => {
     const shouldShowCreateButton = createButtonLinks.some(
         (link) =>
             hasRole(link.role) &&
-            currentPath.startsWith(link.path)
-            &&
-            !currentPath.includes('/edit')
-            &&
-            !currentPath.endsWith('/create')
+            currentPath.endsWith(link.path)
     );
 
     return (

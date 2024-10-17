@@ -155,7 +155,7 @@ settingsRoute.post("/", upload.any(), updateSettings);
 router.use("/settings", verifyStaffToken(["Director"]), settingsRoute);
 
 const categoriesRoute = express.Router();
-categoriesRoute.get("/", queryCategories);
+categoriesRoute.get("/query", queryCategories);
 categoriesRoute.delete("/delete", deleteCategories);
 categoriesRoute.post("/create", createCategory);
 categoriesRoute.get("/:id", getCategory);
