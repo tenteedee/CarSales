@@ -43,4 +43,8 @@ export function setupAssociations() {
   //   foreignKey: "car_color_id",
   //   as: "car_color",
   // });
+  TestDriveRequest.belongsTo(Showroom, {
+    foreignKey: "showroom_id",
+  });
+  Showroom.hasMany(TestDriveRequest, { foreignKey: "showroom_id" });
 }

@@ -52,7 +52,7 @@ export const TestDriveFiltersComponent = () => {
     const loadOptions = async () => {
         const options = await fetchCarsOptions();
         setCarOptions(options);
-        if(hasRole("Director")){
+        if (hasRole("Director")) {
             const salesOptions = await fetchSalesOptions();
             setSalesOptions(salesOptions);
         }

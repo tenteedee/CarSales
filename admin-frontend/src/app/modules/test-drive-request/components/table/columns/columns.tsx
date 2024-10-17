@@ -81,7 +81,7 @@ const testDrivesColumns: ReadonlyArray<Column<TestDrive>> = [
                     break;
                 }
                 case "approved" : {
-                    status = "info"
+                    status = "primary"
                     label = "Approved"
                     break;
                 }
@@ -98,7 +98,7 @@ const testDrivesColumns: ReadonlyArray<Column<TestDrive>> = [
             }
             return (
                 <>
-                    <span className={`badge bg-${status}`}>{label}</span>
+                    <span className={`badge bg-${status} text-white`}>{label}</span>
                 </>
             )
         },

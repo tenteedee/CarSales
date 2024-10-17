@@ -1,6 +1,10 @@
 import express from "express";
 import { verifyStaffToken } from "../../middleware/Auth.js";
-import { validateLogin } from "../../helper/ValidationHelper.js";
+import {
+  validateCreateShowroom,
+  validateLogin,
+  validateUpdateShowroom,
+} from "../../helper/ValidationHelper.js";
 import {
   login,
   loginWithGoogle,
@@ -16,7 +20,13 @@ import {
   updateStaffAvatar,
 } from "../../controllers/management/StaffController.js";
 import { queryRoles } from "../../controllers/management/RoleController.js";
-import { queryShowrooms } from "../../controllers/management/ShowroomController.js";
+import {
+  createShowroom,
+  deleteShowroom,
+  getShowroom,
+  queryShowrooms,
+  updateShowroom,
+} from "../../controllers/management/ShowroomController.js";
 import {
   querySettings,
   updateSettings,
@@ -132,7 +142,11 @@ roleRoute.get("/", queryRoles);
 router.use("/roles", verifyStaffToken(["Director"]), roleRoute);
 
 const showroomRoute = express.Router();
-showroomRoute.get("/", queryShowrooms);
+showroomRoute.get("/query", queryShowrooms);
+showroomRoute.delete("/delete", deleteShowroom);
+showroomRoute.post("/create", validateCreateShowroom, createShowroom);
+showroomRoute.get("/:id", getShowroom);
+showroomRoute.post("/:id", validateUpdateShowroom, updateShowroom);
 router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
 
 const settingsRoute = express.Router();
