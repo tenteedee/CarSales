@@ -134,7 +134,7 @@ export const queryNews = async (req, res) => {
 
   try {
     const searchConditions = {};
-    const specialKeys = ["title", "heading"]; // Các key mà bạn muốn tìm kiếm chuỗi con
+    const specialKeys = ["title", "heading"];
 
     if (searchQuery) {
       searchQuery.split("|").forEach((condition) => {
@@ -142,13 +142,15 @@ export const queryNews = async (req, res) => {
 
         if (key && value) {
           if (specialKeys.includes(key)) {
-            // Xử lý trường hợp tìm kiếm theo chuỗi con
-            const modifiedValue = `%${value.split(" ").join("%")}%`;
+            const words = value.split(" ");
+            const modifiedValues = words.map((word) => ({
+              [Op.like]: `%${word}%`,
+            }));
+
             searchConditions[key] = {
-              [Op.like]: modifiedValue, // Tìm kiếm dựa trên chuỗi đã thay đổi
+              [Op.and]: modifiedValues,
             };
           } else {
-            // Xử lý khi có nhiều giá trị, ví dụ: value=1,2,3
             if (value.includes(",")) {
               const values = value.split(",").map((v) => ({
                 [Op.like]: `%${v}%`,

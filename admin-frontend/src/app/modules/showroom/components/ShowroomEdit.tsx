@@ -2,25 +2,26 @@ import React, {FC, useEffect, useState} from "react";
 import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {useNavigate, useParams} from "react-router-dom";
-import {getCategory, updateCategory} from "../core/requests";
-import {Category} from "../core/models"; // Import updateCategory function
+import {useAuth} from "../../auth";
+import {getShowroom, updateShowroom} from "../core/requests";
+import {Showroom} from "../core/models";
 
 type Props = {};
 
-export const CategoryEdit: FC<Props> = ({...props}) => {
+export const ShowroomEdit: FC<Props> = ({...props}) => {
     const {id} = useParams(); // Get ID from URL
     const navigate = useNavigate();
-    const [category, setCategory] = useState<Category | null>(null); // Initialize category state
+    const [showroom, setShowroom] = useState<Showroom | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    useEffect(() => {
+    const getData = () => {
         if (id) {
-            getCategory(id)
+            getShowroom(id)
                 .then((response: QueryResponse) => {
-                    const categoryData = response.data;
-                    if (categoryData && !Array.isArray(categoryData)) {
-                        setCategory(categoryData);
+                    const showroomData = response.data;
+                    if (showroomData && !Array.isArray(showroomData)) {
+                        setShowroom(showroomData);
                     } else {
                         setError(true);
                         toast.error('Không tìm thấy dữ liệu hoặc dữ liệu không hợp lệ', {
@@ -51,18 +52,21 @@ export const CategoryEdit: FC<Props> = ({...props}) => {
                 })
                 .finally(() => setLoading(false));
         }
+    }
+    useEffect(() => {
+        getData();
     }, [id, navigate]);
 
     const handleInputChange = (key: string, value: string) => {
-        setCategory((prevCategory) => {
-            if (!prevCategory) return null;
-            return {...prevCategory, [key]: value};
+        setShowroom((prevTestDrive) => {
+            if (!prevTestDrive) return null;
+            return {...prevTestDrive, [key]: value};
         });
     };
 
     const handleUpdate = () => {
-        if (category && id) {
-            updateCategory(id, category)
+        if (showroom && id) {
+            updateShowroom(id, showroom)
                 .then(() => {
                     toast.success('Cập nhật thành công!', {
                         position: "top-right",
@@ -73,7 +77,7 @@ export const CategoryEdit: FC<Props> = ({...props}) => {
                         draggable: true,
                         progress: undefined,
                     });
-                    navigate('/categories', {state: {reload: true}});
+                    navigate('/showrooms', {state: {reload: true}});
                 })
                 .catch((error) => {
                     const errorMessage = error && error.response && error.response.data && error.response.data.error
@@ -91,6 +95,7 @@ export const CategoryEdit: FC<Props> = ({...props}) => {
                 });
         }
     };
+    const {hasRole} = useAuth()
 
     if (loading) {
         return <div>Loading...</div>;
@@ -111,31 +116,56 @@ export const CategoryEdit: FC<Props> = ({...props}) => {
             <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
                 <div className='card-header cursor-pointer'>
                     <div className='card-title m-0'>
-                        <h3 className='fw-bolder m-0'>Cập nhật danh mục</h3>
+                        <h3 className='fw-bolder m-0'>Cập nhật thông tin showroom</h3>
                     </div>
                 </div>
                 <div className='card-body p-9'>
+
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Tên danh mục</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Name</label>
                         <div className='col-lg-8'>
                             <input
                                 type='text'
                                 name="name"
                                 className='form-control'
-                                value={category?.name || ""}
+                                value={showroom?.name || ""}
                                 onChange={(e) => handleInputChange("name", e.target.value)} // Update name field
                             />
                         </div>
                     </div>
                     <div className='row mb-7'>
-                        <label className='col-lg-4 fw-bold text-muted'>Mô tả</label>
+                        <label className='col-lg-4 fw-bold text-muted'>Phone</label>
                         <div className='col-lg-8'>
                             <input
                                 type='text'
-                                name="description"
+                                name="phone_number"
                                 className='form-control'
-                                value={category?.description || ""}
-                                onChange={(e) => handleInputChange("description", e.target.value)} // Update description field
+                                value={showroom?.phone_number || ""}
+                                onChange={(e) => handleInputChange("phone_number", e.target.value)} // Update name field
+                            />
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Email</label>
+                        <div className='col-lg-8'>
+                            <input
+                                type='email'
+                                name="email"
+                                className='form-control'
+                                value={showroom?.email || ""}
+                                onChange={(e) => handleInputChange("email", e.target.value)} // Update name field
+                            />
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Address</label>
+                        <div className='col-lg-8'>
+                            <input
+                                type='text'
+                                name="address"
+                                className='form-control'
+                                value={showroom?.address || ""}
+                                onChange={(e) => handleInputChange("address", e.target.value)} // Update name field
                             />
                         </div>
                     </div>

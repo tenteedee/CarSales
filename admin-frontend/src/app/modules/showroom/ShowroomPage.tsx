@@ -1,11 +1,11 @@
 import {Navigate, Outlet, Route, Routes} from 'react-router-dom'
-import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import {TestDriveEditWrapper, TestDriveListWrapper} from "./TestDrive";
+import {PageLink, PageTitle} from "../../../_metronic/layout/core";
+import {ShowroomCreateWrapper, ShowroomEditWrapper, ShowroomListWrapper} from "./Showroom";
 
-const testDriveBreadcrumbs: Array<PageLink> = [
+const showroomBreadcrumbs: Array<PageLink> = [
     {
-        title: 'Test Drive Management',
-        path: '/test-drive',
+        title: 'Showroom Management',
+        path: '/showroom',
         isSeparator: false,
         isActive: false,
     },
@@ -17,7 +17,7 @@ const testDriveBreadcrumbs: Array<PageLink> = [
     },
 ]
 
-const TestDrivePage = () => {
+const ShowroomPage = () => {
     return (
         <Routes>
             <Route element={<Outlet/>}>
@@ -25,8 +25,8 @@ const TestDrivePage = () => {
                     index
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Test Drive list</PageTitle>
-                            <TestDriveListWrapper/>
+                            <PageTitle breadcrumbs={showroomBreadcrumbs}>Showrooms list</PageTitle>
+                            <ShowroomListWrapper/>
                         </>
                     }
                 />
@@ -34,7 +34,8 @@ const TestDrivePage = () => {
                     path="create"
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Create Test Drive</PageTitle>
+                            <PageTitle breadcrumbs={showroomBreadcrumbs}>Create Showroom</PageTitle>
+                            <ShowroomCreateWrapper/>
                         </>
                     }
                 />
@@ -42,8 +43,8 @@ const TestDrivePage = () => {
                     path="edit/:id"
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Edit Test Drive</PageTitle>
-                            <TestDriveEditWrapper/>
+                            <PageTitle breadcrumbs={showroomBreadcrumbs}>Edit Showroom</PageTitle>
+                            <ShowroomEditWrapper/>
                         </>
                     }
                 />
@@ -54,4 +55,4 @@ const TestDrivePage = () => {
     )
 }
 
-export default TestDrivePage
+export default ShowroomPage

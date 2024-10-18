@@ -13,7 +13,8 @@ import TestDrive from './pages/TestDrive/TestDrive';
 import TestDriveHistory from './pages/TestDrive/TestDriveHistory';
 import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
-
+import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
+import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
 function App() {
     const token = useSelector((state) => state.auth.token);
     const location = useLocation();
@@ -58,7 +59,7 @@ function App() {
                 />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/car-loan" element={<CarLoan />} />
-
+                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />                <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/404" element={<NotFound />} />
             </Routes>

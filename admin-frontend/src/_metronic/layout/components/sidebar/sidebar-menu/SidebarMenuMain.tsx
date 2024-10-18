@@ -36,6 +36,14 @@ const SidebarMenuMain = () => {
             )}
             {hasRole("Director") && (
                 <SidebarMenuItem
+                    to='/showrooms'
+                    icon='map'
+                    title='Showrooms'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
                     to='/news'
                     icon='menu'
                     title='News'

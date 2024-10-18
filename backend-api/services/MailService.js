@@ -1,5 +1,5 @@
-const nodemailer = require("nodemailer");
-const {
+import nodemailer from "nodemailer";
+import {
   MAIL_HOST,
   MAIL_PORT,
   MAIL_ENCRYPTION,
@@ -7,7 +7,7 @@ const {
   MAIL_PASSWORD,
   MAIL_FROM_NAME,
   MAIL_FROM_ADDRESS,
-} = require("../config/Config");
+} from "../config/Config.js";
 const transporter = nodemailer.createTransport({
   host: MAIL_HOST,
   port: MAIL_PORT,
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     pass: MAIL_PASSWORD,
   },
 });
-const sendMail = async ({ to, subject, html }) => {
+export const sendMail = async ({ to, subject, html }) => {
   const mailOptions = {
     from: `${MAIL_FROM_NAME} <${MAIL_FROM_ADDRESS}>`,
     to,
@@ -27,11 +27,8 @@ const sendMail = async ({ to, subject, html }) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
   } catch (error) {
     console.error("Error sending email:", error);
     throw new Error("Could not send email");
   }
 };
-
-module.exports = { sendMail };

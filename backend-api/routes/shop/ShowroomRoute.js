@@ -1,12 +1,13 @@
 import express from 'express';
 const router = express.Router();
 import {
-  getAllShowrooms,
- 
 
+  listShowrooms,
+  getShowroom,
 } from '../../controllers/shop/ShowroomController.js';
 
-router.get('/all', getAllShowrooms);
+router.get('/list', listShowrooms);
+router.get('/detail/:id', getShowroom);
 export default router;
 
 

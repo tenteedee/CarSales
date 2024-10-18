@@ -1,16 +1,18 @@
-import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
-import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
-import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider";
 import {ID} from "../../../_metronic/helpers";
 import {QueryResponse} from "../../utils/model/models";
 import {toast} from "react-toastify";
-import {deleteTestDrive, getTestDrives} from "./core/requests";
-import {TestDrivesList} from "./components/TestDriveList";
-import {TestDriveEdit} from "./components/TestDriveEdit";
+import {deleteShowroom, getShowrooms} from "./core/requests";
+import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
+import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
+import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider";
+import {StaffsList} from "../staffs/components/StaffList";
+import {ShowroomList} from "./components/ShowroomList";
+import {ShowroomEdit} from "./components/ShowroomEdit";
+import {ShowroomCreate} from "./components/ShowroomCreate";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
-        const response = await deleteTestDrive(ids); // Gọi hàm deleteStaff
+        const response = await deleteShowroom(ids); // Gọi hàm deleteStaff
         toast.success('Xoá thành công', {
             position: "top-right",
             autoClose: 3000,
@@ -37,24 +39,31 @@ export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
         throw error;
     }
 };
-const TestDriveListWrapper = () => {
+const ShowroomListWrapper = () => {
     return (
         <>
             <QueryRequestProvider>
-                <QueryResponseProvider id={"test-drive"} request={getTestDrives}>
+                <QueryResponseProvider id={"showrooms"} request={getShowrooms}>
                     <ListViewProvider onDelete={handleDelete}>
-                        <TestDrivesList/>
+                        <ShowroomList/>
                     </ListViewProvider>
                 </QueryResponseProvider>
             </QueryRequestProvider>
         </>
     );
 }
-const TestDriveEditWrapper = () => {
+const ShowroomEditWrapper = () => {
     return (
         <>
-            <TestDriveEdit/>
+           <ShowroomEdit/>
         </>
     );
 }
-export {TestDriveListWrapper, TestDriveEditWrapper}
+const ShowroomCreateWrapper = () => {
+    return (
+        <>
+            <ShowroomCreate/>
+        </>
+    );
+}
+export {ShowroomListWrapper,ShowroomEditWrapper,ShowroomCreateWrapper}

@@ -41,14 +41,14 @@ export function setupAssociations() {
   Car.hasMany(OrderDetails, { foreignKey: "car_id", as: "order_details" });
   OrderDetails.belongsTo(Car, { foreignKey: "car_id", as: "orderDetailsCar" }); // Changed alias to "orderDetailsCar"
 
-  //Orders
-  Customer.hasMany(Orders, { foreignKey: "customer_id", as: "orders" });
+  //Order
+  Customer.hasMany(Orders, { foreignKey: "customer_id", as: "order" });
   Orders.belongsTo(Customer, { foreignKey: "customer_id", as: "customer" });
   Orders.hasMany(OrderDetails, { foreignKey: "order_id", as: "order_details" });
   OrderDetails.belongsTo(Orders, { foreignKey: "order_id", as: "order" });
 
   Orders.belongsTo(Loan, { foreignKey: "loan_id", as: "loan" });
-  Loan.hasMany(Orders, { foreignKey: "loan_id", as: "orders" });
+  Loan.hasMany(Orders, { foreignKey: "loan_id", as: "order" });
 
   Customer.hasMany(Loan, { foreignKey: "customer_id", as: "loans" });
   Loan.belongsTo(Customer, { foreignKey: "customer_id", as: "customer" });
@@ -58,9 +58,14 @@ export function setupAssociations() {
   //OrderDetails
   CarColors.hasMany(OrderDetails, { foreignKey: "color_id", as: "order_details" });
   OrderDetails.belongsTo(CarColors, { foreignKey: "color_id", as: "car_color" });
-}
 
-//Showroom
-Showroom.hasMany(Orders, { foreignKey: 'showroom_id' });
-Orders.belongsTo(Showroom, { foreignKey: 'showroom_id' });
-Showroom.hasMany(Staff, { foreignKey: 'showroom_id' });
+
+  //Showroom
+  Showroom.hasMany(Orders, { foreignKey: 'showroom_id' });
+  Orders.belongsTo(Showroom, { foreignKey: 'showroom_id' });
+  Showroom.hasMany(Staff, { foreignKey: 'showroom_id', as: "staff" });
+  CarType.belongsTo(Car, { foreignKey: "id", targetKey: "type_id", as: "car" });
+
+  TestDriveRequest.belongsTo(Showroom, { foreignKey: "showroom_id" });
+  Showroom.hasMany(TestDriveRequest, { foreignKey: "showroom_id" });
+}

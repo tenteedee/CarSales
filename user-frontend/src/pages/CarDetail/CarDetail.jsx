@@ -15,12 +15,13 @@ const CarDetail = () => {
     const [carInfo, setCarInfo] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);  
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [showroomId, setShowroomId] = useState(null);
     const [selectedShowroom, setSelectedShowroom] = useState('');
     const [showrooms, setShowrooms] = useState([]);
+
     useEffect(() => {
         const fetchCarInfo = async () => {
             if (!id) {
@@ -43,23 +44,23 @@ const CarDetail = () => {
             }
         };
 
-        const fetchShowrooms = async () => {
+        fetchCarInfo();
+        const fetchAllShowrooms = async () => {
             try {
-                const response = await axios.get(`/showroom/all`);
-                console.log('Showrooms fetched:', response.data); // Log the response to check its structure
-                if (response.data && Array.isArray(response.data)) {
+                const response = await axios.get('/showroom/list');
+                if (Array.isArray(response.data)) {  // Ensure that the data is an array
                     setShowrooms(response.data);
-                    setSelectedShowroom(response.data[0]?.id); // Default to the first showroom
+                    console.log('Showrooms fetched:', response.data);
                 } else {
-                    throw new Error('Invalid showroom data');
+                    console.error('Unexpected data structure:', response.data);
                 }
             } catch (error) {
                 console.error('Error fetching showrooms:', error);
-                toast.error('Error fetching showrooms');
             }
         };
-        fetchCarInfo();
-        fetchShowrooms();
+        fetchAllShowrooms();
+
+
     }, [id, navigate]);
 
     const prevImage = () => {
@@ -74,29 +75,7 @@ const CarDetail = () => {
         );
     };
 
-    const fetchCarInfo = async () => {
-        if (!carId) {
-            console.error('carId is undefined');
-            setError('Không thể tải thông tin xe. ID xe không hợp lệ.');
-            setIsLoading(false);
-            return;
-        }
-        setIsLoading(true);
-        try {
-            const response = await axios.get(`car/detail/${carId}`);
-            console.log('axios Response:', response); // Log the entire response
-            if (response && response.data) {
-                setCarInfo(response.data);
-            } else {
-                throw new Error('Invalid response structure');
-            }
-        } catch (error) {
-            console.error('Error fetching car info:', error);
-            setError('Failed to load car information. Please try again later.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
+
     const handleRequestTestDrive = () => {
         localStorage.setItem('selectedCar', JSON.stringify(carInfo));
         navigate('/test-drive');
@@ -117,50 +96,48 @@ const CarDetail = () => {
                 return;
             }
 
-            console.log('Car Info:', carInfo); // Log the entire carInfo object
-            const showroomId = carInfo?.showroom_id;
-            const colorId = carInfo?.color_id;
-            console.log('Showroom ID:', showroomId); // Debugging line
-
-            if (!showroomId) {
-                throw new Error('Invalid showroom ID');
-            }
-
-            const response = await axios.post('orders', {
-                customer_id: user.id,
+            const orderData = {
+                customerId: user.id,
                 car_id: carInfo.id,
-                payment_price: carInfo.price,
-                total_price: carInfo.price,
+                quantity: quantity,
+                payment_price: carInfo.price * quantity,
+                total_price: carInfo.price * quantity,
                 order_status: 'pending',
-                showroom_id: 1,
-            });
+                showroom_id: showroomId
+            };
+
+            const response = await axios.post('/order/create', orderData);
 
             if (response.data && response.data.id) {
-                await axios.post('orders-details', {
+                if (showroomId) {
+                    await axios.patch(`/order/${response.data.id}`, {
+                        showroom_id: showroomId
+                    });
+                }
+
+                await axios.post(`/order/${response.data.id}/details`, {
                     order_id: response.data.id,
                     car_id: carInfo.id,
-                    quantity: 1,
+                    quantity: quantity,
                     price: carInfo.price,
-                    color_id: colorId,
                 });
 
-                navigate(`/orders-confirmation/${response.data.id}`);
-            } else {
+                navigate(`/order-confirmation/${response.data.id}`);        
+                } else {
                 throw new Error('Không thể tạo đơn hàng');
             }
         } catch (error) {
-            console.error('Lỗi khi tạo đơn hàng:', error.response?.data || error.message);
-            if (error.response?.status === 404) {
-                toast.error("Không tìm thấy endpoint tạo đơn hàng. Vui lòng kiểm tra lại cấu hình axios.");
-            } else if (error.response?.status === 401) {
-                toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-                // Thêm logic để đăng xuất người dùng và chuyển hướng đến trang đăng nhập
-            } else {
-                toast.error("Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại sau.");
-            }
+            toast.error("Error placing order: " + error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
         }
     };
-
     const decreaseQuantity = () => {
         if (quantity > 1) setQuantity(quantity - 1);
     };
@@ -184,6 +161,14 @@ const CarDetail = () => {
             </ol>
         </nav>
     );
+
+    useEffect(() => {
+        if (selectedShowroom) {
+            console.log('CarInfoAfter', carInfo);
+            // thêm bất kỳ hành động nào khác ở đây nếu cần
+        }
+    }, [selectedShowroom]);
+
 
     return (
         <>
@@ -251,22 +236,33 @@ const CarDetail = () => {
                             <div className="stock-info">{carInfo?.stock || 0} sản phẩm có sẵn</div>
                         </div>
                         <div className="action-buttons">
-                            <button className="btn btn-primary add-to-cart" onClick={handleMakeOrder}>Mua Ngay</button>
+                            <button
+                                className="btn btn-primary add-to-cart"
+                                onClick={handleMakeOrder}
+                                disabled={!carInfo?.stock || quantity < 1} // Disable if out of stock or quantity is invalid
+                            >
+                                Mua Ngay
+                            </button>
                             <button className="btn btn-danger buy-now" onClick={handleRequestTestDrive}>Yêu Cầu Lái Thử</button>
                         </div>
                         <div className="showroom-selection">
                             <label htmlFor="showroomSelect">Choose a Showroom:</label>
-                            <select
-                                id="showroomSelect"
-                                value={selectedShowroom}
-                                onChange={(e) => setSelectedShowroom(e.target.value)}
-                            >
+                            <select id="showroomSelect" value={selectedShowroom} onChange={(e) => {
+                                const newShowroomId = e.target.value;
+                                setSelectedShowroom(newShowroomId);
+                                setShowroomId(newShowroomId);  // Ensure this line correctly updates the showroomId state
+                                console.log(`Showroom selected: ${newShowroomId}`);  // Debugging line to check the selected showroom ID
+                            }}>
                                 <option value="">Select a showroom</option>
-                                {showrooms.map(showroom => (
-                                    <option key={showroom.id} value={showroom.id}>
-                                        {showroom.name} - {showroom.address}
-                                    </option>
-                                ))}
+                                {showrooms.length > 0 ? (
+                                    showrooms.map(showroom => (
+                                        <option key={showroom.id} value={showroom.id}>
+                                            {showroom.name} - {showroom.address}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option disabled>No showrooms available</option>
+                                )}
                             </select>
                         </div>
                     </div>
@@ -317,6 +313,7 @@ const CarDetail = () => {
                     </div>
                 </div>
             </div>
+
         </>
     );
 };
