@@ -62,14 +62,8 @@ const Customer = db.define(
   }
 );
 
-Customer.hasMany(Orders, {
-  foreignKey: 'customer_id',
-  as: 'orders',
-});
-Orders.belongsTo(Customer, {
-  foreignKey: 'customer_id',
-  as: 'customer',
-});
+Customer.hasMany(Orders, { foreignKey: "customer_id", as: "customerOrders" });
+Orders.belongsTo(Customer, { foreignKey: "customer_id", as: "orderCustomer" }); // Changed alias to "orderCustomer"
 
 Customer.hasMany(TestDriveRequest, {
   foreignKey: 'customer_id',

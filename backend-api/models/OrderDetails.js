@@ -1,8 +1,11 @@
-import { DataTypes } from "sequelize";
-import db from "../config/Database.js";
+import { DataTypes } from 'sequelize';
+import db from '../config/Database.js';
+import Car from './Car.js';
+
+
 
 const OrderDetails = db.define(
-    "order_details",
+    'order_details',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -11,40 +14,33 @@ const OrderDetails = db.define(
         },
         order_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+
+            primaryKey: true,
         },
         car_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+
+            primaryKey: true,
         },
+
         price: {
             type: DataTypes.DECIMAL(15, 2),
             allowNull: false,
         },
-        insurance_contract_id: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
         color_id: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+
+            primaryKey: true,
         },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
-        updated_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
+
+
     },
     {
         tableName: 'order_details',
-        timestamps: true,
+        timestamps: false,  // Assuming you don't need timestamps based on your diagram
         underscored: true,
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
     }
 );
+
 
 export default OrderDetails;

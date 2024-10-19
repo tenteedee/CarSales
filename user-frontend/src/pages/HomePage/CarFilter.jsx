@@ -189,11 +189,7 @@ function CarFilter() {
                     </form>
                     <div className="car-results flex justify-center">
                         <h3>{t('SEARCH.SEARCH_RESULTS')}</h3>
-                        {totalPages > 1 && (
-                            <Pagination className="justify-content-center mt-4">
-                                {paginationItems}
-                            </Pagination>
-                        )}
+                        
                         <div className="row">
                             {currentCars.length === 0 ? (
                                 <p>{t('SEARCH.NO_CARS_FOUND')}</p>
@@ -247,6 +243,11 @@ function CarFilter() {
                                 ))
                             )}
                         </div>
+                        {totalPages > 1 && (
+                            <Pagination className="justify-content-center mt-4">
+                                {paginationItems}
+                            </Pagination>
+                        )}
                     </div>
                 </div>
             </div>

@@ -53,12 +53,12 @@ const CarLoanPage = () => {
 
     const calculateLoan = () => {
         const pureAmount = getPureNumber(loanAmount);
-        let newSchedule = [];
-        let totalInt = 0;
-        let totalPay = pureAmount;
-        let remainingBalance = pureAmount;
-        const monthlyRate = interestRate / 12 / 100;
-        const totalMonths = loanTerm * 12;
+        let newSchedule = []; // Khởi tạo mảng để lưu lịch trả nợ
+        let totalInt = 0; // Tổng số lãi phải trả
+        let totalPay = pureAmount; // Tổng số tiền phải trả
+        let remainingBalance = pureAmount; // Số dư nợ gốc
+        const monthlyRate = interestRate / 12 / 100; // Lãi suất tháng
+        const totalMonths = loanTerm * 12; // Tổng số tháng trả nợ
 
         if (paymentType === 'declining') {
             const principalPayment = pureAmount / totalMonths;
