@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
-import './CarDetail.css';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useSelector } from 'react-redux';
+import './CarDetail.css';
 
 const CarDetail = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-    console.log('carId from params:', id);
-    const carId = id; // Đảm bảo carId luôn có giá trị
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
     const [carInfo, setCarInfo] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +20,7 @@ const CarDetail = () => {
     const [showroomId, setShowroomId] = useState(null);
     const [selectedShowroom, setSelectedShowroom] = useState('');
     const [showrooms, setShowrooms] = useState([]);
+    const [orderInfo, setOrderInfo] = useState(null);
 
     useEffect(() => {
         const fetchCarInfo = async () => {
@@ -48,7 +48,7 @@ const CarDetail = () => {
         const fetchAllShowrooms = async () => {
             try {
                 const response = await axios.get('/showroom/list');
-                if (Array.isArray(response.data)) {  // Ensure that the data is an array
+                if (Array.isArray(response.data)) {
                     setShowrooms(response.data);
                     console.log('Showrooms fetched:', response.data);
                 } else {
@@ -59,10 +59,54 @@ const CarDetail = () => {
             }
         };
         fetchAllShowrooms();
-
+        
 
     }, [id, navigate]);
 
+    const handleMakeOrder = async () => {
+        if (!user) {
+            toast.error("Vui lòng đăng nhập để đặt hàng", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
+            return;
+        }
+
+        const orderData = {
+            customerId: user.id,
+            car_id: carInfo.id,
+            quantity: quantity,
+            payment_price: carInfo.price * quantity,
+            total_price: carInfo.price * quantity,
+            order_status: 'pending',
+            showroom_id: showroomId
+        };
+
+        try {
+            const response = await axios.post('/order/create', orderData);
+            if (response.data && response.data.order.id) {
+                navigate(`/order-confirmation/${response.data.order.id}`);
+            } else {
+                throw new Error('Không thể tạo đơn hàng');
+            }
+        } catch (error) {
+            toast.error("Error placing order: " + error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
+        }
+        
+    };
     const prevImage = () => {
         setCurrentImageIndex((prevIndex) =>
             prevIndex === 0 ? carInfo.images.length - 1 : prevIndex - 1
@@ -79,64 +123,6 @@ const CarDetail = () => {
     const handleRequestTestDrive = () => {
         localStorage.setItem('selectedCar', JSON.stringify(carInfo));
         navigate('/test-drive');
-    };
-    // Lưu thông tin xe từ trang này rồi truyền sang trang orders để giảm thiểu request
-    const handleMakeOrder = async () => {
-        try {
-            if (!user) {
-                toast.error("Vui lòng đăng nhập để đặt hàng", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined
-                });
-                return;
-            }
-
-            const orderData = {
-                customerId: user.id,
-                car_id: carInfo.id,
-                quantity: quantity,
-                payment_price: carInfo.price * quantity,
-                total_price: carInfo.price * quantity,
-                order_status: 'pending',
-                showroom_id: showroomId
-            };
-
-            const response = await axios.post('/order/create', orderData);
-
-            if (response.data && response.data.id) {
-                if (showroomId) {
-                    await axios.patch(`/order/${response.data.id}`, {
-                        showroom_id: showroomId
-                    });
-                }
-
-                await axios.post(`/order/${response.data.id}/details`, {
-                    order_id: response.data.id,
-                    car_id: carInfo.id,
-                    quantity: quantity,
-                    price: carInfo.price,
-                });
-
-                navigate(`/order-confirmation/${response.data.id}`);        
-                } else {
-                throw new Error('Không thể tạo đơn hàng');
-            }
-        } catch (error) {
-            toast.error("Error placing order: " + error.message, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined
-            });
-        }
     };
     const decreaseQuantity = () => {
         if (quantity > 1) setQuantity(quantity - 1);

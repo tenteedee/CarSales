@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../../axios';
+import axios from '../../axios'; // Adjust the import path as needed
 
-const OrderDetailsPage = ({ match }) => {
+const OrderDetail = ({ orderId }) => {
     const [orderDetails, setOrderDetails] = useState(null);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
-                const response = await axios.get(`/orders/${match.params.orderId}`);
+                const response = await axios.get(`/order/details/${orderId}`);
                 setOrderDetails(response.data);
             } catch (error) {
-                console.error('Error fetching order details:', error);
+                console.error('Failed to fetch order details:', error);
             }
         };
 
         fetchOrderDetails();
-    }, [match.params.orderId]);
+    }, [orderId]);
 
     return (
         <div>
+            <h2>Order Details</h2>
             {orderDetails ? (
                 <div>
-                    <h1>Order Details</h1>
                     <p>Order ID: {orderDetails.id}</p>
+                    <p>Status: {orderDetails.order_status}</p>
                     <p>Total Price: {orderDetails.total_price}</p>
-                    {/* Display other order details */}
+                    {/* Additional details can be added here */}
                 </div>
             ) : (
-                <p>Loading order details...</p>
+                <p>No details available for this order.</p>
             )}
         </div>
     );
 };
 
-export default OrderDetailsPage;
+export default OrderDetail;
