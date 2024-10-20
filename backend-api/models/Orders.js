@@ -64,14 +64,4 @@ const Orders = db.define(
   }
 );
 
-Orders.hasMany(OrderDetails, {
-  foreignKey: 'order_id',
-  as: 'orderDetails',
-});
-
-OrderDetails.belongsTo(Orders, {
-  foreignKey: 'order_id',
-  as: 'order',
-});
-
 export default Orders;

@@ -20,7 +20,7 @@ const UserProfile = () => {
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/api/shop/customer/profile', {
+        const response = await axios.get('customer/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,8 +58,8 @@ const UserProfile = () => {
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(
-        'http://localhost:3001/api/shop/customer/profile/update',
+      const response = await axios.patch(
+        'customer/profile/update',
         {
           phone_number: userData.phone_number,
           address: userData.address,

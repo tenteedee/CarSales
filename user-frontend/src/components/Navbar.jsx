@@ -103,11 +103,11 @@ const Navbar = () => {
                                         {isDropdownOpen.services && (
                                             <ul className="dropdown-menu h-nav">
                                                 <li>
-                                                    <Link to="/blog">{t('BẢO HÀNH')}</Link>
+                                                    <Link to="/test-drive/history">{t('LỊCH SỬ LÁI THỬ')}</Link>
                                                 </li>
-                                                <li>
+                                                {/* <li>
                                                     <Link to="/blogTwo">{t('PHỤ TÙNG VÀ PHỤ KIỆN')}</Link>
-                                                </li>
+                                                </li> */}
                                                 <li>
                                                     <Link to="/404">{t('ĐĂNG KÝ LÁI THỬ')}</Link>
                                                 </li>

@@ -57,21 +57,4 @@ const Car = db.define(
   }
 );
 
-OrderDetails.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
-
-Car.hasMany(Orders, {
-  foreignKey: 'car_id',
-  as: 'orders',
-});
-
-Orders.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
-
-
-
 export default Car;

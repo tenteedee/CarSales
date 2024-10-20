@@ -23,7 +23,7 @@ const TestDriveRequest = db.define(
     },
     sales_staff_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     status: {
       type: DataTypes.ENUM('pending', 'approved', 'completed', 'cancelled'),

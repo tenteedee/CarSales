@@ -71,7 +71,7 @@ const TestDrive = () => {
             });
             setSuccess('Test drive request successfully submitted!');
             setError('');
-            navigate('/');
+            navigate('/test-drive/history');
         } catch (err) {
             setError('Failed to submit test drive request. Please try again.');
             setSuccess('');

@@ -62,22 +62,4 @@ const Customer = db.define(
   }
 );
 
-Customer.hasMany(Orders, {
-  foreignKey: 'customer_id',
-  as: 'orders',
-});
-Orders.belongsTo(Customer, {
-  foreignKey: 'customer_id',
-  as: 'customer',
-});
-
-Customer.hasMany(TestDriveRequest, {
-  foreignKey: 'customer_id',
-  as: 'test_drive_requests',
-});
-TestDriveRequest.belongsTo(Customer, {
-  foreignKey: 'customer_id',
-  as: 'customer',
-});
-
 export default Customer;
