@@ -106,19 +106,20 @@ const Header = () => {
                                         <li>
                                             <a
                                                 className="m-langLink"
-                                                onClick={() => handleChangeLanguage('vn')}
-                                            >
-                                                <span className="b-topBar__lang-flag m-vn"></span> VN
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                className="m-langLink"
                                                 onClick={() => handleChangeLanguage('en')}
                                             >
                                                 <span className="b-topBar__lang-flag m-en"></span> EN
                                             </a>
                                         </li>
+                                        <li>
+                                            <a
+                                                className="m-langLink"
+                                                onClick={() => handleChangeLanguage('vn')}
+                                            >
+                                                <span className="b-topBar__lang-flag m-vn"></span> VN
+                                            </a>
+                                        </li>
+                                        
                                     </ul>
                                 )}
                             </div>

@@ -17,6 +17,7 @@
         "i18next-http-backend": "^2.6.1",
         "moment": "^2.30.1",
         "owl.carousel": "^2.3.4",
+        "rc-slider": "^11.1.7",
         "react": "^18.2.0",
         "react-bootstrap": "^2.10.5",
         "react-datepicker": "^7.4.0",
