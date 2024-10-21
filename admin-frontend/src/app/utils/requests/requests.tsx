@@ -1,7 +1,31 @@
 import {ID} from "../../../_metronic/helpers";
 import axios, {AxiosResponse} from "axios";
 import {toast} from "react-toastify";
+const API_URL = process.env.REACT_APP_API_URL
 
+export const uploadImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        if (file) {
+            const formData = new FormData();
+            formData.append("upload", file);
+
+            axios.post(API_URL + "/home/uploads", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+                .then((response) => {
+                    resolve(response.data.url); // Trả về URL ảnh
+                })
+                .catch((error) => {
+                    console.error("Upload failed:", error);
+                    reject(error); // Trả về lỗi nếu upload thất bại
+                });
+        } else {
+            reject("No file provided"); // Trả về lỗi nếu không có file
+        }
+    });
+};
 export async function updateState(
     table: string,
     column: string,

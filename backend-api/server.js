@@ -7,15 +7,14 @@ import db from './config/Database.js';
 import shopRoutes from './routes/shop/index.js';
 import staffRoutes from './routes/management/ManagementRoute.js';
 import { setupAssociations } from './helper/SetupAssociations.js';
-  import { API_PORT, SESSION_SECRET } from './config/Config.js';
-  import session from 'express-session';
+import { API_PORT, SESSION_SECRET } from './config/Config.js';
 import path from 'path';
 
 dotenv.config();
 setupAssociations();
 
 const app = express();
-app.use(cors());  
+app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));

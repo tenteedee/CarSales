@@ -15,6 +15,8 @@ const UserProfile = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState(true);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -72,9 +74,13 @@ const UserProfile = () => {
         }
       );
       setIsSubmitting(false);
+      setStatus(true);
+      setMessage('Profile updated successfully!');
       console.log('Profile updated successfully:', response.data);
     } catch (error) {
       setIsSubmitting(false);
+      setStatus(false);
+      setMessage('Error updating profile!');
       console.error('Error updating profile:', error);
     }
   };
@@ -121,6 +127,7 @@ const UserProfile = () => {
               yearDropdownItemNumber={100}
             />
           </div>
+          {status ? <p style={{ color: 'green' }}>{message}</p> : <p style={{ color: 'red' }}>{message}</p>}
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Updating...' : 'Update Profile'}
           </button>

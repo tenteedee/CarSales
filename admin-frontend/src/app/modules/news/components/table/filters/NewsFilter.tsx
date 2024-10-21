@@ -35,8 +35,12 @@ export const NewsFiltersComponent = () => {
 
     const newsFilters: Array<Filters> = [
         {
-            name: 'id',
-            label: 'News Id',
+            name: 'title',
+            label: 'Tile',
+        },
+        {
+            name: 'heading',
+            label: 'Heading',
         },
         {
             name: 'category_id',

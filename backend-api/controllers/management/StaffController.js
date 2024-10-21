@@ -6,6 +6,8 @@ import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 import { APP_URL } from "../../config/Config.js";
+import { sendMail } from "../../services/MailService.js";
+import { randomPassword } from "../../helper/Utils.js";
 export const updateStaffAvatar = async (req, res) => {
   const id = req.params.id;
   if (isNaN(id)) {
@@ -67,7 +69,7 @@ export const createStaff = async (req, res) => {
     email,
     role_id,
     showroom_id,
-    password,
+    //password,
     phone_number,
     address,
   } = req.body;
@@ -85,6 +87,7 @@ export const createStaff = async (req, res) => {
     }
 
     const saltRounds = 10;
+    let password = randomPassword(20);
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const newStaff = await Staff.create({
@@ -126,7 +129,19 @@ export const createStaff = async (req, res) => {
         },
       ],
     });
-
+    try {
+      const html =
+        "<h1>Hello, " +
+        createdStaff.fullname +
+        "!</h1><p>This is your password at Car Shop: <strong> " +
+        password +
+        "</strong></p>";
+      await sendMail({
+        to: createdStaff.email,
+        subject: "Your account at CAR SHOP",
+        html,
+      });
+    } catch (e) {}
     return res.status(201).json({ data: createdStaff });
   } catch (error) {
     console.error(error);
@@ -207,7 +222,19 @@ export const updateStaff = async (req, res) => {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       staff.password = hashedPassword;
+      const html =
+        "<h1>Hello, " +
+        staff.fullname +
+        "!</h1><p>This is your new password at Car Shop: <strong> " +
+        password +
+        "</strong></p>";
+      await sendMail({
+        to: staff.email,
+        subject: "Your updated account at CAR SHOP",
+        html,
+      });
     }
+
     await staff.save();
 
     const updatedStaff = await Staff.findOne({
@@ -308,13 +335,21 @@ export const queryStaff = async (req, res) => {
       searchQuery.split("|").forEach((condition) => {
         const [key, value] = condition.split("=");
         if (key && value) {
-          searchConditions[key] = {
-            [Op.like]: `%${value}%`,
-          };
+          if (value.includes(",")) {
+            const values = value.split(",").map((v) => ({
+              [Op.like]: `%${v}%`,
+            }));
+            searchConditions[key] = {
+              [Op.or]: values,
+            };
+          } else {
+            searchConditions[key] = {
+              [Op.like]: `%${value}%`,
+            };
+          }
         }
       });
     }
-
     const totalStaff = await Staff.count({
       where: searchConditions,
     });

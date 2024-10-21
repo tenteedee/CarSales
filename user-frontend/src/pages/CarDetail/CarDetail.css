@@ -161,6 +161,32 @@
     gap: 10px;
 }
 
+.quantity-control {
+    display: flex;
+    align-items: center;
+    /* Aligns items vertically in the center */
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    line-height: 30px;
+    /* Centers the '+' and '-' vertically */
+    text-align: center;
+}
+
+.quantity-input {
+    width: 40px;
+    text-align: center;
+    margin: 0 5px;
+    /* Adds space between the buttons and the input */
+    border: 1px solid #ccc;
+}
+
 .add-to-cart,
 .buy-now {
     flex: 1;

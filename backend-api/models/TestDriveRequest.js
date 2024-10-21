@@ -1,8 +1,8 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
 
 const TestDriveRequest = db.define(
-  'test_drive_request',
+  "test_drive_request",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -25,10 +25,14 @@ const TestDriveRequest = db.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    status: {
-      type: DataTypes.ENUM('pending', 'approved', 'completed', 'cancelled'),
+    showroom_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 'pending',
+    },
+    status: {
+      type: DataTypes.ENUM("pending", "approved", "completed", "cancelled"),
+      allowNull: false,
+      defaultValue: "pending",
     },
     created_at: {
       type: DataTypes.DATE,
@@ -42,11 +46,11 @@ const TestDriveRequest = db.define(
     },
   },
   {
-    tableName: 'test_drive_requests',
+    tableName: "test_drive_requests",
     timestamps: true,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 

@@ -1,7 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
+import Customer from './Customer.js';
 
-import OrderDetails from './OrderDetails.js';
+
 
 const Orders = db.define(
   'orders',
@@ -13,37 +14,26 @@ const Orders = db.define(
     },
     customer_id: {
       type: DataTypes.INTEGER,
+
+      primaryKey: true,
     },
     car_id: {
       type: DataTypes.INTEGER,
+
+      primaryKey: true,
     },
-    payment_price: {
-      type: DataTypes.DECIMAL(10, 2),
-    },
+    
     total_price: {
-      type: DataTypes.DECIMAL(15, 2),
-    },
-    sales_staff_id: {
-      type: DataTypes.INTEGER,
-    },
-    technical_staff_id: {
-      type: DataTypes.INTEGER,
-    },
-    insurance_staff_id: {
-      type: DataTypes.INTEGER,
-    },
-    order_status: {
-      type: DataTypes.ENUM('pending', 'completed', 'cancelled'), // Giả định các trạng thái có thể
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+      defaultValue: 0.00  // Set a default value if appropriate
     },
 
-    showroom_id: {
-      type: DataTypes.INTEGER,
-    },
-    loan_id: {
-      type: DataTypes.INTEGER,
-    },
-    discount_id: {
-      type: DataTypes.INTEGER,
+
+    order_status: {
+      type: DataTypes.ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled'),
+      allowNull: false,
+      defaultValue: 'pending',
     },
     created_at: {
       type: DataTypes.DATE,
@@ -53,8 +43,13 @@ const Orders = db.define(
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-  },
+    showroom_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true, // Allow null for showroom_id
+    },
 
+
+  },
   {
     tableName: 'orders',
     timestamps: true,

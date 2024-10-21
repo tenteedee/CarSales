@@ -17,10 +17,9 @@ export const loginWithGoogle = async (req, res) => {
   let errors = {};
   try {
     const { token } = req.body;
-    // Verify the token received from the client
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: GOOGLE_CLIENT_ID, // Verify the audience matches your Google client ID
+      audience: GOOGLE_CLIENT_ID,
     });
     const { email, name } = ticket.getPayload();
     const staff = await Staff.findOne({
@@ -68,7 +67,8 @@ export const verify_token = async (req, res) => {
       const staffData = staff.toJSON();
       const token = jwt.sign(staffData, JWT_SECRET);
       delete staffData.password;
-      staffData.api_token = token;
+      staffData.auth = {};
+      staffData.auth.api_token = token;
       res.status(200).json(staffData);
     } else {
       errors.error = "Unauthorized";

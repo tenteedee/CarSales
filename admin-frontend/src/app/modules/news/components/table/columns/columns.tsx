@@ -19,14 +19,34 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             return <SelectionCell id={news.id}/>;
         },
     },
-    // {
-    //     Header: (props) => <TableHeader tableProps={props} title='Title'/>,
-    //     id: 'id',
-    //     Cell: ({...props}) => {
-    //         const news = props.data[props.row.index] as News;
-    //         return <CopyTextCell className='text-dark' value={`${news.id}`}/>;
-    //     },
-    // },
+    {
+        Header: (props) => <TableHeader tableProps={props} title='Image'/>,
+        id: 'image',
+        Cell: ({...props}) => {
+            const news = props.data[props.row.index] as News;
+            return (
+                <>
+                    <div className='d-flex align-items-center'>
+                        {/* begin:: Avatar */}
+                        <div className='symbol symbol-circle symbol-50px overflow-hidden me-3'>
+                            <Link className='d-flex flex-column' to={`/news/edit/${news.id}`}>
+                                <div className='symbol-label'>
+                                    <img src={news.image} alt={news.title} className='w-100' />
+                                </div>
+                            </Link>
+
+                        </div>
+                        <div className='d-flex flex-column'>
+                            {/*<div className='d-flex flex-column'>*/}
+                            {/*    <CopyTextCell className='text-dark' value={`${staff.email}`}/>*/}
+                            {/*</div>*/}
+                            {/*<CopyTextCell className='text-dark' value={`${staff.fullname}`}/>*/}
+                        </div>
+                    </div>
+                </>
+            )
+        },
+    },
     {
         Header: (props) => <TableHeader tableProps={props} title='Title'/>,
         id: 'title',
@@ -41,6 +61,19 @@ const newsColumns: ReadonlyArray<Column<News>> = [
             )
         },
     },
+    // {
+    //     Header: (props) => <TableHeader tableProps={props} title='Heading'/>,
+    //     id: 'heading',
+    //     Cell: ({...props}) => {
+    //         const news = props.data[props.row.index] as News;
+    //         return (
+    //             <>
+    //                 {news.heading}
+    //             </>
+    //         )
+    //     },
+    // },
+
     {
         Header: (props) => <TableHeader tableProps={props} title='Category'/>,
         id: 'category_id',

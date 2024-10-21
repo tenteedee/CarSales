@@ -13,4 +13,6 @@ export type News = {
     status ?: boolean
     content ?: string
     is_pin ?: boolean
+    heading ?: string
+    image ?: string
 }

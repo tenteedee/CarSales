@@ -60,6 +60,7 @@ export const getCarById = async (req, res) => {
           as: 'images',
           attributes: ['image_url'],
         },
+
       ],
     });
 

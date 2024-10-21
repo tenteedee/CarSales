@@ -1,6 +1,10 @@
 import express from "express";
 import { verifyStaffToken } from "../../middleware/Auth.js";
-import { validateLogin } from "../../helper/ValidationHelper.js";
+import {
+  validateCreateShowroom,
+  validateLogin,
+  validateUpdateShowroom,
+} from "../../helper/ValidationHelper.js";
 import {
   login,
   loginWithGoogle,
@@ -16,7 +20,13 @@ import {
   updateStaffAvatar,
 } from "../../controllers/management/StaffController.js";
 import { queryRoles } from "../../controllers/management/RoleController.js";
-import { queryShowrooms } from "../../controllers/management/ShowroomController.js";
+import {
+  createShowroom,
+  deleteShowroom,
+  getShowroom,
+  queryShowrooms,
+  updateShowroom,
+} from "../../controllers/management/ShowroomController.js";
 import {
   querySettings,
   updateSettings,
@@ -35,7 +45,10 @@ import {
   updateNews,
   createNews,
 } from "../../controllers/management/NewsController.js";
-import { updateState } from "../../controllers/management/HomeController.js";
+import {
+  updateState,
+  uploadFile,
+} from "../../controllers/management/HomeController.js";
 
 import {
   createStaffValidation,
@@ -46,6 +59,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import {
+  getTestDrive,
+  queryTestDrive,
+} from "../../controllers/management/TestDriveController.js";
+import { queryCars } from "../../controllers/management/CarController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -96,6 +114,7 @@ router.get("/", (req, res) => {
 });
 
 const homeRouter = express.Router();
+homeRouter.post("/uploads", upload.single("upload"), uploadFile);
 homeRouter.post("/update-state", verifyStaffToken([]), updateState);
 router.use("/home", homeRouter);
 
@@ -123,7 +142,11 @@ roleRoute.get("/", queryRoles);
 router.use("/roles", verifyStaffToken(["Director"]), roleRoute);
 
 const showroomRoute = express.Router();
-showroomRoute.get("/", queryShowrooms);
+showroomRoute.get("/query", queryShowrooms);
+showroomRoute.delete("/delete", deleteShowroom);
+showroomRoute.post("/create", validateCreateShowroom, createShowroom);
+showroomRoute.get("/:id", getShowroom);
+showroomRoute.post("/:id", validateUpdateShowroom, updateShowroom);
 router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
 
 const settingsRoute = express.Router();
@@ -147,4 +170,22 @@ newsRoute.get("/:id", getNews);
 newsRoute.post("/:id", updateNews);
 router.use("/news", verifyStaffToken(["Director"]), newsRoute);
 
+const testDriveRoute = express.Router();
+testDriveRoute.get("/query", queryTestDrive);
+// testDriveRoute.delete("/delete", deleteNews);
+// testDriveRoute.post("/create", createNews);
+testDriveRoute.get("/:id", getTestDrive);
+// testDriveRoute.post("/:id", updateNews);
+router.use(
+  "/test-drive",
+  verifyStaffToken(["Director", "Sale"]),
+  testDriveRoute
+);
+const carRoute = express.Router();
+carRoute.get("/query", queryCars);
+// testDriveRoute.delete("/delete", deleteNews);
+// testDriveRoute.post("/create", createNews);
+// testDriveRoute.get("/:id", getNews);
+// testDriveRoute.post("/:id", updateNews);
+router.use("/cars", verifyStaffToken(["Director"]), carRoute);
 export default router;

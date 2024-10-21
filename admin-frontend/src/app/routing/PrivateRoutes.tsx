@@ -12,6 +12,8 @@ import {useAuth} from "../modules/auth";
 import SettingsPage from "../modules/settings/SettingsPage";
 import NewsPage from "../modules/news/NewsPage";
 import CategoryPage from "../modules/category/CategoryPage";
+import TestDrivePage from "../modules/test-drive-request/TestDrivePage";
+import ShowroomPage from "../modules/showroom/ShowroomPage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -26,6 +28,16 @@ const PrivateRoutes = () => {
                 <Route path='builder' element={<BuilderPageWrapper/>}/>
                 <Route path='menu-test' element={<MenuTestPage/>}/>
                 {/* Lazy Modules */}
+                {(hasRole("Director") || hasRole("Sale")) && (
+                    <Route
+                        path='test-drive/*'
+                        element={
+                            <SuspensedView>
+                                <TestDrivePage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
                 {hasRole("Director") && (
                     <Route
                         path='staffs/*'
@@ -42,6 +54,16 @@ const PrivateRoutes = () => {
                         element={
                             <SuspensedView>
                                 <CategoryPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {hasRole("Director") && (
+                    <Route
+                        path='showrooms/*'
+                        element={
+                            <SuspensedView>
+                                <ShowroomPage/>
                             </SuspensedView>
                         }
                     />

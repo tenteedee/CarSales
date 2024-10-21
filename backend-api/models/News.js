@@ -13,7 +13,16 @@ const News = db.define(
       autoIncrement: true,
     },
     title: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+
+    heading: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     content: {
