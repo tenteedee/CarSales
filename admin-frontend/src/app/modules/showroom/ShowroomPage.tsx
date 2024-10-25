@@ -5,7 +5,7 @@ import {ShowroomCreateWrapper, ShowroomEditWrapper, ShowroomListWrapper} from ".
 const showroomBreadcrumbs: Array<PageLink> = [
     {
         title: 'Showroom Management',
-        path: '/showroom',
+        path: '/showrooms',
         isSeparator: false,
         isActive: false,
     },
