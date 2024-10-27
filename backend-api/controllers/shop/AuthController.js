@@ -167,11 +167,11 @@ export const loginGoogle = async (req, res) => {
   try {
     const ticket = await client.verifyIdToken({
       idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
-    const { sub, email, name, picture } = payload;
+    const { sub, email, name } = payload;
 
     let customer = await Customer.findOne({ where: { googleId: sub } });
 

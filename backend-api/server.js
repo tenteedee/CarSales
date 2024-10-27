@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import db from './config/Database.js';
 import shopRoutes from './routes/shop/index.js';
-import staffRoutes from './routes/management/ManagementRoute.js';
+import managementRoutes from './routes/management/ManagementRoute.js';
 import { setupAssociations } from './helper/SetupAssociations.js';
 import { API_PORT, SESSION_SECRET } from './config/Config.js';
 import path from 'path';
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use('/assets', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/api/shop', shopRoutes);
-app.use('/api/management', staffRoutes);
+app.use('/api/management', managementRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, status: 404, message: 'Not found' });

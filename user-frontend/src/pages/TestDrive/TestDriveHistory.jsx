@@ -12,36 +12,56 @@ const getCustomerIdFromToken = () => {
 
 export default function ShowHistoryPage() {
   const [filter, setFilter] = useState('all');
-  const [data, setData] = useState([]);
+  const [customerData, setCustomerData] = useState([]);
+  const [showrooms, setShowrooms] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [salesStaffs, setSalesStaffs] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchShowrooms = async () => {
+      try {
+        const response = await axios.get('/showroom/list');
+        setShowrooms(response.data); // Lưu danh sách showroom
+      } catch (error) {
+        console.error('Error fetching showrooms:', error);
+      }
+    };
+
+    const fetchCustomerData = async () => {
       try {
         const customerId = getCustomerIdFromToken();
         const response = await axios.get(
           `test-drive/view?customer=${customerId}`
         );
-        setData(response.data);
-        console.log(response.data);
+        setCustomerData(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching test drive history:', error);
       }
     };
 
-    fetchData();
+    const fetchSalesStaff = async () => {
+      try {
+        const response = await axios.get('/staff/list');
+        console.log(response.data)
+        setSalesStaffs(response.data);
+      } catch (error) {
+        console.error('Error fetching sales staff:', error);
+      }
+    };
+
+    fetchShowrooms();
+    fetchCustomerData();
+    fetchSalesStaff();
+
+    console.log(salesStaffs)
   }, []);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const filteredData = data.filter((item) => {
-    console.log(item.testDriveDate);
-    console.log(startDate);
-    console.log(endDate);
-
+  const filteredData = customerData.filter((item) => {
     const itemDate = moment(item.test_drive_date);
 
     const dateMatch =
@@ -52,6 +72,20 @@ export default function ShowHistoryPage() {
 
     return statusMatch && dateMatch;
   });
+
+  const findShowroomById = (showroomId) => {
+    return showrooms.find((showroom) => showroom.id === showroomId);
+  };
+
+  const findSalesStaffById = (salesStaffId) => {
+  if (!Array.isArray(salesStaffs)) {
+    console.error('salesStaffs is not an array:', salesStaffs);
+    return 'N/A';
+  }
+
+  const staff = salesStaffs.find((staff) => staff.id === salesStaffId);
+  return staff ? staff.fullname : 'N/A';
+};
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -118,25 +152,35 @@ export default function ShowHistoryPage() {
               <th>Model</th>
               <th>Type</th>
               <th>Test Drive Date</th>
+              <th>Showroom Name</th>
+              <th>Showroom Address</th> {/* Hiển thị địa chỉ showroom */}
               <th>Status</th>
               <th>Sales Staff</th>
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.car.brand.name}</td>
-                <td>{item.car.model}</td>
-                <td>{item.car.type.name}</td>
-                <td>{new Date(item.test_drive_date).toLocaleDateString()}</td>
-                <td>
-                  <span className={`badge ${getStatusBadgeClass(item.status)}`}>
-                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                  </span>
-                </td>
-                <td>{item.sales_staff_id || 'N/A'}</td>
-              </tr>
-            ))}
+            {filteredData.map((item, index) => {
+              const showroom = findShowroomById(item.showroom_id);
+              return (
+                <tr key={index}>
+                  <td>{item.car.brand.name}</td>
+                  <td>{item.car.model}</td>
+                  <td>{item.car.type.name}</td>
+                  <td>{new Date(item.test_drive_date).toLocaleDateString()}</td>
+                  <td>{showroom ? showroom.name : 'N/A'}</td>
+                  <td>{showroom ? showroom.address : 'N/A'}</td>
+                  <td>
+                    <span
+                      className={`badge ${getStatusBadgeClass(item.status)}`}
+                    >
+                      {item.status.charAt(0).toUpperCase() +
+                        item.status.slice(1)}
+                    </span>
+                  </td>
+                  <td>{findSalesStaffById(item.sales_staff_id)}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

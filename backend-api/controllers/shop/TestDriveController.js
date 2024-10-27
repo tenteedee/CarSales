@@ -4,11 +4,13 @@ import { verifyToken } from '../../middleware/Auth.js';
 import Customer from '../../models/Customer.js';
 import Brand from '../../models/Brand.js';
 import CarType from '../../models/CarType.js';
+import Staff from '../../models/Staff.js';
 
 export const requestTestDrive = async (req, res) => {
-  const { car_id, customer_id, test_drive_date } = req.body;
+  const { car_id, customer_id, test_drive_date, showroom_id } = req.body;
 
-  if (!car_id || !test_drive_date) {
+  // Kiểm tra xem các trường bắt buộc có thiếu không
+  if (!car_id || !test_drive_date || !showroom_id) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
@@ -17,6 +19,7 @@ export const requestTestDrive = async (req, res) => {
   const minDate = new Date();
   minDate.setDate(today.getDate() + 2);
 
+  // Kiểm tra xem ngày lái thử có ít nhất 2 ngày kể từ hôm nay không
   if (selectedDate < minDate) {
     return res
       .status(400)
@@ -24,23 +27,42 @@ export const requestTestDrive = async (req, res) => {
   }
 
   try {
+    // Tìm kiếm xe dựa trên car_id
     const car = await Car.findByPk(car_id);
     if (!car) {
       return res.status(404).json({ error: 'Car not found.' });
     }
 
+    // Lấy danh sách sales staff có role_id = 2 và showroom_id khớp với showroom được chọn
+    const salesStaff = await Staff.findAll({
+      where: { role_id: 2, showroom_id: showroom_id }, // Thêm điều kiện showroom_id
+    });
+
+    // Kiểm tra nếu không có nhân viên bán hàng nào
+    if (!salesStaff || salesStaff.length === 0) {
+      return res
+        .status(404)
+        .json({ error: 'No sales staff available for the selected showroom.' });
+    }
+
+    // Chọn ngẫu nhiên một sales staff từ danh sách
+    const randomSalesStaff =
+      salesStaff[Math.floor(Math.random() * salesStaff.length)];
+
+    // Tạo yêu cầu lái thử và gán sales staff ngẫu nhiên từ showroom đã chọn
     const testDriveRequest = await TestDriveRequest.create({
       customer_id: customer_id,
       car_id: car_id,
       test_drive_date: test_drive_date,
+      showroom_id: showroom_id,
+      sales_staff_id: randomSalesStaff.id, // Gán sales staff ngẫu nhiên từ showroom đã chọn
     });
 
+    // Trả về phản hồi thành công
     res.status(201).json({
-      message: 'Test drive request created successfully.',
       data: testDriveRequest,
     });
   } catch (error) {
-    console.error('Error creating test drive request:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
 };

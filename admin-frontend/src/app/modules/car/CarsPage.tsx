@@ -1,11 +1,11 @@
 import {Navigate, Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import {StaffCreateWrapper, StaffEditWrapper, StaffsListWrapper} from './Staffs'
+import {CarCreateWrapper, CarEditWrapper, CarListWrapper} from './Cars'
 
-const staffsBreadcrumbs: Array<PageLink> = [
+const carsBreadcrumbs: Array<PageLink> = [
   {
-    title: 'Staff Management',
-    path: '/staffs',
+    title: 'Car Management',
+    path: '/car',
     isSeparator: false,
     isActive: false,
   },
@@ -17,7 +17,7 @@ const staffsBreadcrumbs: Array<PageLink> = [
   },
 ]
 
-const StaffsPage = () => {
+const CarsPage = () => {
   return (
     <Routes>
       <Route element={<Outlet />}>
@@ -25,8 +25,8 @@ const StaffsPage = () => {
           index
           element={
             <>
-              <PageTitle breadcrumbs={staffsBreadcrumbs}>Staffs list</PageTitle>
-              <StaffsListWrapper />
+              <PageTitle breadcrumbs={carsBreadcrumbs}>Cars list</PageTitle>
+              <CarListWrapper />
             </>
           }
         />
@@ -34,8 +34,8 @@ const StaffsPage = () => {
           path='create'
           element={
             <>
-              <PageTitle breadcrumbs={staffsBreadcrumbs}>Create Staff</PageTitle>
-              <StaffCreateWrapper />
+              <PageTitle breadcrumbs={carsBreadcrumbs}>Create Car</PageTitle>
+              <CarCreateWrapper />
             </>
           }
         />
@@ -43,8 +43,8 @@ const StaffsPage = () => {
           path='edit/:id'
           element={
             <>
-              <PageTitle breadcrumbs={staffsBreadcrumbs}>Edit Staff</PageTitle>
-              <StaffEditWrapper />
+              <PageTitle breadcrumbs={carsBreadcrumbs}>Edit Car</PageTitle>
+              <CarEditWrapper />
             </>
           }
         />
@@ -54,4 +54,4 @@ const StaffsPage = () => {
   )
 }
 
-export default StaffsPage
+export default CarsPage
