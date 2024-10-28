@@ -7,6 +7,7 @@ import './TestDrive.css';
 
 const TestDrive = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [carInfo, setCarInfo] = useState(null);
   const [customerData, setCustomerData] = useState({
     fullname: '',
@@ -21,52 +22,47 @@ const TestDrive = () => {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('customer/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setCustomerData(response.data);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      }
-    };
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+      fetchUserProfile(token);
+    }
 
-    fetchUserProfile();
-  }, []);
-
-  useEffect(() => {
     const selectedCar = JSON.parse(localStorage.getItem('selectedCar'));
     if (selectedCar) {
       setCarInfo(selectedCar);
     } else {
       navigate('/');
     }
-  }, [navigate]);
-
-  useEffect(() => {
-    const fetchShowrooms = async () => {
-      try {
-        const response = await axios.get('/showroom/list');
-        setShowroomList(response.data);
-      } catch (error) {
-        console.error('Error fetching showrooms:', error);
-      }
-    };
 
     fetchShowrooms();
-  }, []);
+  }, [navigate]);
+
+  const fetchUserProfile = async (token) => {
+    try {
+      const response = await axios.get('customer/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCustomerData(response.data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
+
+  const fetchShowrooms = async () => {
+    try {
+      const response = await axios.get('/showroom/list');
+      setShowroomList(response.data);
+    } catch (error) {
+      console.error('Error fetching showrooms:', error);
+    }
+  };
 
   const validateTestDriveDate = () => {
     const currentDate = new Date();
     if (!testDriveDate) return false;
     const selectedDate = new Date(testDriveDate);
-    const differenceInTime = selectedDate.getTime() - currentDate.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-
+    const differenceInDays = (selectedDate - currentDate) / (1000 * 3600 * 24);
     return differenceInDays >= 2;
   };
 
@@ -83,28 +79,54 @@ const TestDrive = () => {
       return;
     }
 
+    // Ensure non-logged-in users provide all necessary information
+    if (
+      !isLoggedIn &&
+      (!customerData.fullname ||
+        !customerData.email ||
+        !customerData.phone_number)
+    ) {
+      setError('Please fill in all required customer information.');
+      return;
+    }
+
     try {
-      const response = await axios.post('/test-drive/request', {
-        customer_id: customerData.id,
+      let requestPayload = {
         car_id: carInfo.id,
-        showroom_id: selectedShowroom,
         test_drive_date: testDriveDate,
-      });
+        showroom_id: selectedShowroom,
+      };
+
+      if (isLoggedIn) {
+        requestPayload.customer_id = customerData.id;
+      } else {
+        requestPayload.customer_info = {
+          fullname: customerData.fullname,
+          email: customerData.email,
+          phone_number: customerData.phone_number,
+        };
+      }
+
+      const response = await axios.post('/test-drive/request', requestPayload);
       setSuccess('Test drive request successfully submitted!');
       setError('');
-      navigate('/test-drive/history');
+      navigate('/test-drive/success'); // Redirect to the new success page
     } catch (err) {
-      if (err.response) {
-        if (err.response.status === 404) {
-          setError('No sales staff available for the selected showroom.');
-        } else if (err.response.status === 500) {
-          setError('Internal server error.');
-        }
-      } else {
-        setError('Something went wrong.');
-      }
-      setSuccess('');
+      handleSubmissionError(err);
     }
+  };
+
+  const handleSubmissionError = (err) => {
+    if (err.response) {
+      if (err.response.status === 404) {
+        setError('No sales staff available for the selected showroom.');
+      } else if (err.response.status === 500) {
+        setError('Internal server error.');
+      }
+    } else {
+      setError('Something went wrong.');
+    }
+    setSuccess('');
   };
 
   return (
@@ -125,12 +147,28 @@ const TestDrive = () => {
 
         <div className="form-group">
           <label htmlFor="name">Customer Name</label>
-          <input type="text" id="name" value={customerData.fullname} disabled />
+          <input
+            type="text"
+            id="name"
+            value={customerData.fullname}
+            onChange={(e) =>
+              setCustomerData({ ...customerData, fullname: e.target.value })
+            }
+            disabled={isLoggedIn}
+          />
         </div>
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" value={customerData.email} disabled />
+          <input
+            type="email"
+            id="email"
+            value={customerData.email}
+            onChange={(e) =>
+              setCustomerData({ ...customerData, email: e.target.value })
+            }
+            disabled={isLoggedIn}
+          />
         </div>
 
         <div className="form-group">
@@ -139,11 +177,13 @@ const TestDrive = () => {
             type="text"
             id="phone"
             value={customerData.phone_number}
-            disabled
+            onChange={(e) =>
+              setCustomerData({ ...customerData, phone_number: e.target.value })
+            }
+            disabled={isLoggedIn}
           />
         </div>
 
-        {/* Đặt Test Drive Date và Showroom trong một dòng */}
         <div className="form-row">
           <div className="form-group half-width">
             <label htmlFor="testDriveDate">Test Drive Date</label>

@@ -43,7 +43,7 @@ export default function ShowHistoryPage() {
     const fetchSalesStaff = async () => {
       try {
         const response = await axios.get('/staff/list');
-        console.log(response.data)
+        console.log(response.data);
         setSalesStaffs(response.data);
       } catch (error) {
         console.error('Error fetching sales staff:', error);
@@ -54,7 +54,7 @@ export default function ShowHistoryPage() {
     fetchCustomerData();
     fetchSalesStaff();
 
-    console.log(salesStaffs)
+    console.log(salesStaffs);
   }, []);
 
   const handleFilterChange = (event) => {
@@ -78,14 +78,14 @@ export default function ShowHistoryPage() {
   };
 
   const findSalesStaffById = (salesStaffId) => {
-  if (!Array.isArray(salesStaffs)) {
-    console.error('salesStaffs is not an array:', salesStaffs);
-    return 'N/A';
-  }
+    if (!Array.isArray(salesStaffs)) {
+      console.error('salesStaffs is not an array:', salesStaffs);
+      return 'N/A';
+    }
 
-  const staff = salesStaffs.find((staff) => staff.id === salesStaffId);
-  return staff ? staff.fullname : 'N/A';
-};
+    const staff = salesStaffs.find((staff) => staff.id === salesStaffId);
+    return staff ? staff.fullname : 'N/A';
+  };
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -102,7 +102,7 @@ export default function ShowHistoryPage() {
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4">Show History</h1>
+      <h1 className="mb-4">Test Drive History</h1>
       <div className="row mb-3">
         <div className="d-flex justify-content-between">
           <div className="col-md-3">
@@ -153,7 +153,7 @@ export default function ShowHistoryPage() {
               <th>Type</th>
               <th>Test Drive Date</th>
               <th>Showroom Name</th>
-              <th>Showroom Address</th> {/* Hiển thị địa chỉ showroom */}
+              <th>Showroom Address</th>
               <th>Status</th>
               <th>Sales Staff</th>
             </tr>

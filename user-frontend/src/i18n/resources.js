@@ -1,5 +1,5 @@
 const resources = {
-  vn: {
+  vi: {
     translation: {
       ADDRESS: 'Địa chỉ',
       LOGIN: 'Đăng nhập',

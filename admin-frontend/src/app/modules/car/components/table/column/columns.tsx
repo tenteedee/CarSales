@@ -31,7 +31,7 @@ const carsColumns: ReadonlyArray<Column<Car>> = [
     id: 'brand',
     Cell: ({...props}) => {
       const car = props.data[props.row.index] as Car
-      return <CopyTextCell className='text-dark' value={`${car?.brand?.name}`} />
+      return <CopyTextCell className='text-dark' value={`${car.brand?.name}`} />
     },
   },
   {
@@ -39,7 +39,7 @@ const carsColumns: ReadonlyArray<Column<Car>> = [
     id: 'type',
     Cell: ({...props}) => {
       const car = props.data[props.row.index] as Car
-      return <CopyTextCell className='text-dark' value={`${car?.type?.name}`} />
+      return <CopyTextCell className='text-dark' value={`${car.type?.name}`} />
     },
   },
   {

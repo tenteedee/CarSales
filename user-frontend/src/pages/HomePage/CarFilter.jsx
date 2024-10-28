@@ -3,20 +3,25 @@ import axios from '../../axios';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
-import Slider, { Range } from 'rc-slider';
+import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import formatCurrency from './../../utils/formatCurrency';
 
 function CarFilter() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [brands, setBrands] = useState([]);
   const [types, setTypes] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [minPrice, setMinPrice] = useState(100000000);
-  const [maxPrice, setMaxPrice] = useState(50000000000);
+  const [maxPrice, setMaxPrice] = useState(2500000000);
   const [cars, setCars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const carsPerPage = 9;
+
+  const [currentLang, setCurrentLang] = useState(
+    localStorage.getItem('language') || 'en'
+  );
 
   useEffect(() => {
     const fetchBrandsAndTypes = async () => {
@@ -34,6 +39,18 @@ function CarFilter() {
     fetchBrandsAndTypes();
     fetchAllCars();
   }, []);
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const savedLanguage = localStorage.getItem('language') || 'en';
+      setCurrentLang(savedLanguage);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n]);
 
   const fetchAllCars = async () => {
     try {
@@ -68,23 +85,14 @@ function CarFilter() {
     }
   };
 
-  const formatCurrency = (value) => {
-    if (!value) return '';
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 0,
-    }).format(value);
-  };
-
   const handleMinPriceChange = (e) => {
     const value = e.target.value.replace(/\D/g, '');
-    setMinPrice(formatCurrency(value));
+    setMinPrice(parseInt(value));
   };
 
   const handleMaxPriceChange = (e) => {
     const value = e.target.value.replace(/\D/g, '');
-    setMaxPrice(formatCurrency(value));
+    setMaxPrice(parseInt(value));
   };
 
   const indexOfLastCar = currentPage * carsPerPage;
@@ -152,8 +160,8 @@ function CarFilter() {
                     <Slider
                       range
                       min={100000000}
-                      max={5000000000}
-                      value={[minPrice || 100000000, maxPrice || 5000000000]}
+                      max={2500000000}
+                      value={[minPrice || 100000000, maxPrice || 2500000000]}
                       onChange={([newMinPrice, newMaxPrice]) => {
                         setMinPrice(newMinPrice);
                         setMaxPrice(newMaxPrice);

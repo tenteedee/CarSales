@@ -7,19 +7,19 @@ import CarType from '../../models/CarType.js';
 import Staff from '../../models/Staff.js';
 
 export const requestTestDrive = async (req, res) => {
-  const { car_id, customer_id, test_drive_date, showroom_id } = req.body;
+  const { car_id, test_drive_date, showroom_id, customer_info, customer_id } =
+    req.body;
 
-  // Kiểm tra xem các trường bắt buộc có thiếu không
+  // Basic validation for required fields
   if (!car_id || !test_drive_date || !showroom_id) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
+  // Date validation to ensure at least 2 days from today
   const selectedDate = new Date(test_drive_date);
-  const today = new Date();
   const minDate = new Date();
-  minDate.setDate(today.getDate() + 2);
+  minDate.setDate(minDate.getDate() + 2);
 
-  // Kiểm tra xem ngày lái thử có ít nhất 2 ngày kể từ hôm nay không
   if (selectedDate < minDate) {
     return res
       .status(400)
@@ -27,43 +27,87 @@ export const requestTestDrive = async (req, res) => {
   }
 
   try {
-    // Tìm kiếm xe dựa trên car_id
+    let finalCustomerId = customer_id; // Use customer_id if provided (logged-in user)
+
+    // For non-logged-in users, create a new customer
+    if (!customer_id && customer_info) {
+      const { fullname, email, phone_number } = customer_info;
+
+      // Ensure customer info is complete
+      if (!fullname || !email || !phone_number) {
+        return res
+          .status(400)
+          .json({ error: 'Customer information is incomplete.' });
+      }
+
+      // Check if a customer already exists with this email and phone number
+      let customer = await Customer.findOne({ where: { email, phone_number } });
+
+      if (!customer) {
+        // Create a new customer if not found
+        customer = await Customer.create({
+          fullname,
+          email,
+          phone_number,
+          password: '123@Aa',
+        });
+        console.log('New customer created with ID:', customer.id);
+      } else {
+        console.log('Existing customer found with ID:', customer.id);
+      }
+
+      // Use the new or existing customer's ID
+      finalCustomerId = customer.id;
+    }
+
+    // Ensure finalCustomerId is set
+    if (!finalCustomerId) {
+      return res
+        .status(400)
+        .json({ error: 'Customer ID could not be determined.' });
+    }
+
+    // Verify the selected car exists
     const car = await Car.findByPk(car_id);
     if (!car) {
       return res.status(404).json({ error: 'Car not found.' });
     }
 
-    // Lấy danh sách sales staff có role_id = 2 và showroom_id khớp với showroom được chọn
+    // Retrieve available sales staff for the selected showroom
     const salesStaff = await Staff.findAll({
-      where: { role_id: 2, showroom_id: showroom_id }, // Thêm điều kiện showroom_id
+      where: { role_id: 2, showroom_id: showroom_id },
     });
-
-    // Kiểm tra nếu không có nhân viên bán hàng nào
-    if (!salesStaff || salesStaff.length === 0) {
+    if (!salesStaff.length) {
       return res
         .status(404)
         .json({ error: 'No sales staff available for the selected showroom.' });
     }
 
-    // Chọn ngẫu nhiên một sales staff từ danh sách
+    // Randomly assign one of the available sales staff
     const randomSalesStaff =
       salesStaff[Math.floor(Math.random() * salesStaff.length)];
 
-    // Tạo yêu cầu lái thử và gán sales staff ngẫu nhiên từ showroom đã chọn
+    // Create the test drive request record
     const testDriveRequest = await TestDriveRequest.create({
-      customer_id: customer_id,
-      car_id: car_id,
-      test_drive_date: test_drive_date,
-      showroom_id: showroom_id,
-      sales_staff_id: randomSalesStaff.id, // Gán sales staff ngẫu nhiên từ showroom đã chọn
+      customer_id: finalCustomerId,
+      car_id,
+      test_drive_date,
+      showroom_id,
+      sales_staff_id: randomSalesStaff.id,
     });
 
-    // Trả về phản hồi thành công
-    res.status(201).json({
+    // Return a successful response
+    return res.status(201).json({
       data: testDriveRequest,
+      message: 'Test drive request successfully created.',
     });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error.' });
+    console.error(
+      'Error creating test drive request:',
+      error.message,
+      error.stack
+    );
+    return res.status(500).json({ error: 'Internal server error.' });
   }
 };
 
