@@ -8,6 +8,7 @@ import { validationResult } from "express-validator";
 import { APP_URL } from "../../config/Config.js";
 import { sendMail } from "../../services/MailService.js";
 import { randomPassword } from "../../helper/Utils.js";
+import { generateStaffEmailTemplate } from "../../helper/EmailHelper.js";
 export const updateStaffAvatar = async (req, res) => {
   const id = req.params.id;
   if (isNaN(id)) {
@@ -130,12 +131,7 @@ export const createStaff = async (req, res) => {
       ],
     });
     try {
-      const html =
-        "<h1>Hello, " +
-        createdStaff.fullname +
-        "!</h1><p>This is your password at Car Shop: <strong> " +
-        password +
-        "</strong></p>";
+      const html = generateStaffEmailTemplate(createdStaff, password);
       await sendMail({
         to: createdStaff.email,
         subject: "Your account at CAR SHOP",
@@ -222,12 +218,7 @@ export const updateStaff = async (req, res) => {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       staff.password = hashedPassword;
-      const html =
-        "<h1>Hello, " +
-        staff.fullname +
-        "!</h1><p>This is your new password at Car Shop: <strong> " +
-        password +
-        "</strong></p>";
+      const html = generateStaffEmailTemplate(staffData, password);
       await sendMail({
         to: staff.email,
         subject: "Your updated account at CAR SHOP",
@@ -318,6 +309,7 @@ export const deleteStaff = async (req, res) => {
 
     res.status(200).json({ error: "Xóa thành công", deletedCount });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Lỗi máy chủ khi xóa nhân viên" });
   }
 };
