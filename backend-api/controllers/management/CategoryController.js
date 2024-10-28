@@ -1,4 +1,5 @@
 import NewsCategory from "../../models/NewsCategory.js";
+import News from "../../models/News.js";
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
 export const createCategory = async (req, res) => {
@@ -67,11 +68,32 @@ export const getCategory = async (req, res) => {
 export const deleteCategories = async (req, res) => {
   let categoryIds = req.body.ids;
   if (!categoryIds || categoryIds.length === 0) {
-    res.status(500).json({ error: "Danh sách ID không hợp lệ" });
+    return res.status(500).json({ error: "Danh sách ID không hợp lệ" });
   }
+
   categoryIds = categoryIds.filter((id) => !isNaN(id));
 
   try {
+    const hasNews = await Promise.all(
+      categoryIds.map(async (categoryId) => {
+        const countNewExsits = await News.findOne({
+          where: { category_id: categoryId },
+        });
+        return countNewExsits != null ? categoryId : null;
+      })
+    );
+
+    const existingNewsCategories = hasNews.filter((id) => id !== null);
+
+    if (existingNewsCategories.length > 0) {
+      return res
+        .status(500)
+        .json({
+          error: "Vẫn còn tin của các danh mục này",
+          categoryIds: existingNewsCategories,
+        });
+    }
+
     const deletedCount = await NewsCategory.destroy({
       where: {
         id: categoryIds,
@@ -82,9 +104,9 @@ export const deleteCategories = async (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy danh mục để xóa" });
     }
 
-    res.status(200).json({ error: "Xóa thành công", deletedCount });
+    res.status(200).json({ message: "Xóa thành công", deletedCount });
   } catch (error) {
-    res.status(500).json({ error: "Lỗi máy chủ khi xóa nhân viên" });
+    res.status(500).json({ error: "Lỗi máy chủ khi xóa danh mục" });
   }
 };
 
