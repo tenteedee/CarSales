@@ -5,6 +5,7 @@ import axios from '../../axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './CarDetail.css';
+import CostEstimate from './CostEstimate';
 
 const CarDetail = () => {
   const navigate = useNavigate();
@@ -31,9 +32,7 @@ const CarDetail = () => {
         return;
       }
       try {
-        console.log('Fetching car info for carId:', id);
         const response = await axios.get(`car/detail/${id}`);
-        console.log('axios Response:', response);
         setCarInfo(response.data);
       } catch (err) {
         console.error('Error fetching car info:', err);
@@ -50,7 +49,6 @@ const CarDetail = () => {
         const response = await axios.get('/showroom/list');
         if (Array.isArray(response.data)) {
           setShowrooms(response.data);
-          console.log('Showrooms fetched:', response.data);
         } else {
           console.error('Unexpected data structure:', response.data);
         }
@@ -298,6 +296,8 @@ const CarDetail = () => {
             </div>
           </div>
         </div>
+
+        <CostEstimate price={carInfo?.price} />
 
         <div className="row mt-5">
           <div className="col-12">
