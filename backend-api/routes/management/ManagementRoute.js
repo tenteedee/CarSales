@@ -66,6 +66,7 @@ import {
   deleteTestDrive,
   getTestDrive,
   queryTestDrive,
+  updateTestDrive,
 } from '../../controllers/management/TestDriveController.js';
 import { queryCars } from '../../controllers/management/CarController.js';
 
@@ -188,9 +189,9 @@ router.use(
 
 const carRoute = express.Router();
 carRoute.get('/query', queryCars);
-// testDriveRoute.delete("/delete", deleteNews);
-// testDriveRoute.post("/create", createNews);
-// testDriveRoute.get("/:id", getNews);
-// testDriveRoute.post("/:id", updateNews);
+// carRoute.delete("/delete", deleteNews);
+// carRoute.post("/create", createNews);
+// carRoute.get("/:id", getNews);
+// carRoute.post("/:id", updateNews);
 router.use('/cars', verifyStaffToken(['Director']), carRoute);
 export default router;

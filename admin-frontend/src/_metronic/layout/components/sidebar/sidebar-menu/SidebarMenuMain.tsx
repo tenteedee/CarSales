@@ -21,6 +21,7 @@ const SidebarMenuMain = () => {
 
       <SidebarMenuItem to='/builder' icon='switch' title='Layout Builder' fontIcon='bi-layers' />
 
+<<<<<<< HEAD
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
@@ -49,6 +50,79 @@ const SidebarMenuMain = () => {
       )}
     </>
   )
+=======
+            <div className='menu-item'>
+                <div className='menu-content pt-8 pb-2'>
+                    <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
+                </div>
+            </div>
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/cars'
+                    icon='abstract-4'
+                    title='Car'
+                    fontIcon='bi-layers'
+                />
+            )}
+            { (hasRole("Director") || hasRole("Sale")) && (
+                <SidebarMenuItem
+                    to='/test-drive'
+                    icon='ghost'
+                    title='Test Drive'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/showrooms'
+                    icon='map'
+                    title='Showrooms'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/news'
+                    icon='menu'
+                    title='News'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/categories'
+                    icon='menu'
+                    title='News Category'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/staffs'
+                    icon='abstract-28'
+                    title='Staff'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/customers'
+                    icon='abstract-14'
+                    title='Customer'
+                    fontIcon='bi-layers'
+                />
+            )}
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/settings'
+                    icon='wrench'
+                    title='Settings'
+                    fontIcon='bi-layers'
+                />
+            )}
+        </>
+    )
+>>>>>>> 9cc06efd1fd29e13b24a720c79354ebe1f368e86
 }
 
 export {SidebarMenuMain}

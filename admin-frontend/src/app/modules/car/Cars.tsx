@@ -11,6 +11,7 @@ import {CarCreate} from './components/CarCreate'
 import React from 'react'
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
+<<<<<<< HEAD
   try {
     const response = await deleteCar(ids)
     toast.success('Xoá thành công', {
@@ -68,3 +69,62 @@ const CarCreateWrapper = () => {
   )
 }
 export {CarListWrapper, CarEditWrapper, CarCreateWrapper}
+=======
+    try {
+        const response = await deleteCar(ids)
+        toast.success('Xoá thành công', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })
+        return response
+    } catch (error: any) {
+        const errorMessage =
+            error && error.response && error.response.data && error.response.data.error
+                ? error.response.data.error
+                : 'Có lỗi xảy ra khi xoá'
+        toast.error(errorMessage, {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })
+        throw error
+    }
+}
+const CarListWrapper = () => {
+    return (
+        <>
+            <QueryRequestProvider>
+                <QueryResponseProvider id={'cars'} request={getCars}>
+                    <ListViewProvider onDelete={handleDelete}>
+                        <CarList />
+                    </ListViewProvider>
+                </QueryResponseProvider>
+            </QueryRequestProvider>
+        </>
+    )
+}
+const CarEditWrapper = () => {
+    return (
+        <>
+            <CarEdit />
+        </>
+    )
+}
+const CarCreateWrapper = () => {
+    return (
+        <>
+            <CarCreate />
+        </>
+    )
+}
+export {CarListWrapper, CarEditWrapper, CarCreateWrapper}
+>>>>>>> 9cc06efd1fd29e13b24a720c79354ebe1f368e86

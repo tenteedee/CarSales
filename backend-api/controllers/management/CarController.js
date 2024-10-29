@@ -54,23 +54,23 @@ export const queryCars = async (req, res) => {
       offset: (currentPage - 1) * perPage,
       limit: perPage,
       // attributes: ['id', 'model', 'price', 'description', 'stock'],
-      // include: [
-      //   {
-      //     model: Brand,
-      //     as: 'brand',
-      //     attributes: ['name'],
-      //   },
-      //   {
-      //     model: CarType,
-      //     as: 'type',
-      //     attributes: ['name'],
-      //   },
-      //   {
-      //     model: CarImage,
-      //     as: 'images',
-      //     attributes: ['image_url'],
-      //   },
-      // ],
+      include: [
+        {
+          model: Brand,
+          as: 'brand',
+          attributes: ['name'],
+        },
+        {
+          model: CarType,
+          as: 'type',
+          attributes: ['name'],
+        },
+        {
+          model: CarImage,
+          as: 'images',
+          attributes: ['image_url'],
+        },
+      ],
       order: [[sortColumn, sortOrder.toUpperCase()]],
     });
 
