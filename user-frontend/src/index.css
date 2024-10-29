@@ -1,4 +1,6 @@
+
 /* FONTS */
+
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,cyrillic');
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,700');
@@ -25,8 +27,13 @@
 @import url('./assets/css/colors.css');
 @import url('./assets/css/custom.css');
 
+
 /* PLUGIN CSS */
 @import url('./assets/owl-carousel/owl.carousel.css');
-@import url('./assets/owl-carousel/owl.theme.css');
+@import url('./assets/owl-carousel/owl.theme.css'); 
 @import url('./assets/bxslider/jquery.bxslider.css');
 @import url('./assets/switcher/css/color1.css');
+
+
+
+    
