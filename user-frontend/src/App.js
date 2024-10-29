@@ -18,6 +18,7 @@ import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
 import OrderList from './pages/OrderDetails/OrderList';
 import Checkout from './pages/OrderDetails/Checkout';
+import InsuranceList from './pages/Insurance/InsuranceList';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
@@ -58,6 +59,7 @@ function App() {
         />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/car-loan" element={<CarLoan />} />
+        <Route path="/insurance" element={<InsuranceList />} />
         <Route
           path="/order-confirmation/:orderId"
           element={<OrderConfirmation />}

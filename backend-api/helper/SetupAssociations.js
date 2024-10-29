@@ -13,6 +13,9 @@ import Staff from '../models/Staff.js';
 import StaffRole from '../models/StaffRole.js';
 import TestDriveRequest from '../models/TestDriveRequest.js';
 import Loan from '../models/Loan.js';
+import Insurance from '../models/Insurance.js';
+import InsuranceProvider from '../models/InsuranceProvider.js';
+import InsuranceContract from '../models/InsuranceContract.js';
 
 export function setupAssociations() {
   // Test-drive
@@ -68,4 +71,23 @@ export function setupAssociations() {
   // News
   News.belongsTo(NewsCategory, { foreignKey: 'category_id', as: 'category' });
   News.belongsTo(Staff, { foreignKey: 'posted_by', as: 'posted' });
+
+  // Insurance
+  Insurance.belongsTo(InsuranceProvider, {
+    foreignKey: 'insurance_provider_id',
+    as: 'provider',
+  });
+  Insurance.hasMany(InsuranceContract, {
+    foreignKey: 'insurance_id',
+    as: 'contracts',
+  });
+
+  InsuranceContract.belongsTo(InsuranceProvider, {
+    foreignKey: 'provider_id',
+    as: 'provider',
+  });
+  InsuranceContract.belongsTo(Insurance, {
+    foreignKey: 'insurance_id',
+    as: 'insurance',
+  });
 }
