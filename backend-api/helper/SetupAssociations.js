@@ -1,22 +1,21 @@
 import Brand from '../models/Brand.js';
 import Car from '../models/Car.js';
-import CarColors from '../models/CarColors.js';
 import CarImage from '../models/CarImage.js';
 import CarType from '../models/CarType.js';
 import Customer from '../models/Customer.js';
-import News from '../models/News.js';
-import NewsCategory from '../models/NewsCategory.js';
-import OrderDetails from '../models/OrderDetails.js';
-import Orders from '../models/Orders.js';
 import Showroom from '../models/Showroom.js';
 import Staff from '../models/Staff.js';
 import StaffRole from '../models/StaffRole.js';
 import TestDriveRequest from '../models/TestDriveRequest.js';
+import Orders from '../models/Orders.js';
+import OrderDetails from '../models/OrderDetails.js';
 import Loan from '../models/Loan.js';
+import CarColors from '../models/CarColors.js';
+import News from '../models/News.js';
+import NewsCategory from '../models/NewsCategory.js';
 import Insurance from '../models/Insurance.js';
 import InsuranceProvider from '../models/InsuranceProvider.js';
 import InsuranceContract from '../models/InsuranceContract.js';
-
 export function setupAssociations() {
   // Test-drive
   Customer.hasMany(TestDriveRequest, { foreignKey: 'customer_id' });
@@ -38,39 +37,63 @@ export function setupAssociations() {
 
   // Car
   Car.hasMany(CarImage, { foreignKey: 'car_id', as: 'images' });
-  CarImage.belongsTo(Car, { foreignKey: 'car_id', as: 'car' });
+  CarImage.belongsTo(Car, { foreignKey: 'car_id', as: 'carImages' });
+  Car.belongsTo(CarColors, { foreignKey: 'color_id', as: 'colors' });
+  CarColors.hasMany(Car, { foreignKey: 'color_id', as: 'carColors' });
+  Car.hasOne(Brand, { foreignKey: 'id', sourceKey: 'brand_id', as: 'brand' });
+  Brand.belongsTo(Car, {
+    foreignKey: 'id',
+    targetKey: 'brand_id',
+    as: 'brandCar',
+  }); // Changed alias to "brandCar"
+  Car.hasOne(CarType, { foreignKey: 'id', sourceKey: 'type_id', as: 'type' });
+  CarType.belongsTo(Car, {
+    foreignKey: 'id',
+    targetKey: 'type_id',
+    as: 'typeCar',
+  }); // Changed alias to "typeCar"
+  Car.hasMany(OrderDetails, { foreignKey: 'car_id', as: 'order_details' });
+  OrderDetails.belongsTo(Car, { foreignKey: 'car_id', as: 'orderDetailsCar' }); // Changed alias to "orderDetailsCar"
 
-  Car.belongsTo(Brand, { foreignKey: 'brand_id', as: 'brand' });
-  Brand.hasMany(Car, { foreignKey: 'brand_id', as: 'cars' });
+  //Order
+  Customer.hasMany(Orders, { foreignKey: 'customer_id', as: 'order' });
+  Orders.belongsTo(Customer, { foreignKey: 'customer_id', as: 'customer' });
+  Orders.hasMany(OrderDetails, { foreignKey: 'order_id', as: 'order_details' });
+  OrderDetails.belongsTo(Orders, { foreignKey: 'order_id', as: 'order' });
 
-  Car.belongsTo(CarType, { foreignKey: 'type_id', as: 'type' });
-  CarType.hasMany(Car, { foreignKey: 'type_id', as: 'cars' });
+  Orders.belongsTo(Loan, { foreignKey: 'loan_id', as: 'loan' });
+  Loan.hasMany(Orders, { foreignKey: 'loan_id', as: 'order' });
 
-  OrderDetails.belongsTo(Car, { foreignKey: 'car_id', as: 'car' });
-  Car.hasMany(Orders, { foreignKey: 'car_id', as: 'orders' });
-  Orders.belongsTo(Car, { foreignKey: 'car_id', as: 'car' });
+  Customer.hasMany(Loan, { foreignKey: 'customer_id', as: 'loans' });
+  Loan.belongsTo(Customer, { foreignKey: 'customer_id', as: 'customer' });
 
-  // CarColors
+  Car.hasMany(Orders, { foreignKey: 'car_id' });
+  Orders.belongsTo(Car, { foreignKey: 'car_id' });
+
+  //OrderDetails
   CarColors.hasMany(OrderDetails, {
-    foreignKey: 'car_color_id',
+    foreignKey: 'color_id',
     as: 'order_details',
   });
   OrderDetails.belongsTo(CarColors, {
-    foreignKey: 'car_color_id',
+    foreignKey: 'color_id',
     as: 'car_color',
   });
 
-  //Customer
-  Customer.hasMany(Orders, { foreignKey: 'customer_id', as: 'orders' });
-  Orders.belongsTo(Customer, { foreignKey: 'customer_id', as: 'customer' });
+  //Showroom
+  Showroom.hasMany(Orders, { foreignKey: 'showroom_id' });
+  Orders.belongsTo(Showroom, { foreignKey: 'showroom_id' });
+  Showroom.hasMany(Staff, { foreignKey: 'showroom_id', as: 'staff' });
+  CarType.belongsTo(Car, { foreignKey: 'id', targetKey: 'type_id', as: 'car' });
 
-  // Order
-  Orders.hasMany(OrderDetails, { foreignKey: 'order_id', as: 'orderDetails' });
-  OrderDetails.belongsTo(Orders, { foreignKey: 'order_id', as: 'order' });
+  TestDriveRequest.belongsTo(Showroom, { foreignKey: 'showroom_id' });
+  Showroom.hasMany(TestDriveRequest, { foreignKey: 'showroom_id' });
 
   // News
   News.belongsTo(NewsCategory, { foreignKey: 'category_id', as: 'category' });
   News.belongsTo(Staff, { foreignKey: 'posted_by', as: 'posted' });
+  Staff.hasMany(News, { foreignKey: 'posted_by', as: 'posted' });
+  NewsCategory.hasMany(News, { foreignKey: 'category_id', as: 'category' });
 
   // Insurance
   Insurance.belongsTo(InsuranceProvider, {

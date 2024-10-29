@@ -42,10 +42,10 @@ const SidebarMenuMain = () => {
         <SidebarMenuItem to='/staffs' icon='abstract-28' title='Staff' fontIcon='bi-layers' />
       )}
       {hasRole('Director') && (
-        <SidebarMenuItem to='/settings' icon='wrench' title='Settings' fontIcon='bi-layers' />
+        <SidebarMenuItem to='/customers' icon='abstract-14' title='Customer' fontIcon='bi-layers' />
       )}
       {hasRole('Director') && (
-        <SidebarMenuItem to='/car' icon='wrench' title='Car' fontIcon='bi-layers' />
+        <SidebarMenuItem to='/settings' icon='wrench' title='Settings' fontIcon='bi-layers' />
       )}
     </>
   )

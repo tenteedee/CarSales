@@ -17,7 +17,7 @@ function CarFilter() {
   const [maxPrice, setMaxPrice] = useState(2500000000);
   const [cars, setCars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const carsPerPage = 9;
+  const carsPerPage = 8;
 
   const [currentLang, setCurrentLang] = useState(
     localStorage.getItem('language') || 'en'

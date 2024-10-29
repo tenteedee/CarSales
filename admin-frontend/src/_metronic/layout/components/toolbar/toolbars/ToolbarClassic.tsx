@@ -13,21 +13,22 @@ const ToolbarClassic = () => {
     const location = useLocation();
     const {hasRole} = useAuth()
     const createButtonLinks = [
-        {path: '/staffs', role: 'Director'},
-        {path: '/categories', role: 'Director'},
-        {path: '/news', role: 'Director'},
-        {path: '/showrooms', role: 'Director'},
+        { path: '/staffs', roles: ['Director'] },
+        { path: '/categories', roles: ['Director'] },
+        { path: '/news', roles: ['Director'] },
+        { path: '/showrooms', roles: ['Director'] },
+        { path: '/test-drive', roles: ['Director'] },
+        { path: '/customers', roles: ['Director'] },
+
     ];
+
     const currentPath = location.pathname;
     const shouldShowCreateButton = createButtonLinks.some(
         (link) =>
-            hasRole(link.role) &&
-            currentPath.startsWith(link.path)
-            &&
-            !currentPath.includes('/edit')
-            &&
-            !currentPath.endsWith('/create')
+            link.roles.some(role => hasRole(role)) &&
+            currentPath.endsWith(link.path)
     );
+
 
     return (
         <div className='d-flex align-items-center gap-2 gap-lg-3'>

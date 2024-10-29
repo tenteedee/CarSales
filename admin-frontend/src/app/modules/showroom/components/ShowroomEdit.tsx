@@ -95,8 +95,8 @@ export const ShowroomEdit: FC<Props> = ({...props}) => {
                 });
         }
     };
-    const {hasRole} = useAuth()
-
+    const {hasRole} = useAuth();
+    console.log("Checking roles:", hasRole("Director"), hasRole("Sale"));
     if (loading) {
         return <div>Loading...</div>;
     }

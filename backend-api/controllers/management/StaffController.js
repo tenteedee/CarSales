@@ -8,6 +8,7 @@ import { validationResult } from "express-validator";
 import { APP_URL } from "../../config/Config.js";
 import { sendMail } from "../../services/MailService.js";
 import { randomPassword } from "../../helper/Utils.js";
+import { generateStaffEmailTemplate } from "../../helper/EmailHelper.js";
 export const updateStaffAvatar = async (req, res) => {
   const id = req.params.id;
   if (isNaN(id)) {
@@ -87,7 +88,7 @@ export const createStaff = async (req, res) => {
     }
 
     const saltRounds = 10;
-    let password = randomPassword(20);
+    let password = randomPassword(12);
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const newStaff = await Staff.create({
@@ -130,12 +131,7 @@ export const createStaff = async (req, res) => {
       ],
     });
     try {
-      const html =
-        "<h1>Hello, " +
-        createdStaff.fullname +
-        "!</h1><p>This is your password at Car Shop: <strong> " +
-        password +
-        "</strong></p>";
+      const html = generateStaffEmailTemplate(createdStaff, password);
       await sendMail({
         to: createdStaff.email,
         subject: "Your account at CAR SHOP",
@@ -219,15 +215,12 @@ export const updateStaff = async (req, res) => {
       await staff.setShowroom(showroom);
     }
     if (password) {
+      let passwordChange = randomPassword(12);
+
       const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const hashedPassword = await bcrypt.hash(passwordChange, saltRounds);
       staff.password = hashedPassword;
-      const html =
-        "<h1>Hello, " +
-        staff.fullname +
-        "!</h1><p>This is your new password at Car Shop: <strong> " +
-        password +
-        "</strong></p>";
+      const html = generateStaffEmailTemplate(staffData, passwordChange);
       await sendMail({
         to: staff.email,
         subject: "Your updated account at CAR SHOP",
@@ -295,6 +288,7 @@ export const getStaff = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Lỗi máy chủ" });
   }
+
 };
 export const deleteStaff = async (req, res) => {
   let staffIds = req.body.ids;
@@ -318,6 +312,7 @@ export const deleteStaff = async (req, res) => {
 
     res.status(200).json({ error: "Xóa thành công", deletedCount });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Lỗi máy chủ khi xóa nhân viên" });
   }
 };

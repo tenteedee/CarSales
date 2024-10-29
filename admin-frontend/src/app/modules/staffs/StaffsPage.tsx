@@ -1,7 +1,7 @@
 import {Navigate, Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import {StaffCreateWrapper, StaffEditWrapper, StaffsListWrapper} from './Staffs'
-
+import ProfilePage from './ProfilePage'
 const staffsBreadcrumbs: Array<PageLink> = [
   {
     title: 'Staff Management',
@@ -45,6 +45,15 @@ const StaffsPage = () => {
             <>
               <PageTitle breadcrumbs={staffsBreadcrumbs}>Edit Staff</PageTitle>
               <StaffEditWrapper />
+            </>
+          }
+        />
+        <Route
+          path='profile/:id'
+          element={
+            <>
+              <PageTitle breadcrumbs={staffsBreadcrumbs}>Profile</PageTitle>
+              <ProfilePage />
             </>
           }
         />

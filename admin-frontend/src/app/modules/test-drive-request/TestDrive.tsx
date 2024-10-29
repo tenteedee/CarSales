@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import {deleteTestDrive, getTestDrives} from "./core/requests";
 import {TestDrivesList} from "./components/TestDriveList";
 import {TestDriveEdit} from "./components/TestDriveEdit";
+import {TestDriveCreate} from "./components/TestDriveCreate";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -57,4 +58,11 @@ const TestDriveEditWrapper = () => {
         </>
     );
 }
-export {TestDriveListWrapper, TestDriveEditWrapper}
+const TestDriveCreateWrapper = () => {
+    return (
+        <>
+            <TestDriveCreate/>
+        </>
+    );
+}
+export {TestDriveListWrapper, TestDriveEditWrapper, TestDriveCreateWrapper}

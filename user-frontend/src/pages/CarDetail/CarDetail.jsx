@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { formatCurrency } from '../../utils/priceFormat';
 
 import './CarDetail.css';
 import CostEstimate from './CostEstimate';
@@ -21,8 +22,9 @@ const CarDetail = () => {
   const [showroomId, setShowroomId] = useState(null);
   const [selectedShowroom, setSelectedShowroom] = useState('');
   const [showrooms, setShowrooms] = useState([]);
+  const [carColors, setCarColors] = useState([]);
   const [orderInfo, setOrderInfo] = useState(null);
-
+  const [selectedColor, setSelectedColor] = useState('');
   useEffect(() => {
     const fetchCarInfo = async () => {
       if (!id) {
@@ -32,7 +34,9 @@ const CarDetail = () => {
         return;
       }
       try {
+        console.log('Fetching car info for carId:', id);
         const response = await axios.get(`car/detail/${id}`);
+        console.log('axios Response:', response);
         setCarInfo(response.data);
       } catch (err) {
         console.error('Error fetching car info:', err);
@@ -44,11 +48,13 @@ const CarDetail = () => {
     };
 
     fetchCarInfo();
+    console.log('carInfo', carInfo);
     const fetchAllShowrooms = async () => {
       try {
         const response = await axios.get('/showroom/list');
         if (Array.isArray(response.data)) {
           setShowrooms(response.data);
+          console.log('Showrooms fetched:', response.data);
         } else {
           console.error('Unexpected data structure:', response.data);
         }
@@ -74,7 +80,7 @@ const CarDetail = () => {
     }
 
     const orderData = {
-      customerId: user.id,
+      customer_id: user.id,
       car_id: carInfo.id,
       quantity: quantity,
       payment_price: carInfo.price * quantity,
@@ -125,15 +131,15 @@ const CarDetail = () => {
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
-  // Hàm để định dạng giá tiền
-  const formatPrice = (value) => {
+  const formatCurrency = (value) => {
     if (!value) return '';
-    return new Intl.NumberFormat('vi-VN', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'VND',
+      currency: 'USD',
       minimumFractionDigits: 0,
     }).format(value);
   };
+
   // Thêm component Breadcrumb
   const Breadcrumb = ({ brand, model }) => (
     <nav aria-label="breadcrumb" className="breadcrumb-container">
@@ -157,6 +163,10 @@ const CarDetail = () => {
       </ol>
     </nav>
   );
+  const selectColor = (color) => {
+    setSelectedColor(color);
+    console.log(`Color selected: ${color}`); //Chưa lấy được màu đợi bảng
+  };
 
   useEffect(() => {
     if (selectedShowroom) {
@@ -169,39 +179,52 @@ const CarDetail = () => {
     <>
       <Breadcrumb brand={carInfo?.brand?.name} model={carInfo?.model} />
       <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-7">
-            {carInfo && carInfo.images && carInfo.images.length > 0 ? (
-              <div className="image-container">
-                <img
-                  src={carInfo.images[currentImageIndex].image_url}
-                  alt={`${carInfo.brand.name} ${carInfo.model}`}
-                  className="car-image"
-                />
-                {carInfo.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="image-nav-btn"
-                      aria-label="Previous image"
-                    >
-                      &#8249;
-                    </button>
-                    <button
-                      onClick={nextImage}
-                      className="image-nav-btn"
-                      aria-label="Next image"
-                    >
-                      &#8250;
-                    </button>
-                  </>
-                )}
+        <div className="product-detail-container">
+          <div className="product-image col-md-7">
+            {carInfo?.images?.length > 0 ? (
+              <div className="image-gallery">
+                <div className="image-container">
+                  <img
+                    src={carInfo.images[currentImageIndex].image_url}
+                    alt={`${carInfo.brand.name} ${carInfo.model}`}
+                    className="car-image"
+                  />
+                  {carInfo.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        className="image-nav-btn"
+                        aria-label="Previous image"
+                      >
+                        &#8249;
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        className="image-nav-btn"
+                        aria-label="Next image"
+                      >
+                        &#8250;
+                      </button>
+                    </>
+                  )}
+                </div>
+                <div className="thumbnail-container">
+                  {carInfo.images.map((img, index) => (
+                    <img
+                      key={`thumbnail-${index}`}
+                      src={img.image_url}
+                      alt={`Thumbnail ${index}`}
+                      className="thumbnail"
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </div>
               </div>
             ) : (
-              <p>No image available</p>
+              <p>No images available</p>
             )}
           </div>
-          <div className="col-md-5">
+          <div className="product-description col-md-5">
             <h2>
               {carInfo ? `${carInfo.brand.name} ${carInfo.model}` : 'Car Name'}
             </h2>
@@ -212,16 +235,16 @@ const CarDetail = () => {
             </div>
             <div className="price-container">
               <span className="original-price">
-                {formatPrice(carInfo?.price * 1.2)}
+                {formatCurrency(carInfo?.price * 1.2)}
               </span>
               <span className="discounted-price">
-                {formatPrice(carInfo?.price)}
+                {formatCurrency(carInfo?.price)}
               </span>
               <span className="discount-badge">20% GIẢM</span>
             </div>
             <div className="mb-3">
               <span className="badge bg-danger me-2"> THƯƠNG HIỆU</span>
-              <span>Chỉ từ {formatPrice(carInfo?.price * 0.9)}</span>
+              <span>Chỉ từ {formatCurrency(carInfo?.price * 0.9)}</span>
             </div>
             <div className="mb-3">
               <h6>Mã Giảm Giá Của Shop</h6>
@@ -255,6 +278,8 @@ const CarDetail = () => {
                 {carInfo?.stock || 0} sản phẩm có sẵn
               </div>
             </div>
+            {carInfo ? carInfo.description : 'Car Name'}
+
             <div className="action-buttons">
               <button
                 className="btn btn-primary add-to-cart"
@@ -270,6 +295,7 @@ const CarDetail = () => {
                 Yêu Cầu Lái Thử
               </button>
             </div>
+
             <div className="showroom-selection">
               <label htmlFor="showroomSelect">Choose a Showroom:</label>
               <select
@@ -293,89 +319,23 @@ const CarDetail = () => {
                   <option disabled>No showrooms available</option>
                 )}
               </select>
+              <p>Showroom ID: {showroomId}</p>
+              <p>Showroom ID: {showroomId}</p>
+
+              <p>Showroom ID: {showroomId}</p>
+
+              <p>Showroom ID: {showroomId}</p>
+
+              <p>Showroom ID: {showroomId}</p>
+              <p>Showroom ID: {showroomId}</p>
+
+              <p>Showroom ID: {showroomId}</p>
+
+              <p>Showroom ID: {showroomId}</p>
             </div>
           </div>
         </div>
-
         <CostEstimate price={carInfo?.price} />
-
-        <div className="row mt-5">
-          <div className="col-12">
-            <h4>Leave a Comment:</h4>
-            <form role="form">
-              <div className="form-group">
-                <textarea className="form-control" rows="3" required></textarea>
-              </div>
-              <button type="submit" className="btn btn-success mt-2">
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <div className="row mt-4">
-          <div className="col-12">
-            <p>
-              <span className="badge bg-secondary">2</span> Comments:
-            </p>
-            <div className="comment">
-              <div className="d-flex">
-                <img
-                  src="bandmember.jpg"
-                  className="rounded-circle me-3"
-                  height="50"
-                  width="50"
-                  alt="Avatar"
-                />
-                <div>
-                  <h5>
-                    Anja{' '}
-                    <small className="text-muted">Sep 29, 2015, 9:12 PM</small>
-                  </h5>
-                  <p>Bình luận 1</p>
-                </div>
-              </div>
-            </div>
-            <div className="comment mt-3">
-              <div className="d-flex">
-                <img
-                  src="bird.jpg"
-                  className="rounded-circle me-3"
-                  height="50"
-                  width="50"
-                  alt="Avatar"
-                />
-                <div>
-                  <h5>
-                    John Row{' '}
-                    <small className="text-muted">Sep 25, 2015, 8:25 PM</small>
-                  </h5>
-                  <p>Bình luận 2</p>
-                  <div className="nested-comment mt-3">
-                    <div className="d-flex">
-                      <img
-                        src="bird.jpg"
-                        className="rounded-circle me-3"
-                        height="50"
-                        width="50"
-                        alt="Avatar"
-                      />
-                      <div>
-                        <h5>
-                          Nested Bro{' '}
-                          <small className="text-muted">
-                            Sep 25, 2015, 8:28 PM
-                          </small>
-                        </h5>
-                        <p>Bình luận 3</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );

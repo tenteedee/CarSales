@@ -20,6 +20,7 @@ import OrderList from './pages/OrderDetails/OrderList';
 import Checkout from './pages/OrderDetails/Checkout';
 import InsuranceList from './pages/Insurance/InsuranceList';
 import CarFilter from './pages/HomePage/CarFilter';
+import News from './pages/News/News';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
@@ -30,11 +31,12 @@ function App() {
   return (
     <div>
       <Header />
+
       {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
       {!hideNavbarPaths.includes(location.pathname) && (
-        <div>
+        <>
           <Navbar />
-        </div>
+        </>
       )}
 
       <Routes>
@@ -69,6 +71,7 @@ function App() {
         <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
         <Route path="/order-list" element={<OrderList />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/news" element={<News />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>

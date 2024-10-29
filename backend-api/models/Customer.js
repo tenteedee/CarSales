@@ -1,10 +1,10 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
-import TestDriveRequest from './TestDriveRequest.js';
-import Orders from './Orders.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
+import TestDriveRequest from "./TestDriveRequest.js";
+import Orders from "./Orders.js";
 
 const Customer = db.define(
-  'customer',
+  "customer",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -13,7 +13,7 @@ const Customer = db.define(
     },
     googleId: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     fullname: {
@@ -54,11 +54,11 @@ const Customer = db.define(
     },
   },
   {
-    tableName: 'customers',
+    tableName: "customers",
     timestamps: true,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 

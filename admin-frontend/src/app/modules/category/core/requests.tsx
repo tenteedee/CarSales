@@ -5,7 +5,7 @@ import {Category} from "./models";
 
 const API_URL = process.env.REACT_APP_API_URL
 export const getCategories = (query: string): Promise<QueryResponse> => {
-    return axios.get(`${API_URL}/categories?${query}`).then((d: AxiosResponse<QueryResponse>) => d.data)
+    return axios.get(`${API_URL}/categories/query?${query}`).then((d: AxiosResponse<QueryResponse>) => d.data)
 }
 export const deleteCategory = (ids: Array<ID>): Promise<QueryResponse> => {
     return axios

@@ -1,6 +1,8 @@
 import express from 'express';
 import { verifyStaffToken } from '../../middleware/Auth.js';
 import {
+  createCustomerValidation,
+  updateCustomerValidation,
   validateCreateShowroom,
   validateLogin,
   validateUpdateShowroom,
@@ -60,20 +62,12 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  createTestDrive,
+  deleteTestDrive,
   getTestDrive,
   queryTestDrive,
 } from '../../controllers/management/TestDriveController.js';
-import {
-  createNewCar,
-  deleteCar,
-  getAllBrands,
-  getAllCars,
-  getAllTypes,
-  getCarById,
-  queryCars,
-  updateCar,
-} from '../../controllers/management/CarController.js';
-import { get } from 'http';
+import { queryCars } from '../../controllers/management/CarController.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -194,13 +188,9 @@ router.use(
 
 const carRoute = express.Router();
 carRoute.get('/query', queryCars);
-carRoute.route('/detail/:id').get(getCarById);
-carRoute.route('/delete/:id').delete(deleteCar);
-carRoute.route('/edit/:id').patch(updateCar);
-carRoute.post('/create', createNewCar);
-carRoute.get('/all', getAllCars);
-carRoute.route('/brand').get(getAllBrands);
-carRoute.route('/type').get(getAllTypes);
+// testDriveRoute.delete("/delete", deleteNews);
+// testDriveRoute.post("/create", createNews);
+// testDriveRoute.get("/:id", getNews);
+// testDriveRoute.post("/:id", updateNews);
 router.use('/cars', verifyStaffToken(['Director']), carRoute);
-
 export default router;

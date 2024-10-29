@@ -21,6 +21,7 @@
 - Profile:	http://themeforest.net/user/andreysokoltsov
 
 -------------------------------------------------------------------*/
+
 /* Top Bar */
 .b-topBar {
   border-bottom: 1px solid #eeeeee;
@@ -1837,4 +1838,13 @@ a.m-langLink {
 
 .error {
   font-size: 80px;
+}
+/* Ensure that the main container of each section has some margin */
+.main-container {
+    margin-bottom: 20px; /* Adjust the value as needed */
+}
+
+/* Specific fix for car filter section if it's overlapping */
+.car-filter-section {
+    margin-top: 20px; /* Adds space at the top */
 }

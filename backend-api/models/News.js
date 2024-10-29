@@ -16,7 +16,10 @@ const News = db.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     heading: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -25,10 +28,7 @@ const News = db.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
+    
     status: {
       type: DataTypes.ENUM('draft', 'published', 'archived'), // Giả sử enum có các giá trị này
       allowNull: false,

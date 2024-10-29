@@ -9,7 +9,7 @@ import {getCars} from "../../car/core/requests";
 import {Staff} from "../../staffs/core/models";
 import {getStaffs} from "../../staffs/core/requests";
 import {useAuth} from "../../auth";
-import moment, {Moment} from "moment/moment"; // Import updateTestDrive function
+import moment, {Moment} from "moment/moment";
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 type Props = {};
@@ -99,6 +99,7 @@ export const TestDriveEdit: FC<Props> = ({...props}) => {
     }
     useEffect(() => {
         getData();
+
     }, [id, navigate]);
 
     const handleInputChange = (key: string, value: string) => {
@@ -204,7 +205,7 @@ export const TestDriveEdit: FC<Props> = ({...props}) => {
                                 >
                                     <option value=''>Select Sale</option>
                                     {sales
-                                        .filter((sale) => sale.role_id === 2)
+                                        .filter((sale) => sale.role_id === 2 && sale.showroom_id === testDrive?.showroom_id)
                                         .map((sale) => (
                                             <option key={sale.id} value={sale.id || ""}>
                                                 {sale.fullname} - {sale.email}

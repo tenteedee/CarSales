@@ -114,17 +114,11 @@ const Navbar = () => {
                             {t('LỊCH SỬ LÁI THỬ')}
                           </Link>
                         </li>
-                        {/* <li>
-                                                    <Link to="/blogTwo">{t('PHỤ TÙNG VÀ PHỤ KIỆN')}</Link>
-                                                </li> */}
-                        <li>
-                          <Link to="/404">{t('ĐĂNG KÝ LÁI THỬ')}</Link>
-                        </li>
                       </ul>
                     )}
                   </li>
                   <li>
-                    <Link to="/submit1">{t('TIN TỨC')}</Link>
+                    <Link to="/news">{t('TIN TỨC')}</Link>
                   </li>
                   <li>
                     <Link to="/contacts">{t('LIÊN HỆ')}</Link>
