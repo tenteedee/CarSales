@@ -18,6 +18,8 @@ const ToolbarClassic = () => {
         { path: '/news', roles: ['Director'] },
         { path: '/showrooms', roles: ['Director'] },
         { path: '/test-drive', roles: ['Director'] },
+        { path: '/customers', roles: ['Director'] },
+
     ];
 
     const currentPath = location.pathname;

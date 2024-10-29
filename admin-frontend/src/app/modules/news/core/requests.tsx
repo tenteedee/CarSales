@@ -8,7 +8,6 @@ const NEWS_URL = `${API_URL}/news`
 export const getNews = (query: string): Promise<QueryResponse> => {
     return axios.get(`${NEWS_URL}/query?${query}`).then((d: AxiosResponse<QueryResponse>) => d.data)
 }
-
 export const deleteNews = (newsIds: Array<ID>): Promise<QueryResponse> => {
     return axios
         .delete(`${NEWS_URL}/delete`, {
