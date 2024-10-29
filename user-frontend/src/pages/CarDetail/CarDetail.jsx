@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { formatCurrency } from '../../utils/priceFormat';
 
 import './CarDetail.css';
 
@@ -20,8 +21,9 @@ const CarDetail = () => {
     const [showroomId, setShowroomId] = useState(null);
     const [selectedShowroom, setSelectedShowroom] = useState('');
     const [showrooms, setShowrooms] = useState([]);
+    const [carColors, setCarColors] = useState([]);
     const [orderInfo, setOrderInfo] = useState(null);
-
+    const [selectedColor, setSelectedColor] = useState('');
     useEffect(() => {
         const fetchCarInfo = async () => {
             if (!id) {
@@ -45,6 +47,7 @@ const CarDetail = () => {
         };
 
         fetchCarInfo();
+        console.log('carInfo', carInfo);
         const fetchAllShowrooms = async () => {
             try {
                 const response = await axios.get('/showroom/list');
@@ -59,7 +62,7 @@ const CarDetail = () => {
             }
         };
         fetchAllShowrooms();
-        
+
 
     }, [id, navigate]);
 
@@ -78,13 +81,14 @@ const CarDetail = () => {
         }
 
         const orderData = {
-            customerId: user.id,
+            customer_id: user.id,
             car_id: carInfo.id,
             quantity: quantity,
             payment_price: carInfo.price * quantity,
             total_price: carInfo.price * quantity,
             order_status: 'pending',
-            showroom_id: showroomId
+            showroom_id: showroomId,
+
         };
 
         try {
@@ -105,7 +109,7 @@ const CarDetail = () => {
                 progress: undefined
             });
         }
-        
+
     };
     const prevImage = () => {
         setCurrentImageIndex((prevIndex) =>
@@ -119,7 +123,6 @@ const CarDetail = () => {
         );
     };
 
-
     const handleRequestTestDrive = () => {
         localStorage.setItem('selectedCar', JSON.stringify(carInfo));
         navigate('/test-drive');
@@ -132,10 +135,7 @@ const CarDetail = () => {
         setQuantity(quantity + 1);
     };
     // Hàm để định dạng giá tiền
-    const formatPrice = (price) => {
-        if (!price) return 'N/A';
-        return `$ ${parseFloat(price).toLocaleString('en-US')}`;
-    };
+    
     // Thêm component Breadcrumb
     const Breadcrumb = ({ brand, model }) => (
         <nav aria-label="breadcrumb" className="breadcrumb-container">
@@ -147,6 +147,10 @@ const CarDetail = () => {
             </ol>
         </nav>
     );
+    const selectColor = (color) => {
+        setSelectedColor(color);
+        console.log(`Color selected: ${color}`); //Chưa lấy được màu đợi bảng
+    };
 
     useEffect(() => {
         if (selectedShowroom) {
@@ -155,32 +159,34 @@ const CarDetail = () => {
         }
     }, [selectedShowroom]);
 
-
     return (
         <>
             <Breadcrumb brand={carInfo?.brand?.name} model={carInfo?.model} />
             <div className="container mt-4">
-                <div className="row">
-                    <div className="col-md-7">
-                        {carInfo && carInfo.images && carInfo.images.length > 0 ? (
-                            <div className="image-container">
-                                <img
-                                    src={carInfo.images[currentImageIndex].image_url}
-                                    alt={`${carInfo.brand.name} ${carInfo.model}`}
-                                    className="car-image"
-                                />
-                                {carInfo.images.length > 1 && (
-                                    <>
-                                        <button onClick={prevImage} className="image-nav-btn" aria-label="Previous image">&#8249;</button>
-                                        <button onClick={nextImage} className="image-nav-btn" aria-label="Next image">&#8250;</button>
-                                    </>
-                                )}
+                <div className="product-detail-container">
+                    <div className="product-image col-md-7">
+                        {carInfo?.images?.length > 0 ? (
+                            <div className="image-gallery">
+                                <div className="image-container">
+                                    <img src={carInfo.images[currentImageIndex].image_url} alt={`${carInfo.brand.name} ${carInfo.model}`} className="car-image" />
+                                    {carInfo.images.length > 1 && (
+                                        <>
+                                            <button onClick={prevImage} className="image-nav-btn" aria-label="Previous image">&#8249;</button>
+                                            <button onClick={nextImage} className="image-nav-btn" aria-label="Next image">&#8250;</button>
+                                        </>
+                                    )}
+                                </div>
+                                <div className="thumbnail-container">
+                                    {carInfo.images.map((img, index) => (
+                                        <img key={`thumbnail-${index}`} src={img.image_url} alt={`Thumbnail ${index}`} className="thumbnail" onClick={() => setCurrentImageIndex(index)} />
+                                    ))}
+                                </div>
                             </div>
                         ) : (
-                            <p>No image available</p>
+                            <p>No images available</p>
                         )}
                     </div>
-                    <div className="col-md-5">
+                    <div className="product-description col-md-5">
                         <h2>{carInfo ? `${carInfo.brand.name} ${carInfo.model}` : 'Car Name'}</h2>
                         <div className="d-flex align-items-center mb-2">
                             <span className="me-2">4.4 ★★★★☆</span>
@@ -189,24 +195,36 @@ const CarDetail = () => {
                         </div>
                         <div className="price-container">
                             <span className="original-price">
-                                {formatPrice(carInfo?.price * 1.2)}
+                                {formatCurrency(carInfo?.price * 1.2)}
                             </span>
                             <span className="discounted-price">
-                                {formatPrice(carInfo?.price)}
+                                {formatCurrency(carInfo?.price)}
                             </span>
                             <span className="discount-badge">20% GIẢM</span>
                         </div>
                         <div className="mb-3">
                             <span className="badge bg-danger me-2"> THƯƠNG HIỆU</span>
-                            <span>Chỉ từ {formatPrice(carInfo?.price * 0.9)}</span>
+                            <span>Chỉ từ {formatCurrency(carInfo?.price * 0.9)}</span>
                         </div>
                         <div className="mb-3">
                             <h6>Mã Giảm Giá Của Shop</h6>
+                            <span>Chọn màu{selectedColor}</span>
                             {/* Add shop voucher details here */}
                         </div>
-                        <div className="mb-3">
-                            <h6>Vận Chuyển</h6>
-                            <span>Miễn phí vận chuyển</span>
+                        <div className="color-selection">
+                            <div className="color-option" style={{ backgroundColor: '#006494' }} onClick={() => selectColor()}></div>
+                            <div className="color-option" style={{ backgroundColor: '#B22222' }} onClick={() => selectColor()}></div>
+
+                            <div className="color-option" style={{ backgroundColor: 'gray' }} onClick={() => selectColor()}></div>
+                            <div className="color-option" style={{ backgroundColor: '#5A9F68' }} onClick={() => selectColor()}></div>
+                            {carColors.map((color, index) => (
+                                <div
+                                    key={index}
+                                    className={`color-option ${selectedColor === color.color_name ? 'selected' : ''}`}
+                                    style={{ backgroundColor: color.color_name }}
+                                    onClick={() => selectColor(color.color_name)}
+                                />
+                            ))}
                         </div>
                         <div className="mb-3">
                             <h6>Size</h6>
@@ -221,6 +239,8 @@ const CarDetail = () => {
                             </div>
                             <div className="stock-info">{carInfo?.stock || 0} sản phẩm có sẵn</div>
                         </div>
+                        {carInfo ? (carInfo.description) : 'Car Name'}
+
                         <div className="action-buttons">
                             <button
                                 className="btn btn-primary add-to-cart"
@@ -231,6 +251,7 @@ const CarDetail = () => {
                             </button>
                             <button className="btn btn-danger buy-now" onClick={handleRequestTestDrive}>Yêu Cầu Lái Thử</button>
                         </div>
+
                         <div className="showroom-selection">
                             <label htmlFor="showroomSelect">Choose a Showroom:</label>
                             <select id="showroomSelect" value={selectedShowroom} onChange={(e) => {
@@ -250,8 +271,23 @@ const CarDetail = () => {
                                     <option disabled>No showrooms available</option>
                                 )}
                             </select>
+                            <p>Showroom ID: {showroomId}</p>
+                            <p>Showroom ID: {showroomId}</p>
+
+                            <p>Showroom ID: {showroomId}</p>
+
+                            <p>Showroom ID: {showroomId}</p>
+
+                            <p>Showroom ID: {showroomId}</p>
+                            <p>Showroom ID: {showroomId}</p>
+
+                            <p>Showroom ID: {showroomId}</p>
+
+                            <p>Showroom ID: {showroomId}</p>
+
                         </div>
                     </div>
+
                 </div>
 
                 <div className="row mt-5">

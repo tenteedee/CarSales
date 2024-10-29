@@ -1,6 +1,7 @@
 import Orders from '../../models/Orders.js';
 import OrderDetails from '../../models/OrderDetails.js';
 
+
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Orders.findAll({

@@ -34,7 +34,9 @@ export function setupAssociations() {
   // Car
   Car.hasMany(CarImage, { foreignKey: "car_id", as: "images" });
   CarImage.belongsTo(Car, { foreignKey: "car_id", as: "carImages" }); // Changed alias "images" to "carImages"
-  Car.hasOne(Brand, { foreignKey: "id", sourceKey: "brand_id", as: "brand" });
+  Car.belongsTo(CarColors, { foreignKey: 'color_id', as: 'colors' });
+  CarColors.hasMany(Car, { foreignKey: 'color_id', as: 'carColors' });  // Changed 'cars' to 'colors'
+   Car.hasOne(Brand, { foreignKey: "id", sourceKey: "brand_id", as: "brand" });
   Brand.belongsTo(Car, { foreignKey: "id", targetKey: "brand_id", as: "brandCar" }); // Changed alias to "brandCar"
   Car.hasOne(CarType, { foreignKey: "id", sourceKey: "type_id", as: "type" });
   CarType.belongsTo(Car, { foreignKey: "id", targetKey: "type_id", as: "typeCar" }); // Changed alias to "typeCar"
@@ -55,9 +57,8 @@ export function setupAssociations() {
 
   Car.hasMany(Orders, { foreignKey: 'car_id' });
   Orders.belongsTo(Car, { foreignKey: 'car_id' });
+
   //OrderDetails
-  CarColors.hasMany(OrderDetails, { foreignKey: "color_id", as: "order_details" });
-  OrderDetails.belongsTo(CarColors, { foreignKey: "color_id", as: "car_color" });
 
 
   //Showroom

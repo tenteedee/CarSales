@@ -14,7 +14,7 @@ function CarFilter() {
     const [maxPrice, setMaxPrice] = useState('');
     const [cars, setCars] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const carsPerPage = 9;
+    const carsPerPage = 8;
 
     useEffect(() => {
         const fetchBrandsAndTypes = async () => {
@@ -106,76 +106,57 @@ function CarFilter() {
     return (
         <section className="b-search">
             <div className="container">
-                <h1>{t('SEARCH.HEADER')}</h1>
-                <div className="b-search__main">
+
+                <div className="b-search__main" style={{ minHeight: '500px' }}>
+                    <h1>{t('SEARCH.HEADER')}</h1><br />
                     <h4>{t('SEARCH.SUBHEADER')}</h4>
-                    <form
-                        onSubmit={handleSearch}
-                        className="b-search__main-form"
-                    >
+                    <form onSubmit={handleSearch} className="b-search__main-form">
                         <div className="row">
                             <div className="col-xs-16 col-md-12">
                                 <div className="m-firstSelects">
                                     <div className="col-md-3">
                                         <select
                                             value={selectedBrand}
-                                            onChange={(e) =>
-                                                setSelectedBrand(e.target.value)
-                                            }
+                                            onChange={(e) => setSelectedBrand(e.target.value)}
                                         >
-                                            <option value="">
-                                                {t('SEARCH.SELECT_BRAND')}
-                                            </option>
+                                            <option value="">{t('SEARCH.SELECT_BRAND')}</option>
                                             {brands.map((brand) => (
-                                                <option
-                                                    key={brand.id}
-                                                    value={brand.id}
-                                                >
+                                                <option key={brand.id} value={brand.id}>
                                                     {brand.name}
                                                 </option>
                                             ))}
                                         </select>
                                         <span className="fa fa-caret-down"></span>
                                     </div>
-
                                     <div className="col-md-3">
                                         <select
                                             value={selectedType}
-                                            onChange={(e) =>
-                                                setSelectedType(e.target.value)
-                                            }
+                                            onChange={(e) => setSelectedType(e.target.value)}
                                         >
-                                            <option value="">
-                                                {t('SEARCH.SELECT_TYPE')}
-                                            </option>
+                                            <option value="">{t('SEARCH.SELECT_TYPE')}</option>
                                             {types.map((type) => (
-                                                <option
-                                                    key={type.id}
-                                                    value={type.id}
-                                                >
+                                                <option key={type.id} value={type.id}>
                                                     {type.name}
                                                 </option>
                                             ))}
                                         </select>
                                         <span className="fa fa-caret-down"></span>
                                     </div>
-
                                     <div className="col-md-2">
                                         <input
                                             type="text"
                                             placeholder={t('SEARCH.MIN_PRICE')}
                                             value={minPrice}
-                                            onChange={handleMinPriceChange} // Gọi hàm xử lý
+                                            onChange={handleMinPriceChange}
                                             style={{ width: '150px' }}
                                         />
                                     </div>
-
                                     <div className="col-md-2">
                                         <input
                                             type="text"
                                             placeholder={t('SEARCH.MAX_PRICE')}
                                             value={maxPrice}
-                                            onChange={handleMaxPriceChange} // Gọi hàm xử lý
+                                            onChange={handleMaxPriceChange}
                                             style={{ width: '150px' }}
                                         />
                                     </div>
@@ -189,15 +170,14 @@ function CarFilter() {
                     </form>
                     <div className="car-results flex justify-center">
                         <h3>{t('SEARCH.SEARCH_RESULTS')}</h3>
-                        
-                        <div className="row">
+                        <div className="car-container">
                             {currentCars.length === 0 ? (
                                 <p>{t('SEARCH.NO_CARS_FOUND')}</p>
                             ) : (
                                 currentCars.map((car) => (
                                     <div
                                         key={car.id}
-                                        className="col-xs-12 col-md-4 car-item "
+                                        className="car-card"
                                     >
                                         <Link
                                             to={`/car/detail/${car.id}`}
@@ -205,37 +185,19 @@ function CarFilter() {
                                         >
                                             <img
                                                 src={
-                                                    car.images &&
-                                                    car.images.length > 0
-                                                        ? car.images[0]
-                                                              .image_url
+                                                    car.images && car.images.length > 0
+                                                        ? car.images[0].image_url
                                                         : 'default-car.png'
                                                 }
                                                 alt={car.model}
-                                                className="img-responsive"
-                                                style={{
-                                                    width: '220px',
-                                                    height: '120px',
-                                                    objectFit: 'cover',
-                                                    objectPosition: 'center',
-                                                }}
+                                                className="car-image"
                                             />
                                         </Link>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                width: '220px',
-                                            }}
-                                        >
-                                            <div>
-                                                <h5>{car.model}</h5>
-                                            </div>
-                                            <p>
+                                        <div className="car-info">
+                                            <h5 className="car-name">{car.model}</h5>
+                                            <p className="car-price">
                                                 {t('CAR.PRICE', {
-                                                    price: formatCurrency(
-                                                        parseInt(car.price)
-                                                    ),
+                                                    price: formatCurrency(parseInt(car.price)),
                                                 })}
                                             </p>
                                         </div>
@@ -244,9 +206,11 @@ function CarFilter() {
                             )}
                         </div>
                         {totalPages > 1 && (
-                            <Pagination className="justify-content-center mt-4">
-                                {paginationItems}
-                            </Pagination>
+                            <div className="pagination-container">
+                                <Pagination className="justify-content-center mt-4">
+                                    {paginationItems}
+                                </Pagination>
+                            </div>
                         )}
                     </div>
                 </div>

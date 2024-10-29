@@ -288,6 +288,7 @@ export const getStaff = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Lỗi máy chủ" });
   }
+
 };
 export const deleteStaff = async (req, res) => {
   let staffIds = req.body.ids;
