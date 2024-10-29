@@ -11,6 +11,8 @@ import Orders from "../models/Orders.js";
 import OrderDetails from "../models/OrderDetails.js";
 import Loan from "../models/Loan.js";
 import CarColors from "../models/CarColors.js";
+import News from "../models/News.js";
+import NewsCategory from "../models/NewsCategory.js";
 export function setupAssociations() {
   // Test-drive
   Customer.hasMany(TestDriveRequest, { foreignKey: "customer_id" });
@@ -70,3 +72,11 @@ export function setupAssociations() {
   TestDriveRequest.belongsTo(Showroom, { foreignKey: "showroom_id" });
   Showroom.hasMany(TestDriveRequest, { foreignKey: "showroom_id" });
 }
+
+// News
+News.belongsTo(NewsCategory, { foreignKey: "category_id", as: "category" });
+News.belongsTo(Staff, { foreignKey: "posted_by", as: "posted" });
+Staff.hasMany(News, { foreignKey: "posted_by", as: "posted" });
+NewsCategory.hasMany(News, { foreignKey: "category_id", as: "category" });
+
+
