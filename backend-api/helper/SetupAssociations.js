@@ -11,6 +11,8 @@ import Orders from "../models/Orders.js";
 import OrderDetails from "../models/OrderDetails.js";
 import Loan from "../models/Loan.js";
 import CarColors from "../models/CarColors.js";
+import News from "../models/News.js";
+import NewsCategory from "../models/NewsCategory.js";
 export function setupAssociations() {
   // Test-drive
   Customer.hasMany(TestDriveRequest, { foreignKey: "customer_id" });
@@ -34,7 +36,9 @@ export function setupAssociations() {
   // Car
   Car.hasMany(CarImage, { foreignKey: "car_id", as: "images" });
   CarImage.belongsTo(Car, { foreignKey: "car_id", as: "carImages" }); // Changed alias "images" to "carImages"
-  Car.hasOne(Brand, { foreignKey: "id", sourceKey: "brand_id", as: "brand" });
+  Car.belongsTo(CarColors, { foreignKey: 'color_id', as: 'colors' });
+  CarColors.hasMany(Car, { foreignKey: 'color_id', as: 'carColors' });  // Changed 'cars' to 'colors'
+   Car.hasOne(Brand, { foreignKey: "id", sourceKey: "brand_id", as: "brand" });
   Brand.belongsTo(Car, { foreignKey: "id", targetKey: "brand_id", as: "brandCar" }); // Changed alias to "brandCar"
   Car.hasOne(CarType, { foreignKey: "id", sourceKey: "type_id", as: "type" });
   CarType.belongsTo(Car, { foreignKey: "id", targetKey: "type_id", as: "typeCar" }); // Changed alias to "typeCar"
@@ -55,9 +59,8 @@ export function setupAssociations() {
 
   Car.hasMany(Orders, { foreignKey: 'car_id' });
   Orders.belongsTo(Car, { foreignKey: 'car_id' });
+
   //OrderDetails
-  CarColors.hasMany(OrderDetails, { foreignKey: "color_id", as: "order_details" });
-  OrderDetails.belongsTo(CarColors, { foreignKey: "color_id", as: "car_color" });
 
 
   //Showroom
@@ -69,3 +72,11 @@ export function setupAssociations() {
   TestDriveRequest.belongsTo(Showroom, { foreignKey: "showroom_id" });
   Showroom.hasMany(TestDriveRequest, { foreignKey: "showroom_id" });
 }
+
+// News
+News.belongsTo(NewsCategory, { foreignKey: "category_id", as: "category" });
+News.belongsTo(Staff, { foreignKey: "posted_by", as: "posted" });
+Staff.hasMany(News, { foreignKey: "posted_by", as: "posted" });
+NewsCategory.hasMany(News, { foreignKey: "category_id", as: "category" });
+
+
