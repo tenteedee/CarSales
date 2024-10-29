@@ -11,7 +11,7 @@ import {
   changePassword,
   loginGoogle,
 } from '../../controllers/shop/AuthController.js';
-
+import { getStaff } from '../../controllers/management/StaffController.js';
 const router = express.Router();
 router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);

@@ -17,6 +17,7 @@ import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
 import OrderList from './pages/OrderDetails/OrderList';
 import Checkout from './pages/OrderDetails/Checkout';
+import News from './pages/News/News';
 function App() {
     const token = useSelector((state) => state.auth.token);
     const location = useLocation();
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
                 <Route path="/order-list" element={<OrderList />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/news" element={<News />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/404" element={<NotFound />} />
             </Routes>
