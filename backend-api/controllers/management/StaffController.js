@@ -88,7 +88,7 @@ export const createStaff = async (req, res) => {
     }
 
     const saltRounds = 10;
-    let password = randomPassword(20);
+    let password = randomPassword(12);
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const newStaff = await Staff.create({
@@ -215,10 +215,12 @@ export const updateStaff = async (req, res) => {
       await staff.setShowroom(showroom);
     }
     if (password) {
+      let passwordChange = randomPassword(12);
+
       const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const hashedPassword = await bcrypt.hash(passwordChange, saltRounds);
       staff.password = hashedPassword;
-      const html = generateStaffEmailTemplate(staffData, password);
+      const html = generateStaffEmailTemplate(staffData, passwordChange);
       await sendMail({
         to: staff.email,
         subject: "Your updated account at CAR SHOP",

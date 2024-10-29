@@ -1,6 +1,8 @@
 import express from "express";
 import { verifyStaffToken } from "../../middleware/Auth.js";
 import {
+  createCustomerValidation,
+  updateCustomerValidation,
   validateCreateShowroom,
   validateLogin,
   validateUpdateShowroom,
@@ -10,7 +12,13 @@ import {
   loginWithGoogle,
   verify_token,
 } from "../../controllers/management/AuthController.js";
-import { query } from "../../controllers/management/UserController.js";
+import {
+  createCustomer,
+  deleteCustomer,
+  getCustomer,
+  query,
+  updateCustomer,
+} from "../../controllers/management/UserController.js";
 import {
   queryStaff,
   deleteStaff,
@@ -129,6 +137,10 @@ router.use("/auth", authRouter);
 
 const userRouter = express.Router();
 userRouter.get("/query", query);
+userRouter.post("/create", createCustomerValidation, createCustomer);
+userRouter.delete("/delete", deleteCustomer);
+userRouter.get("/:id", getCustomer);
+userRouter.post("/:id", updateCustomerValidation, updateCustomer);
 router.use("/customers", verifyStaffToken(["Director"]), userRouter);
 
 const staffRoute = express.Router();

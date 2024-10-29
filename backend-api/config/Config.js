@@ -16,6 +16,9 @@ export const APP_URL =
   process.env.APP_URL || "http://localhost:" + API_PORT + "/";
 export const BACKEND_HOME_URL =
   process.env.BACKEND_HOME_URL || "http://localhost";
+export const FRONTEND_HOME_URL =
+  process.env.FRONTEND_HOME_URL || "http://localhost";
+
 export const JWT_SECRET = process.env.JWT_SECRET || "1fhjsdvar672fgj";
 export const SESSION_SECRET = process.env.JWT_SECRET || "1fhjsdvar672fgj";
 // OAuth
