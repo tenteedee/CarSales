@@ -1,17 +1,20 @@
-import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
-import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
-import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider";
 import {ID} from "../../../_metronic/helpers";
 import {QueryResponse} from "../../utils/model/models";
 import {toast} from "react-toastify";
-import {deleteTestDrive, getTestDrives} from "./core/requests";
-import {TestDrivesList} from "./components/TestDriveList";
-import {TestDriveEdit} from "./components/TestDriveEdit";
-import {TestDriveCreate} from "./components/TestDriveCreate";
+import {deleteCustomers, getCustomers} from "./core/requests";
+import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
+import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
+import {getNews} from "../news/core/requests";
+import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider";
+import {NewsList} from "../news/components/NewsList";
+import {CustomerList} from "./components/CustomerList";
+import {StaffEdit} from "../staffs/components/StaffEdit";
+import {CustomerEdit} from "./components/CustomerEdit";
+import {CustomerCreate} from "./components/CustomerCreate";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
-        const response = await deleteTestDrive(ids); // Gọi hàm deleteStaff
+        const response = await deleteCustomers(ids); // Gọi hàm deleteStaff
         toast.success('Xoá thành công', {
             position: "top-right",
             autoClose: 3000,
@@ -38,31 +41,31 @@ export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
         throw error;
     }
 };
-const TestDriveListWrapper = () => {
+const CustomerListWrapper = () => {
     return (
         <>
             <QueryRequestProvider>
-                <QueryResponseProvider id={"test-drive"} request={getTestDrives}>
+                <QueryResponseProvider id={"customers"} request={getCustomers}>
                     <ListViewProvider onDelete={handleDelete}>
-                        <TestDrivesList/>
+                        <CustomerList/>
                     </ListViewProvider>
                 </QueryResponseProvider>
             </QueryRequestProvider>
         </>
     );
 }
-const TestDriveEditWrapper = () => {
+const CustomerEditWrapper = () => {
     return (
         <>
-            <TestDriveEdit/>
+            <CustomerEdit/>
         </>
     );
 }
-const TestDriveCreateWrapper = () => {
+const CustomerCreateWrapper = () => {
     return (
         <>
-            <TestDriveCreate/>
+            <CustomerCreate/>
         </>
     );
 }
-export {TestDriveListWrapper, TestDriveEditWrapper, TestDriveCreateWrapper}
+export {CustomerListWrapper,CustomerEditWrapper,CustomerCreateWrapper}

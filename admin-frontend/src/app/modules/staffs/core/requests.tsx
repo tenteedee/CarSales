@@ -16,7 +16,6 @@ export const deleteStaff = (staffIds: Array<ID>): Promise<QueryResponse> => {
         })
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 };
-
 export const getStaff = (id: string): Promise<QueryResponse> => {
     return axios
         .get(`${STAFF_URL}/${id}`)

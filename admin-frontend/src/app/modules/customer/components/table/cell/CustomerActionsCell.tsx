@@ -6,14 +6,13 @@ import {Link} from "react-router-dom";
 import {Confirm} from "notiflix";
 import {useQueryResponse} from "../../../../../../_metronic/layout/core/QueryResponseProvider";
 import {useListView} from "../../../../../../_metronic/layout/core/ListViewProvider";
-import {handleDelete} from "../../../TestDrive";
-
+import {handleDelete} from "../../../Customer";
 type Props = {
     id: ID;
-    value?: string;
+    value?: string; // Assuming "value" may be passed in
 };
 
-const TestDriveActionsCell: FC<Props> = ({id, value, ...props}) => {
+const CustomerActionsCell: FC<Props> = ({id, value, ...props}) => {
     useEffect(() => {
         MenuComponent.reinitialization()
     }, [])
@@ -46,7 +45,7 @@ const TestDriveActionsCell: FC<Props> = ({id, value, ...props}) => {
             >
                 {/* begin::Menu item */}
                 <div className='menu-item px-3'>
-                    <Link className='menu-link px-3' to={`/test-drive/edit/${id}`}>
+                    <Link className='menu-link px-3' to={`/customers/edit/${id}`}>
                         Edit
                     </Link>
                 </div>
@@ -61,11 +60,10 @@ const TestDriveActionsCell: FC<Props> = ({id, value, ...props}) => {
                         Delete
                     </a>
                 </div>
-
             </div>
             {/* end::Menu */}
         </>
     );
 };
 
-export {TestDriveActionsCell};
+export {CustomerActionsCell};

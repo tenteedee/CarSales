@@ -134,7 +134,14 @@ const CarDetail = () => {
     const increaseQuantity = () => {
         setQuantity(quantity + 1);
     };
-    // Hàm để định dạng giá tiền
+    const formatCurrency = (value) => {
+        if (!value) return '';
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+        }).format(value);
+    };
     
     // Thêm component Breadcrumb
     const Breadcrumb = ({ brand, model }) => (
@@ -208,23 +215,11 @@ const CarDetail = () => {
                         </div>
                         <div className="mb-3">
                             <h6>Mã Giảm Giá Của Shop</h6>
-                            <span>Chọn màu{selectedColor}</span>
                             {/* Add shop voucher details here */}
                         </div>
-                        <div className="color-selection">
-                            <div className="color-option" style={{ backgroundColor: '#006494' }} onClick={() => selectColor()}></div>
-                            <div className="color-option" style={{ backgroundColor: '#B22222' }} onClick={() => selectColor()}></div>
-
-                            <div className="color-option" style={{ backgroundColor: 'gray' }} onClick={() => selectColor()}></div>
-                            <div className="color-option" style={{ backgroundColor: '#5A9F68' }} onClick={() => selectColor()}></div>
-                            {carColors.map((color, index) => (
-                                <div
-                                    key={index}
-                                    className={`color-option ${selectedColor === color.color_name ? 'selected' : ''}`}
-                                    style={{ backgroundColor: color.color_name }}
-                                    onClick={() => selectColor(color.color_name)}
-                                />
-                            ))}
+                        <div className="mb-3">
+                            <h6>Vận Chuyển</h6>
+                            <span>Miễn phí vận chuyển</span>
                         </div>
                         <div className="mb-3">
                             <h6>Size</h6>
@@ -286,55 +281,13 @@ const CarDetail = () => {
                             <p>Showroom ID: {showroomId}</p>
 
                         </div>
-                    </div>
-
-                </div>
-
-                <div className="row mt-5">
-                    <div className="col-12">
-                        <h4>Leave a Comment:</h4>
-                        <form role="form">
-                            <div className="form-group">
-                                <textarea className="form-control" rows="3" required></textarea>
-                            </div>
-                            <button type="submit" className="btn btn-success mt-2">Submit</button>
-                        </form>
-                    </div>
-                </div>
-
-                <div className="row mt-4">
-                    <div className="col-12">
-                        <p><span className="badge bg-secondary">2</span> Comments:</p>
-                        <div className="comment">
-                            <div className="d-flex">
-                                <img src="bandmember.jpg" className="rounded-circle me-3" height="50" width="50" alt="Avatar" />
-                                <div>
-                                    <h5>Anja <small className="text-muted">Sep 29, 2015, 9:12 PM</small></h5>
-                                    <p>Bình luận 1</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="comment mt-3">
-                            <div className="d-flex">
-                                <img src="bird.jpg" className="rounded-circle me-3" height="50" width="50" alt="Avatar" />
-                                <div>
-                                    <h5>John Row <small className="text-muted">Sep 25, 2015, 8:25 PM</small></h5>
-                                    <p>Bình luận 2</p>
-                                    <div className="nested-comment mt-3">
-                                        <div className="d-flex">
-                                            <img src="bird.jpg" className="rounded-circle me-3" height="50" width="50" alt="Avatar" />
-                                            <div>
-                                                <h5>Nested Bro <small className="text-muted">Sep 25, 2015, 8:28 PM</small></h5>
-                                                <p>Bình luận 3</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
+
                 </div>
-            </div>
+
+                
+            
 
         </>
     );

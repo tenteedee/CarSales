@@ -7,13 +7,14 @@ import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
-import StaffsPage from "../modules/staffs/StaffsPage";
+import StaffPage from "../modules/staffs/StaffsPage";
 import {useAuth} from "../modules/auth";
 import SettingsPage from "../modules/settings/SettingsPage";
 import NewsPage from "../modules/news/NewsPage";
 import CategoryPage from "../modules/category/CategoryPage";
 import TestDrivePage from "../modules/test-drive-request/TestDrivePage";
 import ShowroomPage from "../modules/showroom/ShowroomPage";
+import CustomerPage from "../modules/customer/CustomerPage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -43,7 +44,17 @@ const PrivateRoutes = () => {
                         path='staffs/*'
                         element={
                             <SuspensedView>
-                                <StaffsPage/>
+                                <StaffPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {hasRole("Director") && (
+                    <Route
+                        path='customers/*'
+                        element={
+                            <SuspensedView>
+                                <CustomerPage/>
                             </SuspensedView>
                         }
                     />

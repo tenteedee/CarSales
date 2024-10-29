@@ -1,11 +1,11 @@
-import {Navigate, Outlet, Route, Routes} from 'react-router-dom'
-import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import {TestDriveCreateWrapper, TestDriveEditWrapper, TestDriveListWrapper} from "./TestDrive";
+import {PageLink, PageTitle} from "../../../_metronic/layout/core";
+import {Navigate, Outlet, Route, Routes} from "react-router-dom";
+import {CustomerCreateWrapper, CustomerEditWrapper, CustomerListWrapper} from "./Customer";
 
-const testDriveBreadcrumbs: Array<PageLink> = [
+const customersBreadcrumbs: Array<PageLink> = [
     {
-        title: 'Test Drive Management',
-        path: '/test-drive',
+        title: 'Customer',
+        path: '/customers',
         isSeparator: false,
         isActive: false,
     },
@@ -17,7 +17,7 @@ const testDriveBreadcrumbs: Array<PageLink> = [
     },
 ]
 
-const TestDrivePage = () => {
+const CustomerPage = () => {
     return (
         <Routes>
             <Route element={<Outlet/>}>
@@ -25,8 +25,8 @@ const TestDrivePage = () => {
                     index
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Test Drive list</PageTitle>
-                            <TestDriveListWrapper/>
+                            <PageTitle breadcrumbs={customersBreadcrumbs}>Customer List</PageTitle>
+                            <CustomerListWrapper/>
                         </>
                     }
                 />
@@ -34,8 +34,8 @@ const TestDrivePage = () => {
                     path="create"
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Create Test Drive</PageTitle>
-                            <TestDriveCreateWrapper/>
+                            <PageTitle breadcrumbs={customersBreadcrumbs}>Create Customer</PageTitle>
+                            <CustomerCreateWrapper/>
                         </>
                     }
                 />
@@ -43,8 +43,8 @@ const TestDrivePage = () => {
                     path="edit/:id"
                     element={
                         <>
-                            <PageTitle breadcrumbs={testDriveBreadcrumbs}>Edit Test Drive</PageTitle>
-                            <TestDriveEditWrapper/>
+                            <PageTitle breadcrumbs={customersBreadcrumbs}>Edit Customer</PageTitle>
+                            <CustomerEditWrapper/>
                         </>
                     }
                 />
@@ -55,4 +55,5 @@ const TestDrivePage = () => {
     )
 }
 
-export default TestDrivePage
+export default CustomerPage
+

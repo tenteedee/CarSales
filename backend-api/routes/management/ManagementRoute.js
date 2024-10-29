@@ -1,6 +1,8 @@
 import express from "express";
 import { verifyStaffToken } from "../../middleware/Auth.js";
 import {
+  createCustomerValidation,
+  updateCustomerValidation,
   validateCreateShowroom,
   validateLogin,
   validateUpdateShowroom,
@@ -10,7 +12,13 @@ import {
   loginWithGoogle,
   verify_token,
 } from "../../controllers/management/AuthController.js";
-import { query } from "../../controllers/management/UserController.js";
+import {
+  createCustomer,
+  deleteCustomer,
+  getCustomer,
+  query,
+  updateCustomer,
+} from "../../controllers/management/UserController.js";
 import {
   queryStaff,
   deleteStaff,
@@ -60,8 +68,11 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import {
+  createTestDrive,
+  deleteTestDrive,
   getTestDrive,
   queryTestDrive,
+  updateTestDrive,
 } from "../../controllers/management/TestDriveController.js";
 import { queryCars } from "../../controllers/management/CarController.js";
 
@@ -126,7 +137,11 @@ router.use("/auth", authRouter);
 
 const userRouter = express.Router();
 userRouter.get("/query", query);
-router.use("/users", verifyStaffToken(["Director"]), userRouter);
+userRouter.post("/create", createCustomerValidation, createCustomer);
+userRouter.delete("/delete", deleteCustomer);
+userRouter.get("/:id", getCustomer);
+userRouter.post("/:id", updateCustomerValidation, updateCustomer);
+router.use("/customers", verifyStaffToken(["Director"]), userRouter);
 
 const staffRoute = express.Router();
 staffRoute.get("/query", queryStaff);
@@ -172,10 +187,10 @@ router.use("/news", verifyStaffToken(["Director"]), newsRoute);
 
 const testDriveRoute = express.Router();
 testDriveRoute.get("/query", queryTestDrive);
-// testDriveRoute.delete("/delete", deleteNews);
-// testDriveRoute.post("/create", createNews);
+testDriveRoute.delete("/delete", deleteTestDrive);
+testDriveRoute.post("/create", createTestDrive);
 testDriveRoute.get("/:id", getTestDrive);
-// testDriveRoute.post("/:id", updateNews);
+testDriveRoute.post("/:id", updateTestDrive);
 router.use(
   "/test-drive",
   verifyStaffToken(["Director", "Sale"]),
@@ -183,9 +198,9 @@ router.use(
 );
 const carRoute = express.Router();
 carRoute.get("/query", queryCars);
-// testDriveRoute.delete("/delete", deleteNews);
-// testDriveRoute.post("/create", createNews);
-// testDriveRoute.get("/:id", getNews);
-// testDriveRoute.post("/:id", updateNews);
+// carRoute.delete("/delete", deleteNews);
+// carRoute.post("/create", createNews);
+// carRoute.get("/:id", getNews);
+// carRoute.post("/:id", updateNews);
 router.use("/cars", verifyStaffToken(["Director"]), carRoute);
 export default router;
