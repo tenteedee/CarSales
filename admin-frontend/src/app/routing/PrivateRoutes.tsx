@@ -15,6 +15,7 @@ import CategoryPage from "../modules/category/CategoryPage";
 import TestDrivePage from "../modules/test-drive-request/TestDrivePage";
 import ShowroomPage from "../modules/showroom/ShowroomPage";
 import CustomerPage from "../modules/customer/CustomerPage";
+import CarsPage from "../modules/car/CarsPage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -95,6 +96,16 @@ const PrivateRoutes = () => {
                         element={
                             <SuspensedView>
                                 <NewsPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {hasRole('Director') && (
+                    <Route
+                        path='cars/*'
+                        element={
+                            <SuspensedView>
+                                <CarsPage />
                             </SuspensedView>
                         }
                     />

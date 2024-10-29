@@ -1,6 +1,10 @@
 import { generatePaginationLinks } from "../../helper/PagingHelper.js";
 import { Op } from "sequelize";
 import Car from "../../models/Car.js";
+import Brand from "../../models/Brand.js";
+import CarType from "../../models/CarType.js";
+import CarImage from "../../models/CarImage.js";
+import { parse } from "dotenv";
 
 export const queryCars = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
@@ -49,12 +53,23 @@ export const queryCars = async (req, res) => {
       where: searchConditions,
       offset: (currentPage - 1) * perPage,
       limit: perPage,
+      // attributes: ['id', 'model', 'price', 'description', 'stock'],
       include: [
-        // {
-        //   model: Staff,
-        //   as: "posted",
-        //   attributes: ["id", "fullname"],
-        // },
+        {
+          model: Brand,
+          as: "brand",
+          attributes: ["name"],
+        },
+        {
+          model: CarType,
+          as: "type",
+          attributes: ["name"],
+        },
+        {
+          model: CarImage,
+          as: "images",
+          attributes: ["image_url"],
+        },
       ],
       order: [[sortColumn, sortOrder.toUpperCase()]],
     });
@@ -99,5 +114,187 @@ export const queryCars = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error || "Something went wrong" });
+  }
+};
+
+export const getCarById = async (req, res) => {
+  try {
+    const carId = req.params.id;
+    if (isNaN(carId)) {
+      throw new Error("Invalid car ID");
+    }
+    const car = await Car.findByPk(carId, {
+      //attributes: ["id", "model", "price", "description", "stock"],
+      include: [
+        {
+          model: Brand,
+          as: "brand",
+          attributes: ["name"],
+        },
+        {
+          model: CarType,
+          as: "type",
+          attributes: ["name"],
+        },
+        {
+          model: CarImage,
+          as: "images",
+          attributes: ["image_url"],
+        },
+      ],
+    });
+
+    if (!car) {
+      return res.status(404).json({
+        message: "Car not found",
+      });
+    }
+    const json = car.toJSON();
+    return res.status(200).json({ data: json });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+export const createNewCar = async (req, res) => {
+  try {
+    const { model, brand_id, type_id, content, price, description, stock } =
+      req.body;
+
+    const brandId = parseInt(brand_id, 10);
+    const typeId = parseInt(type_id, 10);
+
+    const existingCar = await Car.findOne({
+      where: {
+        model,
+        // brand_id: brandId,
+        // type_id: typeId,
+      },
+      raw: true,
+    });
+    if (existingCar) {
+      return res
+        .status(400)
+        .json({ error: "Car already exists in the system!" });
+    }
+
+    const newCar = await Car.create({
+      model,
+      brand_id: brandId,
+      type_id: typeId,
+      price,
+      content,
+      description,
+      stock,
+    });
+    return res.status(201).json({ data: newCar });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const deleteCar = async (req, res) => {
+  let Ids = req.body.ids;
+  if (!Ids || Ids.length === 0) {
+    res.status(500).json({ error: "Danh sách ID không hợp lệ" });
+  }
+  Ids = Ids.filter((id) => !isNaN(id));
+  if (Ids.length === 0) {
+    return res.status(400).json({ error: "Không có ID hợp lệ để xóa" });
+  }
+  try {
+    const deletedCount = await Car.destroy({
+      where: {
+        id: Ids,
+      },
+    });
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ error: "Không tìm thấy xe để xóa" });
+    }
+
+    res.status(200).json({ error: "Xóa thành công", deletedCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Lỗi máy chủ khi xóa xe" });
+  }
+};
+
+export const updateCar = async (req, res) => {
+  try {
+    const carId = req.params.id;
+    const { model, brand_id, type_id, price, stock, content } = req.body;
+
+    const car = await Car.findByPk(carId);
+
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+    if (brand_id) {
+      const brand = await Brand.findOne({ where: { id: brand_id } });
+      if (!brand) {
+        return res.status(400).json({ error: "Brand không tồn tại" });
+      }
+      await car.setBrand(brand);
+    }
+    if (type_id) {
+      const type = await CarType.findOne({ where: { id: type_id } });
+      if (!type) {
+        return res.status(400).json({ error: "Type không tồn tại" });
+      }
+      await car.setType(type);
+    }
+    car.content = content || car.content;
+    car.model = model || car.model;
+    car.price = price || car.price;
+    car.stock = stock || car.stock;
+
+    await car.save();
+    const updatedCar = await Car.findOne({
+      where: { id: carId },
+      include: [
+        {
+          model: Brand,
+          as: "brand",
+          attributes: ["name"],
+        },
+        {
+          model: CarType,
+          as: "type",
+          attributes: ["name"],
+        },
+        {
+          model: CarImage,
+          as: "images",
+          attributes: ["image_url"],
+        },
+      ],
+    });
+    return res.status(200).json({ data: updatedCar });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getAllBrands = async (req, res) => {
+  try {
+    const brands = await Brand.findAll({
+      attributes: ["id", "name"],
+    });
+    return res.status(200).json({ data: brands });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getAllTypes = async (req, res) => {
+  try {
+    const types = await CarType.findAll({
+      attributes: ["id", "name"],
+    });
+    return res.status(200).json({ data: types });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

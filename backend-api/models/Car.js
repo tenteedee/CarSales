@@ -1,15 +1,8 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
-import CarImage from './CarImage.js';
-import Brand from './Brand.js';
-import CarType from './CarType.js';
-import OrderDetails from './OrderDetails.js';
-import Orders from './Orders.js';
-import CarColors from './CarColors.js';
-import TestDriveRequest from './TestDriveRequest.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
 
 const Car = db.define(
-  'car',
+  "car",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -28,14 +21,6 @@ const Car = db.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    color_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'CarColors',
-        key: 'id'
-      }
-    },
     price: {
       type: DataTypes.DECIMAL(15, 2),
       allowNull: true,
@@ -44,6 +29,11 @@ const Car = db.define(
       type: DataTypes.TEXT(1000),
       allowNull: true,
     },
+    content: {
+      type: DataTypes.TEXT(10000),
+      allowNull: true,
+    },
+
     stock: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -58,21 +48,12 @@ const Car = db.define(
     },
   },
   {
-    tableName: 'cars',
+    tableName: "cars",
     timestamps: true,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
-
-OrderDetails.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
-
-
-
-
 
 export default Car;
