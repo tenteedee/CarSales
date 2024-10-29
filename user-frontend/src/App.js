@@ -21,7 +21,6 @@ import Checkout from './pages/OrderDetails/Checkout';
 import InsuranceList from './pages/Insurance/InsuranceList';
 import CarFilter from './pages/HomePage/CarFilter';
 import News from './pages/News/News';
-import News from './pages/News/News';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();

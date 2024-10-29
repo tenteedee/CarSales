@@ -31,31 +31,31 @@
 .slider-container {
   display: flex;
   transition: transform 0.5s ease-in-out;
-
+  
 }
 
 .slider-item {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-
-
+  margin: 0; 
+  padding: 0; 
+  overflow: hidden; 
+  
+  
 }
 
 
 .slider-item {
-  display: none;
+  display: none; 
 }
 
 .slider-item.active {
-  display: block;
+  display: block; 
   transition: transform 0.5s ease;
 }
 
 .slider-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
 }
 
 .slider-control {
@@ -81,7 +81,6 @@
 .m-home .b-slider__info h2 {
   line-height: 1 !important;
 }
-
 .b-slider__info {
   text-transform: uppercase;
   margin: 0 0 0 20px;
@@ -97,10 +96,9 @@
   position: relative;
   padding-bottom: 50px;
   height: 1000px;
-
+ 
   /* Other existing styles */
 }
-
 .m-home .b-search__main .pagination-container {
   position: absolute;
   bottom: 0;
@@ -109,7 +107,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-}
+}   
 
 .m-home .b-search__main>h1 {
   text-transform: uppercase;
@@ -489,6 +487,7 @@
 .m-home .b-review__main-person-inside.m-personThree {
   background: url(../media/persons/person3.jpg) center center no-repeat;
 }
+
 
 /* Asks */
 .m-home .b-asks {
