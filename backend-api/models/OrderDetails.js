@@ -27,11 +27,7 @@ const OrderDetails = db.define(
             type: DataTypes.DECIMAL(15, 2),
             allowNull: false,
         },
-        color_id: {
-            type: DataTypes.INTEGER,
-
-            primaryKey: true,
-        },
+       
 
 
     },
@@ -41,6 +37,7 @@ const OrderDetails = db.define(
         underscored: true,
     }
 );
+
 
 
 export default OrderDetails;

@@ -65,8 +65,8 @@ const CarLoanPage = () => {
             for (let month = 1; month <= totalMonths; month++) {
                 const interest = remainingBalance * monthlyRate;
                 const total = principalPayment + interest;
-                totalInt += interest;
-                totalPay += interest;
+                totalInt += interest;           
+                totalPay += interest;   
                 newSchedule.push({
                     month,
                     beginningBalance: remainingBalance,

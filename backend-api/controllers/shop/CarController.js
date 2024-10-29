@@ -3,6 +3,7 @@ import CarImage from '../../models/CarImage.js';
 import Brand from '../../models/Brand.js';
 import CarType from '../../models/CarType.js';
 import { Op } from 'sequelize';
+import CarColors from '../../models/CarColors.js';
 
 export const getAllCars = async (req, res) => {
   try {
@@ -43,7 +44,7 @@ export const getCarById = async (req, res) => {
       throw new Error('Invalid car ID');
     }
     const car = await Car.findByPk(carId, {
-      attributes: ['id', 'model', 'price', 'description', 'stock'],
+      attributes: ['id', 'model', 'price', 'description', 'stock',],
       include: [
         {
           model: Brand,
@@ -60,7 +61,11 @@ export const getCarById = async (req, res) => {
           as: 'images',
           attributes: ['image_url'],
         },
-
+        {
+          model: CarColors,
+          as: 'colors',
+          attributes: ['color_name'],
+        },
       ],
     });
 

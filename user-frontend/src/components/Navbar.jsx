@@ -115,7 +115,7 @@ const Navbar = () => {
                                         )}
                                     </li>
                                     <li>
-                                        <Link to="/submit1">{t('TIN TỨC')}</Link>
+                                        <Link to="/news">{t('TIN TỨC')}</Link>
                                     </li>
                                     <li>
                                         <Link to="/contacts">{t('LIÊN HỆ')}</Link>

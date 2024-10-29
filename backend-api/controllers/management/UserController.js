@@ -7,8 +7,7 @@ import { sendMail } from "../../services/MailService.js";
 import { randomPassword } from "../../helper/Utils.js";
 import { generateCustomerEmailTemplate } from "../../helper/EmailHelper.js";
 export const createCustomer = async (req, res) => {
-  const { fullname, email, password, phone_number, address, date_of_birth } =
-    req.body;
+  const { fullname, email, phone_number, address, date_of_birth } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
