@@ -1,9 +1,8 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
-import OrderDetails from './OrderDetails.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
 
 const CarColors = db.define(
-  'car_colors',
+  "car_color",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -12,6 +11,7 @@ const CarColors = db.define(
     },
     color_name: {
       type: DataTypes.STRING(50),
+      allowNull: true,
       allowNull: true,
     },
     created_at: {

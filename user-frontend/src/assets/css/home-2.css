@@ -31,27 +31,31 @@
 .slider-container {
   display: flex;
   transition: transform 0.5s ease-in-out;
+  
 }
 
 .slider-item {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+  margin: 0; 
+  padding: 0; 
+  overflow: hidden; 
+  
+  
 }
 
+
 .slider-item {
-  display: none;
+  display: none; 
 }
 
 .slider-item.active {
-  display: block;
+  display: block; 
   transition: transform 0.5s ease;
 }
 
 .slider-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
 }
 
 .slider-control {
@@ -86,12 +90,13 @@
 
 /* Search */
 
+
 .m-home .b-search__main {
   max-height: 1000px;
   position: relative;
   padding-bottom: 50px;
   height: 1000px;
-
+ 
   /* Other existing styles */
 }
 .m-home .b-search__main .pagination-container {
@@ -102,9 +107,9 @@
   width: 100%;
   display: flex;
   justify-content: center;
-}
+}   
 
-.m-home .b-search__main > h1 {
+.m-home .b-search__main>h1 {
   text-transform: uppercase;
   font: 600 24px 'Open Sans', sans-serif;
   /* Increased font size for better visibility */
@@ -120,7 +125,7 @@
   /* Added letter spacing for better readability */
 }
 
-.m-home .b-search__main > h4 {
+.m-home .b-search__main>h4 {
   text-transform: uppercase;
   font: 600 12px 'Open Sans', sans-serif;
   margin: 0 0 45px 0;
@@ -129,18 +134,18 @@
   display: inline-block;
 }
 
-.m-home .b-search__main > h4:before {
+.m-home .b-search__main>h4:before {
   height: 1px;
   width: 70%;
   left: 15%;
-  border-bottom: 1px solid #b4b4b4;
+  border-bottom: 1px solid #B4B4B4;
   content: '';
   position: absolute;
   top: 100%;
   display: block;
 }
 
-.m-home .b-search__main > h4:after {
+.m-home .b-search__main>h4:after {
   background: url(../images/elements/chevron-down.png) center no-repeat;
   width: 100%;
   height: 7px;
@@ -173,12 +178,13 @@
   display: none;
 }
 
-.m-home .b-featured__item > a {
+
+.m-home .b-featured__item>a {
   margin-bottom: 0;
   height: 125px;
 }
 
-.m-home .b-featured__item > a img {
+.m-home .b-featured__item>a img {
   margin-top: 10px;
 }
 
@@ -267,10 +273,11 @@
 .m-home .b-homeAuto__world-item-info {
   margin-bottom: 30px;
   padding-bottom: 25px;
-  border-bottom: 1px solid #b4b4b4;
+  border-bottom: 1px solid #B4B4B4;
   position: relative;
   min-height: 150px;
 }
+
 
 .m-home .b-homeAuto__world-item-info:after {
   background: url(../images/elements/chevron-down.png) center no-repeat;
@@ -283,7 +290,7 @@
   display: block;
 }
 
-.m-home .b-homeAuto__world-item-info > h2 {
+.m-home .b-homeAuto__world-item-info>h2 {
   margin: 0 0 25px 0;
   font: 600 16px 'Open Sans', sans-serif;
   padding: 0 0 0 15px;
@@ -291,11 +298,11 @@
   position: relative;
 }
 
-.m-home .b-homeAuto__world-item-info > h2 a {
+.m-home .b-homeAuto__world-item-info>h2 a {
   text-decoration: none;
 }
 
-.m-home .b-homeAuto__world-item-info > h2:before {
+.m-home .b-homeAuto__world-item-info>h2:before {
   height: 20px;
   border-left: 3px solid #f76d2b;
   position: absolute;
@@ -322,7 +329,7 @@
   font: 300 13px 'Open Sans', sans-serif;
 }
 
-.m-home .b-homeAuto__world > a {
+.m-home .b-homeAuto__world>a {
   font: 600 10px 'Open Sans', sans-serif !important;
   text-transform: uppercase;
   border: 1px solid #dddddd;
@@ -331,7 +338,7 @@
   margin-top: -20px;
 }
 
-.m-home .b-homeAuto__world > a span.fa {
+.m-home .b-homeAuto__world>a span.fa {
   width: 25px;
   height: 25px;
   font-size: 14px;
@@ -339,15 +346,16 @@
   margin-left: 10px;
 }
 
-.m-home .b-homeAuto__world > a:hover {
+.m-home .b-homeAuto__world>a:hover {
   background: #f76d2b;
   color: #fff;
   border-color: #f76d2b;
 }
 
-.m-home .b-homeAuto__world > a:hover span.fa {
+.m-home .b-homeAuto__world>a:hover span.fa {
   background: #fff;
   color: #555;
+
 }
 
 /* Count */
@@ -456,7 +464,7 @@
   -o-transform: scale(-1, 1);
   transform: scale(-1, 1);
   filter: FlipH;
-  -ms-filter: 'FlipH';
+  -ms-filter: "FlipH";
   line-height: 50px;
 }
 
@@ -469,7 +477,7 @@
 
 .m-home .b-review__main-person-inside {
   height: 75px;
-  width: 75px;
+  width: 75px
 }
 
 .m-home .b-review__main-person-inside.m-personTwo {
@@ -479,6 +487,7 @@
 .m-home .b-review__main-person-inside.m-personThree {
   background: url(../media/persons/person3.jpg) center center no-repeat;
 }
+
 
 /* Asks */
 .m-home .b-asks {

@@ -58,9 +58,8 @@ const Navbar = () => {
                 </button>
               </div>
               <div
-                className={`collapse navbar-collapse navbar-main-slide ${
-                  isNavbarOpen ? 'in' : ''
-                }`}
+                className={`collapse navbar-collapse navbar-main-slide ${isNavbarOpen ? 'in' : ''
+                  }`}
                 id="nav"
               >
                 <ul className="navbar-nav-menu">
@@ -68,9 +67,8 @@ const Navbar = () => {
                     <Link to="/">{t('TRANG CHỦ')}</Link>
                   </li>
                   <li
-                    className={`dropdown ${
-                      isDropdownOpen.buyCar ? 'open' : ''
-                    }`}
+                    className={`dropdown ${isDropdownOpen.buyCar ? 'open' : ''
+                      }`}
                     onMouseEnter={() => handleMouseEnter('buyCar')}
                     onMouseLeave={() => handleMouseLeave('buyCar')}
                   >
@@ -98,9 +96,8 @@ const Navbar = () => {
                     <Link to="/article">{t('KHUYẾN MÃI')}</Link>
                   </li>
                   <li
-                    className={`dropdown ${
-                      isDropdownOpen.services ? 'open' : ''
-                    }`}
+                    className={`dropdown ${isDropdownOpen.services ? 'open' : ''
+                      }`}
                     onMouseEnter={() => handleMouseEnter('services')}
                     onMouseLeave={() => handleMouseLeave('services')}
                   >
