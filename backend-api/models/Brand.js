@@ -1,8 +1,8 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
 
 const Brand = db.define(
-  'brand',
+  "brand",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -13,21 +13,11 @@ const Brand = db.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
   },
   {
-    tableName: 'brands',
-    timestamps: true,
+    tableName: "brands",
+    timestamps: false,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
   }
 );
 

@@ -44,6 +44,11 @@ const Car = db.define(
       type: DataTypes.TEXT(1000),
       allowNull: true,
     },
+    content: {
+      type: DataTypes.TEXT(10000),
+      allowNull: true,
+    },
+
     stock: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -65,14 +70,5 @@ const Car = db.define(
     updatedAt: 'updated_at',
   }
 );
-
-OrderDetails.belongsTo(Car, {
-  foreignKey: 'car_id',
-  as: 'car',
-});
-
-
-
-
 
 export default Car;

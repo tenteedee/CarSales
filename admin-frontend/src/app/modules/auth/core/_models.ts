@@ -1,19 +1,8 @@
+import {ID} from "../../../../_metronic/helpers";
+
 export interface AuthModel {
     api_token: string
     refreshToken?: string
-}
-
-export interface UserCommunicationModel {
-    email: boolean
-    sms: boolean
-    phone: boolean
-}
-
-export interface UserSocialNetworksModel {
-    linkedIn: string
-    facebook: string
-    twitter: string
-    instagram: string
 }
 
 export interface RoleModel {
@@ -22,16 +11,17 @@ export interface RoleModel {
 }
 
 export interface UserModel {
-    id: number
+    id?: ID
     username?: string
-    password: string | undefined
-    email: string
+    password?: string | undefined
+    email?: string
     fullname?: string
-    phone?: string
-    role?: RoleModel
+    phone_number?: string
+    role: RoleModel
     pic?: string
     language?: 'en' | 'de' | 'es' | 'fr' | 'ja' | 'zh' | 'ru'
-    auth?: AuthModel
-    communication?: UserCommunicationModel
-    socialNetworks?: UserSocialNetworksModel
+    auth: AuthModel
+    created_at?: string
+    address?: string
+    date_of_birth?: string
 }

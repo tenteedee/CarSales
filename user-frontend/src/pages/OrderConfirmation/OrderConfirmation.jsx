@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect}from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '../../axios';
 import './OrderConfirmation.css';
@@ -7,11 +7,11 @@ import { formatCurrency } from '../../utils/priceFormat';
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
-  const [orderDetails, setOrderDetails] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
         const response = await axios.get(`/order/details/${orderId}`);

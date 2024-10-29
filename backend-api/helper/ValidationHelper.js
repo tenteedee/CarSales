@@ -51,22 +51,53 @@ export const createStaffValidation = [
   body("role_id").optional().isInt().withMessage("Vai trò không hợp lệ"),
   body("showroom_id").optional().isInt().withMessage("Showroom không hợp lệ"),
 ];
+
 export const updateStaffValidation = [
   body("fullname").notEmpty().withMessage("Please provide a valid name"),
   body("email").isEmail().withMessage("Please provide a valid email"),
-  body("password")
-    .optional({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters long")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
-    .withMessage(
-      "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
-    ),
+  // body("password")
+  //   .optional({ checkFalsy: true })
+  //   .isLength({ min: 6 })
+  //   .withMessage("Password must be at least 6 characters long")
+  //   .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
+  //   .withMessage(
+  //     "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
+  //   ),
   body("phone_number")
     .isMobilePhone()
     .withMessage("Please provide a valid phone number"),
   body("role_id").optional().isInt().withMessage("Vai trò không hợp lệ"),
   body("showroom_id").optional().isInt().withMessage("Showroom không hợp lệ"),
+];
+export const createCustomerValidation = [
+  body("fullname").notEmpty().withMessage("Please provide a valid name"),
+  body("email").isEmail().withMessage("Please provide a valid email"),
+  // body("password")
+  //   .optional({ checkFalsy: true })
+  //   .isLength({ min: 6 })
+  //   .withMessage("Password must be at least 6 characters long")
+  //   .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
+  //   .withMessage(
+  //     "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
+  //   ),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Please provide a valid phone number"),
+];
+export const updateCustomerValidation = [
+  body("fullname").notEmpty().withMessage("Please provide a valid name"),
+  body("email").isEmail().withMessage("Please provide a valid email"),
+  // body("password")
+  //   .optional({ checkFalsy: true })
+  //   .isLength({ min: 6 })
+  //   .withMessage("Password must be at least 6 characters long")
+  //   .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/)
+  //   .withMessage(
+  //     "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
+  //   ),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Please provide a valid phone number"),
 ];
 export const validateRegister = [
   check("fullname", "Fullname is required").not().isEmpty(),

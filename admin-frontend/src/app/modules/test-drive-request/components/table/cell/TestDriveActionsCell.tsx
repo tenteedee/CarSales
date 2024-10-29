@@ -52,21 +52,15 @@ const TestDriveActionsCell: FC<Props> = ({id, value, ...props}) => {
                 </div>
                 {/* end::Menu item */}
 
-                {id !== 1 && (
-                    <>
-                        {/* begin::Menu item */}
-                        <div className='menu-item px-3'>
-                            <a
-                                className='menu-link px-3'
-                                data-kt-users-table-filter='delete_row'
-                                onClick={onDeleteClick}
-                            >
-                                Delete
-                            </a>
-                        </div>
-                        {/* end::Menu item */}
-                    </>
-                )}
+                <div className='menu-item px-3'>
+                    <a
+                        className='menu-link px-3'
+                        data-kt-users-table-filter='delete_row'
+                        onClick={onDeleteClick}
+                    >
+                        Delete
+                    </a>
+                </div>
 
             </div>
             {/* end::Menu */}

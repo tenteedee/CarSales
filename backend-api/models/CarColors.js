@@ -12,6 +12,7 @@ const CarColors = db.define(
     color_name: {
       type: DataTypes.STRING(50),
       allowNull: true,
+      allowNull: true,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -23,11 +24,11 @@ const CarColors = db.define(
     },
   },
   {
-    tableName: "car_colors",
+    tableName: 'car_colors',
     timestamps: true,
     underscored: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );
 
