@@ -19,6 +19,7 @@ import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
 import OrderList from './pages/OrderDetails/OrderList';
 import Checkout from './pages/OrderDetails/Checkout';
 import InsuranceList from './pages/Insurance/InsuranceList';
+import CarFilter from './pages/HomePage/CarFilter';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
@@ -58,6 +59,7 @@ function App() {
           element={token ? <TestDriveHistory /> : <Navigate to="/login" />}
         />
         <Route path="/contacts" element={<Contacts />} />
+        <Route path="/cars" element={<CarFilter />} />
         <Route path="/car-loan" element={<CarLoan />} />
         <Route path="/insurance" element={<InsuranceList />} />
         <Route
