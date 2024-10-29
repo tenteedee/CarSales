@@ -74,7 +74,15 @@ import {
   queryTestDrive,
   updateTestDrive,
 } from "../../controllers/management/TestDriveController.js";
-import { queryCars } from "../../controllers/management/CarController.js";
+import {
+  createNewCar,
+  deleteCar,
+  getAllBrands,
+  getAllTypes,
+  getCarById,
+  queryCars,
+  updateCar,
+} from "../../controllers/management/CarController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -198,9 +206,12 @@ router.use(
 );
 const carRoute = express.Router();
 carRoute.get("/query", queryCars);
-// carRoute.delete("/delete", deleteNews);
-// carRoute.post("/create", createNews);
-// carRoute.get("/:id", getNews);
-// carRoute.post("/:id", updateNews);
+carRoute.route("/detail/:id").get(getCarById);
+carRoute.route("/delete/:id").delete(deleteCar);
+carRoute.route("/edit/:id").patch(updateCar);
+carRoute.post("/create", createNewCar);
+carRoute.route("/brand").get(getAllBrands);
+carRoute.route("/type").get(getAllTypes);
 router.use("/cars", verifyStaffToken(["Director"]), carRoute);
+
 export default router;

@@ -26,6 +26,14 @@ const SidebarMenuMain = () => {
                     <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
                 </div>
             </div>
+            {hasRole("Director") && (
+                <SidebarMenuItem
+                    to='/cars'
+                    icon='abstract-4'
+                    title='Car'
+                    fontIcon='bi-layers'
+                />
+            )}
             { (hasRole("Director") || hasRole("Sale")) && (
                 <SidebarMenuItem
                     to='/test-drive'
