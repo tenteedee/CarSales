@@ -112,7 +112,6 @@ export const queryCars = async (req, res) => {
       data: carsList,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error || "Something went wrong" });
   }
 };
@@ -198,14 +197,14 @@ export const createNewCar = async (req, res) => {
 
 export const deleteCar = async (req, res) => {
   let Ids = req.body.ids;
-  if (!Ids || Ids.length === 0) {
-    res.status(500).json({ error: "Danh sách ID không hợp lệ" });
-  }
-  Ids = Ids.filter((id) => !isNaN(id));
-  if (Ids.length === 0) {
-    return res.status(400).json({ error: "Không có ID hợp lệ để xóa" });
-  }
   try {
+    if (!Ids || Ids.length === 0) {
+      res.status(500).json({ error: "Danh sách ID không hợp lệ" });
+    }
+    Ids = Ids.filter((id) => !isNaN(id));
+    if (Ids.length === 0) {
+      return res.status(400).json({ error: "Không có ID hợp lệ để xóa" });
+    }
     const deletedCount = await Car.destroy({
       where: {
         id: Ids,
