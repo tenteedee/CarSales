@@ -1,45 +1,25 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 
-const Car = db.define(
-  'car',
+const InsuranceProvider = db.define(
+  'InsuranceProvider',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    model: {
+    name: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    brand_id: {
-      type: DataTypes.INTEGER,
+    phone_number: {
+      type: DataTypes.STRING(20),
       allowNull: false,
     },
-    type_id: {
-      type: DataTypes.INTEGER,
+    email: {
+      type: DataTypes.STRING(100),
       allowNull: false,
-    },
-    price: {
-      type: DataTypes.DECIMAL(15, 2),
-      allowNull: true,
-    },
-    description: {
-      type: DataTypes.TEXT(1000),
-      allowNull: true,
-    },
-    content: {
-      type: DataTypes.TEXT(10000),
-      allowNull: true,
-    },
-    color_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    stock: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -51,7 +31,7 @@ const Car = db.define(
     },
   },
   {
-    tableName: 'cars',
+    tableName: 'insurance_providers',
     timestamps: true,
     underscored: true,
     createdAt: 'created_at',
@@ -59,4 +39,4 @@ const Car = db.define(
   }
 );
 
-export default Car;
+export default InsuranceProvider;
