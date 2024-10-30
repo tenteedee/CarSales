@@ -6,6 +6,7 @@ import {CarActionsCell} from '../cell/CarActionsCell'
 import {SelectionHeader} from '../../../../../../_metronic/partials/table/header/SelectionHeader'
 import {SelectionCell} from '../../../../../../_metronic/partials/table/cell/SelectionCell'
 import React from 'react'
+import {numberFormat} from "../../../../../utils/helpers/helpers";
 
 const carsColumns: ReadonlyArray<Column<Car>> = [
     {
@@ -45,7 +46,7 @@ const carsColumns: ReadonlyArray<Column<Car>> = [
         id: 'price',
         Cell: ({...props}) => {
             const car = props.data[props.row.index] as Car
-            return <CopyTextCell className='text-dark' value={`${car.price}`}/>
+            return <CopyTextCell className='text-dark' value={`${numberFormat(car.price)}`}/>
         },
     },
     {

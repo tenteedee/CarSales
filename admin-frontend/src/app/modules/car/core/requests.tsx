@@ -1,7 +1,7 @@
 import {QueryResponse} from '../../../utils/model/models'
 import axios, {AxiosResponse} from 'axios'
 import {ID} from '../../../../_metronic/helpers'
-import {Brand, Car, Type} from './models'
+import {Car} from './models'
 
 const API_URL = process.env.REACT_APP_API_URL
 const CAR_URL = `${API_URL}/cars`

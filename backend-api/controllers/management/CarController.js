@@ -112,7 +112,6 @@ export const queryCars = async (req, res) => {
       data: carsList,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error || 'Something went wrong' });
   }
 };

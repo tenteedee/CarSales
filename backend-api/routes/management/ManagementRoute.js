@@ -54,6 +54,7 @@ import {
   createNews,
 } from '../../controllers/management/NewsController.js';
 import {
+  homeStatistic,
   updateState,
   uploadFile,
 } from '../../controllers/management/HomeController.js';
@@ -135,6 +136,7 @@ router.get('/', (req, res) => {
 const homeRouter = express.Router();
 homeRouter.post('/uploads', upload.single('upload'), uploadFile);
 homeRouter.post('/update-state', verifyStaffToken([]), updateState);
+homeRouter.get('/statistic', verifyStaffToken([]), homeStatistic);
 router.use('/home', homeRouter);
 
 const authRouter = express.Router();
