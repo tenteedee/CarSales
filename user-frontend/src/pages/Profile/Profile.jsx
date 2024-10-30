@@ -15,12 +15,14 @@ const UserProfile = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState(true);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/api/shop/customer/profile', {
+        const response = await axios.get('customer/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,8 +60,8 @@ const UserProfile = () => {
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(
-        'http://localhost:3001/api/shop/customer/profile/update',
+      const response = await axios.patch(
+        'customer/profile/update',
         {
           phone_number: userData.phone_number,
           address: userData.address,
@@ -72,9 +74,13 @@ const UserProfile = () => {
         }
       );
       setIsSubmitting(false);
+      setStatus(true);
+      setMessage('Profile updated successfully!');
       console.log('Profile updated successfully:', response.data);
     } catch (error) {
       setIsSubmitting(false);
+      setStatus(false);
+      setMessage('Error updating profile!');
       console.error('Error updating profile:', error);
     }
   };
@@ -121,6 +127,7 @@ const UserProfile = () => {
               yearDropdownItemNumber={100}
             />
           </div>
+          {status ? <p style={{ color: 'green' }}>{message}</p> : <p style={{ color: 'red' }}>{message}</p>}
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Updating...' : 'Update Profile'}
           </button>

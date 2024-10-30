@@ -6,7 +6,7 @@ const router = express.Router();
 router.route('/list')
     .get(queryNews);
 //Route để lấy chi tiết một tin tức
-router.route('/detail/:id')
+router.route('/details/:id')
     .get(getNews);
 
 export default router;

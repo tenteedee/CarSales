@@ -1,14 +1,14 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { validationResult } from "express-validator";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
 import {
   handleErrors,
   handleValidationErrors,
-} from "../../helper/ValidationHelper.js";
-import Customer from "../../models/Customer.js";
-import { OAuth2Client } from "google-auth-library";
-import { GOOGLE_CLIENT_ID, JWT_SECRET } from "../../config/Config.js";
-import moment from "moment";
+} from '../../helper/ValidationHelper.js';
+import Customer from '../../models/Customer.js';
+import { OAuth2Client } from 'google-auth-library';
+import { GOOGLE_CLIENT_ID, JWT_SECRET } from '../../config/Config.js';
+import moment from 'moment';
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -17,7 +17,7 @@ export const verify_token = async (req, res) => {
   try {
     res.status(200).json(errors);
   } catch (err) {
-    errors.error = err.message || "Exception error";
+    errors.error = err.message || 'Exception error';
     res.status(500).json(errors);
   }
 };
@@ -33,7 +33,7 @@ export const login = async (req, res) => {
     const customer = await Customer.findOne({ where: { email: email } });
     errors = {};
     if (!customer) {
-      errors.email = "Email is not registered";
+      errors.email = 'Email is not registered';
       return res.status(422).json(handleErrors(errors, errors.email));
     }
 
@@ -41,7 +41,7 @@ export const login = async (req, res) => {
     // const isMatch = password == customerData.password;
     const isMatch = await bcrypt.compare(password, customer.password);
     if (!isMatch) {
-      errors.password = "Password is incorrect";
+      errors.password = 'Password is incorrect';
       return res.status(422).json(handleErrors(errors, errors.password));
     }
 
@@ -51,7 +51,7 @@ export const login = async (req, res) => {
 
     res.status(200).json({ user: customerData, token });
   } catch (err) {
-    errors.error = err.message || "Server error";
+    errors.error = err.message || 'Server error';
     res.status(500).json(errors);
   }
 };
@@ -67,21 +67,21 @@ export const register = async (req, res) => {
 
     const parsedDob = moment(
       dob,
-      ["MM-DD-YYYY", "DD-MM-YYYY", "YYYY-MM-DD"],
+      ['MM-DD-YYYY', 'DD-MM-YYYY', 'YYYY-MM-DD'],
       true
     );
 
     if (!parsedDob.isValid()) {
       return res
         .status(422)
-        .json({ errors: [{ msg: "Invalid date", path: "dob" }] });
+        .json({ errors: [{ msg: 'Invalid date', path: 'dob' }] });
     }
 
-    const formattedDob = parsedDob.format("YYYY-MM-DD");
+    const formattedDob = parsedDob.format('YYYY-MM-DD');
 
     const existingUser = await Customer.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: "Email already exists" });
+      return res.status(400).json({ error: 'Email already exists' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -98,7 +98,7 @@ export const register = async (req, res) => {
 
     // eslint-disable-next-line no-undef
     const token = jwt.sign({ id: newCustomer.id }, JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: '1d',
     });
 
     const customerData = newCustomer.toJSON();
@@ -120,7 +120,7 @@ export const changePassword = async (req, res) => {
     const isMatch = await bcrypt.compare(oldPassword, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ error: "Old password is incorrect." });
+      return res.status(400).json({ error: 'Old password is incorrect.' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -129,7 +129,7 @@ export const changePassword = async (req, res) => {
     user.password = hashedNewPassword;
     await user.save();
 
-    res.status(200).json({ message: "Password updated successfully." });
+    res.status(200).json({ message: 'Password updated successfully.' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -167,11 +167,11 @@ export const loginGoogle = async (req, res) => {
   try {
     const ticket = await client.verifyIdToken({
       idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
-    const { sub, email, name, picture } = payload;
+    const { sub, email, name } = payload;
 
     let customer = await Customer.findOne({ where: { googleId: sub } });
 
@@ -182,6 +182,7 @@ export const loginGoogle = async (req, res) => {
         email,
       });
     }
+
     const customerData = customer.toJSON();
     const token = jwt.sign({ id: customer.id }, JWT_SECRET);
     res.status(200).json({ user: customerData, token });

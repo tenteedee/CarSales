@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
 import TestDrive from './pages/TestDrive/TestDrive';
+import TestDriveSuccess from './pages/TestDrive/TestDriveSucess';
 import TestDriveHistory from './pages/TestDrive/TestDriveHistory';
 import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
@@ -17,71 +18,76 @@ import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
 import OrderList from './pages/OrderDetails/OrderList';
 import Checkout from './pages/OrderDetails/Checkout';
+import InsuranceList from './pages/Insurance/InsuranceList';
+import CarFilter from './pages/HomePage/CarFilter';
 import News from './pages/News/News';
 function App() {
-    const token = useSelector((state) => state.auth.token);
-    const location = useLocation();
+  const token = useSelector((state) => state.auth.token);
+  const location = useLocation();
 
-    // Các đường dẫn muốn ẩn Navbar
-    const hideNavbarPaths = ['/login', '/register'];
+  // Các đường dẫn muốn ẩn Navbar
+  const hideNavbarPaths = ['/login', '/register'];
 
-    return (
-        <div>
-            <Header />
-            {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
-            {!hideNavbarPaths.includes(location.pathname) && (
-                <>
-                    <Navbar />
-                </>
-            )}
+  return (
+    <div>
+      <Header />
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route
-                    path="/login"
-                    element={!token ? <Login /> : <Navigate to="/" />}
-                />
-                <Route
-                    path="/register"
-                    element={!token ? <Register /> : <Navigate to="/" />}
-                />
-                <Route
-                    path="/profile"
-                    element={token ? <UserProfile /> : <Navigate to="/" />}
-                />
-                <Route path="/car/detail/:id" element={<CarDetail />} />
-                <Route
-                    path="/test-drive"
-                    element={token ? <TestDrive /> : <Navigate to="/login" />}
-                />
-                <Route
-                    path="/test-drive/history"
-                    element={
-                        token ? <TestDriveHistory /> : <Navigate to="/login" />
-                    }
-                />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/car-loan" element={<CarLoan />} />
-                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />              
-                <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
-                <Route path="/order-list" element={<OrderList />} />
-                <Route path="/checkout" element={<Checkout />} />
+      {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
+      {!hideNavbarPaths.includes(location.pathname) && (
+        <>
+          <Navbar />
+        </>
+      )}
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/login"
+          element={!token ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!token ? <Register /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profile"
+          element={token ? <UserProfile /> : <Navigate to="/" />}
+        />
+        <Route path="/car/detail/:id" element={<CarDetail />} />
+        <Route path="/test-drive" element={<TestDrive />} />
+        <Route path="/test-drive/success" element={<TestDriveSuccess />} />
+        <Route
+          path="/test-drive/history"
+          element={token ? <TestDriveHistory /> : <Navigate to="/login" />}
+        />
+        <Route path="/contacts" element={<Contacts />} />
+        <Route path="/cars" element={<CarFilter />} />
+        <Route path="/car-loan" element={<CarLoan />} />
+        <Route path="/insurance" element={<InsuranceList />} />
+        <Route
+          path="/order-confirmation/:orderId"
+          element={<OrderConfirmation />}
+        />
+        <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
+        <Route path="/order-list" element={<OrderList />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/news" element={<News />} />
                 <Route path="/news" element={<News />} />
-                <Route path="*" element={<NotFound />} />
-                <Route path="/404" element={<NotFound />} />
-            </Routes>
-            <Footer />
-        </div>
-    );
+        <Route path="*" element={<NotFound />} />
+        <Route path="/404" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
 }
 
 const NotFound = () => {
-    return (
-        <div className="not-found">
-            <h1 className="not-found status">404</h1>
-            <h2 className="not-found error">Page Not Found</h2>
-        </div>
-    );
+  return (
+    <div className="not-found">
+      <h1 className="not-found status">404</h1>
+      <h2 className="not-found error">Page Not Found</h2>
+    </div>
+  );
 };
 
 export default App;
