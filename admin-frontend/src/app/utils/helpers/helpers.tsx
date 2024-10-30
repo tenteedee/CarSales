@@ -11,15 +11,3 @@ export function timeToDate(dateString : any) {
 
     return `${day}/${month}/${year} - ${hours}:${minutes}:${seconds}`;
 }
-export function numberFormat(number : any, decimals = 2, decPoint = ".", thousandsSep = ",") {
-    if (isNaN(number)) return "0";
-
-    const fixedNumber = Number(number).toFixed(decimals); // Làm tròn số đến số thập phân chỉ định
-    const parts = fixedNumber.split("."); // Tách phần nguyên và phần thập phân
-
-    // Thêm dấu phân cách cho phần nguyên
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSep);
-
-    // Kết hợp phần nguyên và phần thập phân với dấu thập phân
-    return parts.join(decPoint);
-}

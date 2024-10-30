@@ -24,5 +24,4 @@ export interface UserModel {
     created_at?: string
     address?: string
     date_of_birth?: string
-    avatar_url ?: string
 }

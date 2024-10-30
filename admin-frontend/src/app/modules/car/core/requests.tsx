@@ -1,7 +1,7 @@
 import {QueryResponse} from '../../../utils/model/models'
 import axios, {AxiosResponse} from 'axios'
 import {ID} from '../../../../_metronic/helpers'
-import {Car} from './models'
+import {Brand, Car, Type} from './models'
 
 const API_URL = process.env.REACT_APP_API_URL
 const CAR_URL = `${API_URL}/cars`
@@ -55,11 +55,8 @@ export const getTypes = async (): Promise<QueryResponse> => {
     return axios.get(`${GET_CARS_URL}?${query}`).then((d: AxiosResponse<QueryResponse>) => d.data)
 }
 export const deleteCar = async (carId: Array<ID>): Promise<QueryResponse> => {
-    return axios
-        .delete(`${CAR_URL}/delete`, {
-            data: {ids: carId}
-        })
-        .then((response: AxiosResponse<QueryResponse>) => response.data);
+    const response = await axios.delete(`${CAR_URL}/delete/${carId}`)
+    return response.data
 }
 
 export const getCar = async (id: string): Promise<QueryResponse> => {
@@ -78,7 +75,7 @@ export const createCar = async (car: Car): Promise<QueryResponse> => {
         brand_id: car.brand?.id,
         type_id: car.type?.id,
         price: car.price,
-        content: car.content,
+        content : car.content,
         description: car.description,
         stock: car.stock,
     }
