@@ -1,97 +1,13 @@
 import { APP_URL } from "../../config/Config.js";
 import db from "../../config/Database.js";
 import { checkStaffRole } from "../../helper/RoleHelper.js";
-import Brand from "../../models/Brand.js";
-import Car from "../../models/Car.js";
-import Customer from "../../models/Customer.js";
-import Orders from "../../models/Orders.js";
-import { Op } from "sequelize";
 
-const allowedTables = ["news", "customers"];
+const allowedTables = ["news", "users"];
 const allowedColumns = ["status", "is_pin"];
 
 const tableRoles = {
   news: ["Director"],
-  customers: ["Director"],
-};
-
-export const homeStatistic = async (req, res) => {
-  try {
-    const { type } = req.query;
-    let startDate;
-    const currentDate = new Date();
-    switch (type) {
-      case "day":
-        startDate = new Date(currentDate);
-        startDate.setHours(0, 0, 0, 0); // Đặt thời gian đầu ngày
-        break;
-      case "week":
-        startDate = new Date(currentDate);
-        const dayOfWeek = startDate.getDay();
-        startDate.setDate(currentDate.getDate() - dayOfWeek); // Đặt thời gian đầu tuần (Chủ nhật)
-        startDate.setHours(0, 0, 0, 0);
-        break;
-      case "month":
-        startDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          1
-        ); // Đặt thời gian đầu tháng
-        break;
-      default:
-        return res.status(400).json({ error: "Type không hợp lệ" });
-    }
-    const user = req.user;
-
-    let whereCondition = {
-      created_at: {
-        [Op.gte]: startDate,
-        [Op.lte]: currentDate,
-      },
-    };
-
-    if (user.role.name === "Technical") {
-      whereCondition = {
-        ...whereCondition,
-        technical_staff_id: user.id,
-      };
-    } else if (user.role.name === "Sale") {
-      whereCondition = {
-        ...whereCondition,
-        sales_staff_id: user.id,
-      };
-    } else if (user.role.name === "Insurance") {
-      whereCondition = {
-        ...whereCondition,
-        insurance_staff_id: user.id,
-      };
-    }
-
-    const orders = await Orders.findAll({
-      include: [
-        {
-          model: Car,
-          as: "car",
-          include: [
-            {
-              model: Brand,
-              as: "brand",
-              attributes: ["name"],
-            },
-          ],
-        },
-        {
-          model: Customer,
-          as: "customer",
-          attributes: ["fullname", "email", "phone_number"],
-        },
-      ],
-      where: whereCondition,
-    });
-    return res.status(200).json({ data: orders });
-  } catch (err) {
-    return res.status(500).json({ error: err.message || "Lỗi máy chủ" });
-  }
+  users: ["Director"],
 };
 export const uploadFile = async (req, res) => {
   try {
