@@ -150,3 +150,39 @@ export const queryNews = async (req, res) => {
     res.status(500).json({ error: error || "Something went wrong" });
   }
 };
+export const getNewsById = async (req, res) => {
+  const { id } = req.params;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
+  try {
+    const news = await News.findOne({
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+      },
+      include: [
+        {
+          model: NewsCategory,
+          as: "category",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Staff,
+          as: "posted",
+          attributes: ["id", "fullname"],
+        },
+      ],
+    });
+
+    if (!news) {
+      return res.status(404).json({ error: "Tin tức không tồn tại" });
+    }
+    const newsData = news.toJSON();
+    newsData.password = ""; // Ensure sensitive data is not exposed
+    return res.status(200).json({ data: newsData });
+  } catch (error) {
+    return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};

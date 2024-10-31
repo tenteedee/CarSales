@@ -22,5 +22,4 @@ router.get('/settings', getAllSettings);
 router.use('/order', OrderRouter);
 router.use('/insurance', InsuranceRouter);
 router.use('/news', NewsRouter);
-router.use('/news', newsRouter);
 export default router;

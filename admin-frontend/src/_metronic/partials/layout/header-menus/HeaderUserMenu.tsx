@@ -33,7 +33,7 @@ const HeaderUserMenu: FC = () => {
       <div className='separator my-2'></div>
 
       <div className='menu-item px-5'>
-        <Link to={`/staff-profile/${currentUser?.id}`} className='menu-link px-5'>
+        <Link to='/profile' className='menu-link px-5'>
           My Profile
         </Link>
       </div>

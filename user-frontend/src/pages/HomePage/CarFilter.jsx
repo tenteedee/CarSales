@@ -119,8 +119,9 @@ function CarFilter() {
   return (
     <section className="b-search">
       <div className="container">
-        <h1>{t('SEARCH.HEADER')}</h1>
         <div className="b-search__main">
+        <h1>{t('SEARCH.HEADER')}</h1>
+        <br />
           <h4>{t('SEARCH.SUBHEADER')}</h4>
           <form onSubmit={handleSearch} className="b-search__main-form">
             <div className="row">
