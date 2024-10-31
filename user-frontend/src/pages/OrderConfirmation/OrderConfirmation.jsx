@@ -2,8 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '../../axios';
 import './OrderConfirmation.css';
-import { formatCurrency } from '../../utils/priceFormat';
-
+import { formatCurrency } from '../../utils/formatCurrency';
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
@@ -28,8 +27,6 @@ const OrderConfirmation = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-
- 
 
   return (
     <div className="order-confirmation">

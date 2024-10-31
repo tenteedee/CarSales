@@ -44,7 +44,7 @@ export const getCarById = async (req, res) => {
       throw new Error('Invalid car ID');
     }
     const car = await Car.findByPk(carId, {
-      attributes: ['id', 'model', 'price', 'description', 'stock',],
+      attributes: ['id', 'model', 'price', 'description', 'stock', 'content'],
       include: [
         {
           model: Brand,
