@@ -20,6 +20,7 @@ const ToolbarClassic = () => {
         { path: '/test-drive', roles: ['Director'] },
         { path: '/customers', roles: ['Director'] },
         { path: '/cars', roles: ['Director'] },
+        { path: '/insurances/providers', roles: ['Director'] },
 
     ];
 

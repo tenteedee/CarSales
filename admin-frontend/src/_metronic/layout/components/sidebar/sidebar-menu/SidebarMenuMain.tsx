@@ -3,8 +3,7 @@ import React from 'react'
 import {useIntl} from 'react-intl'
 import {SidebarMenuItem} from './SidebarMenuItem'
 import {useAuth} from "../../../../../app/modules/auth";
-import {Route} from "react-router-dom";
-import SettingsPage from "../../../../../app/modules/settings/SettingsPage";
+import {SidebarMenuItemWithSub} from "./SidebarMenuItemWithSub";
 
 const SidebarMenuMain = () => {
     const intl = useIntl()
@@ -20,21 +19,18 @@ const SidebarMenuMain = () => {
             />
 
             <SidebarMenuItem to='/builder' icon='switch' title='Layout Builder' fontIcon='bi-layers'/>
-
             <div className='menu-item'>
                 <div className='menu-content pt-8 pb-2'>
-                    <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
+                    <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Transations</span>
                 </div>
             </div>
-            {hasRole("Director") && (
-                <SidebarMenuItem
-                    to='/cars'
-                    icon='abstract-4'
-                    title='Car'
-                    fontIcon='bi-layers'
-                />
+            {(hasRole("Director") || hasRole("Insurance")) && (
+                <SidebarMenuItemWithSub fontIcon='bi-layers' icon='abstract-26' to='/insurances' title='Insurance'>
+                    <SidebarMenuItem fontIcon='bi-layers' icon='abstract-19' to='/insurances/contracts'
+                                 title='Insurance Contracts'/>
+                </SidebarMenuItemWithSub>
             )}
-            { (hasRole("Director") || hasRole("Sale")) && (
+            {(hasRole("Director") || hasRole("Sale")) && (
                 <SidebarMenuItem
                     to='/test-drive'
                     icon='ghost'
@@ -42,6 +38,25 @@ const SidebarMenuMain = () => {
                     fontIcon='bi-layers'
                 />
             )}
+            <div className='menu-item'>
+                <div className='menu-content pt-8 pb-2'>
+                    <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
+                </div>
+            </div>
+
+
+            {(hasRole("Director") || hasRole("Insurance")) && (
+                <SidebarMenuItem fontIcon='bi-layers' icon='abstract-33' to='/insurances/providers'
+                                 title='Insurance Providers'/>
+            )}
+
+            {(hasRole("Director")) && (
+                <SidebarMenuItemWithSub fontIcon='bi-layers' icon='abstract-16' to='/cars' title='Car'>
+                    <SidebarMenuItem fontIcon='bi-layers' icon='abstract-4' to='/cars' title='List Car'/>
+                </SidebarMenuItemWithSub>
+            )}
+
+
             {hasRole("Director") && (
                 <SidebarMenuItem
                     to='/showrooms'
