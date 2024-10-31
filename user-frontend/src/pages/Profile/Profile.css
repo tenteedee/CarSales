@@ -1,27 +1,48 @@
 .user-profile-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  height: 100vh;
 }
 
 .profile-info {
-    flex: 1;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-right: 1px solid #ddd;
+  flex: 1;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-right: 1px solid #ddd;
 }
 
 .password-section {
-    flex: 1;
-    background-color: #ffffff;
-    padding: 20px;
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
 }
 
 input {
-    width: 500px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 500px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.user-profile-container input,
+.user-profile-container button,
+.user-profile-container label {
+  font-size: 14px; /* Tăng kích thước chữ */
+}
+
+.user-profile-container input {
+  padding: 10px; /* Tăng khoảng cách bên trong input */
+}
+
+.user-profile-container input[readonly] {
+  background-color: #f0f0f0; /* Màu nền nhạt cho các ô chỉ đọc */
+}
+
+.profile-info input,
+.password-section input {
+  width: 100%; /* Đặt width của input theo kích thước của container */
+  max-width: 500px; /* Đặt giới hạn cho độ rộng */
+  font-size: 12px !important; /* Bắt buộc font-size nếu các quy tắc khác ghi đè */
 }

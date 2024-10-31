@@ -66,8 +66,8 @@ function CarFilter() {
     const searchParams = {
       brand: selectedBrand,
       type: selectedType,
-      minPrice: minPrice.replace(/\D/g, ''),
-      maxPrice: maxPrice.replace(/\D/g, ''),
+      minPrice,
+      maxPrice,
     };
 
     try {
