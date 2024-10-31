@@ -79,9 +79,9 @@ const Navbar = () => {
                     </Link>
                     {isDropdownOpen.buyCar && (
                       <ul className="dropdown-menu h-nav">
-                        <li>
+                        {/* <li>
                           <Link to="/cars">{t('DANH SÁCH XE')}</Link>
-                        </li>
+                        </li> */}
                         <li>
                           <Link to="/car-loan">{t('ƯỚC TÍNH VAY')}</Link>
                         </li>

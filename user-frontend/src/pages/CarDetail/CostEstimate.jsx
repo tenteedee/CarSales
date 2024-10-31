@@ -94,7 +94,7 @@ const CostEstimate = ({ price }) => {
         <div className="cost-item">
           <strong>Giá xe:</strong> <span>{formatCurrency(price)}</span>
         </div>
-        <hr />
+
         <div className="cost-item">
           <strong>Phí bắt buộc</strong>
         </div>
@@ -120,7 +120,7 @@ const CostEstimate = ({ price }) => {
           <span>Bảo hiểm TNDS:</span>{' '}
           <span>{formatCurrency(mandatoryInsurance)}</span>
         </div>
-        <hr />
+
         <div className="cost-total">
           <strong>Tổng tiền:</strong> <span>{formatCurrency(totalCost())}</span>
         </div>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatCurrency } from '../../utils/formatCurrency';
+import formatCurrency from './../../utils/formatCurrency';
 
 import './CarDetail.css';
 import CostEstimate from './CostEstimate';
@@ -12,6 +13,7 @@ const CarDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   const user = useSelector((state) => state.auth.user);
   const [carInfo, setCarInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +27,9 @@ const CarDetail = () => {
   const [carColors, setCarColors] = useState([]);
   const [orderInfo, setOrderInfo] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
+  const [currentLang, setCurrentLang] = useState(
+    localStorage.getItem('language') || 'en'
+  );
   useEffect(() => {
     const fetchCarInfo = async () => {
       if (!id) {
@@ -64,6 +69,18 @@ const CarDetail = () => {
     };
     fetchAllShowrooms();
   }, [id, navigate]);
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const savedLanguage = localStorage.getItem('language') || 'en';
+      setCurrentLang(savedLanguage);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n]);
 
   const handleMakeOrder = async () => {
     if (!user) {
@@ -130,14 +147,6 @@ const CarDetail = () => {
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
-  };
-  const formatCurrency = (value) => {
-    if (!value) return '';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-    }).format(value);
   };
 
   // Thêm component Breadcrumb
@@ -230,8 +239,8 @@ const CarDetail = () => {
             </h2>
             <div className="d-flex align-items-center mb-2">
               <span className="me-2">4.4 ★★★★☆</span>
-              <span className="me-2">a Đánh Giá</span>
-              <span>b Đã Bán</span>
+              {/* <span className="me-2">Đánh Giá</span>
+              <span>Đã Bán</span> */}
             </div>
             <div className="price-container">
               <span className="original-price">
@@ -323,6 +332,14 @@ const CarDetail = () => {
           </div>
         </div>
         <CostEstimate price={carInfo?.price} />
+        <div className="row">
+          <div className="col-md-12">
+            <div
+              className="centered-content"
+              dangerouslySetInnerHTML={{ __html: carInfo?.content }}
+            />
+          </div>
+        </div>
       </div>
     </>
   );

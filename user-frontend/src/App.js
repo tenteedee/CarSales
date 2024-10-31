@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
 import TestDrive from './pages/TestDrive/TestDrive';
+import TestDriveSuccess from './pages/TestDrive/TestDriveSuccess';
 import TestDriveHistory from './pages/TestDrive/TestDriveHistory';
 import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
@@ -55,6 +56,10 @@ function App() {
         <Route
           path="/test-drive"
           element={token ? <TestDrive /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/test-drive/success"
+          element={token ? <TestDriveSuccess /> : <Navigate to="/login" />}
         />
         <Route
           path="/test-drive/history"
