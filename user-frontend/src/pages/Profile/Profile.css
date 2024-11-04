@@ -29,20 +29,20 @@ input {
 .user-profile-container input,
 .user-profile-container button,
 .user-profile-container label {
-  font-size: 14px; /* Tăng kích thước chữ */
+  font-size: 14px;
 }
 
 .user-profile-container input {
-  padding: 10px; /* Tăng khoảng cách bên trong input */
+  padding: 10px;
 }
 
 .user-profile-container input[readonly] {
-  background-color: #f0f0f0; /* Màu nền nhạt cho các ô chỉ đọc */
+  background-color: #f0f0f0;
 }
 
 .profile-info input,
 .password-section input {
-  width: 100%; /* Đặt width của input theo kích thước của container */
-  max-width: 500px; /* Đặt giới hạn cho độ rộng */
-  font-size: 12px !important; /* Bắt buộc font-size nếu các quy tắc khác ghi đè */
+  width: 100%;
+  max-width: 500px;
+  font-size: 12px !important;
 }

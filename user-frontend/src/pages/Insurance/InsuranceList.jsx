@@ -7,7 +7,7 @@ import formatCurrency from './../../utils/formatCurrency';
 const InsuranceList = () => {
   const { t, i18n } = useTranslation();
   const [insurances, setInsurances] = useState([]);
-  const [selectedType, setSelectedType] = useState('Bắt buộc');
+  const [selectedType, setSelectedType] = useState(1);
   const [insuranceTypes, setInsuranceTypes] = useState([]);
   const [currentLang, setCurrentLang] = useState(
     localStorage.getItem('language') || 'en'

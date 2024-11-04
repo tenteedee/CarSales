@@ -5,6 +5,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './TestDrive.css';
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const phoneRegex = /^[0-9]{10,11}$/;
+
 const TestDrive = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,6 +61,18 @@ const TestDrive = () => {
     }
   };
 
+  const validateInputs = () => {
+    if (!emailRegex.test(customerData.email)) {
+      setError('Invalid email format.');
+      return false;
+    }
+    if (!phoneRegex.test(customerData.phone_number)) {
+      setError('Phone number must be 10 or 11 digits.');
+      return false;
+    }
+    return true;
+  };
+
   const validateTestDriveDate = () => {
     const currentDate = new Date();
     if (!testDriveDate) return false;
@@ -79,14 +94,7 @@ const TestDrive = () => {
       return;
     }
 
-    // Ensure non-logged-in users provide all necessary information
-    if (
-      !isLoggedIn &&
-      (!customerData.fullname ||
-        !customerData.email ||
-        !customerData.phone_number)
-    ) {
-      setError('Please fill in all required customer information.');
+    if (!isLoggedIn && !validateInputs()) {
       return;
     }
 

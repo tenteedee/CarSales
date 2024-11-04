@@ -53,14 +53,8 @@ function App() {
           element={token ? <UserProfile /> : <Navigate to="/" />}
         />
         <Route path="/car/detail/:id" element={<CarDetail />} />
-        <Route
-          path="/test-drive"
-          element={token ? <TestDrive /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/test-drive/success"
-          element={token ? <TestDriveSuccess /> : <Navigate to="/login" />}
-        />
+        <Route path="/test-drive" element={<TestDrive />} />
+        <Route path="/test-drive/success" element={<TestDriveSuccess />} />
         <Route
           path="/test-drive/history"
           element={token ? <TestDriveHistory /> : <Navigate to="/login" />}

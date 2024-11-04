@@ -36,9 +36,11 @@ export const requestTestDrive = async (req, res) => {
           .json({ error: 'Customer information is incomplete.' });
       }
 
+      // Check if customer already exists based on email
       let customer = await Customer.findOne({ where: { email } });
 
       if (!customer) {
+        // Create new customer if not found
         customer = await Customer.create({
           fullname,
           email,
@@ -59,23 +61,22 @@ export const requestTestDrive = async (req, res) => {
         .json({ error: 'Customer ID could not be determined.' });
     }
 
-    const car = await Car.findByPk(car_id);
-    if (!car) {
-      return res.status(404).json({ error: 'Car not found.' });
-    }
-
+    // Find all available sales staff in the selected showroom
     const salesStaff = await Staff.findAll({
       where: { role_id: 2, showroom_id: showroom_id },
     });
+
     if (!salesStaff.length) {
       return res
         .status(404)
         .json({ error: 'No sales staff available for the selected showroom.' });
     }
 
+    // Select a random sales staff member from the available list
     const randomSalesStaff =
       salesStaff[Math.floor(Math.random() * salesStaff.length)];
 
+    // Proceed to create the test drive request with assigned sales staff
     const testDriveRequest = await TestDriveRequest.create({
       customer_id: finalCustomerId,
       car_id,
