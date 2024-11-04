@@ -1,4 +1,26 @@
 import { body, check } from "express-validator";
+export const validateCreateInsuranceProvider = [
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email."),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Please provide a valid phone number"),
+  body("name").notEmpty().withMessage("Name showroom is required."),
+];
+export const validateUpdateInsuranceProvider = [
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email."),
+  body("phone_number")
+    .isMobilePhone()
+    .withMessage("Please provide a valid phone number"),
+  body("name").notEmpty().withMessage("Name showroom is required."),
+];
 export const validateCreateShowroom = [
   body("email")
     .notEmpty()
