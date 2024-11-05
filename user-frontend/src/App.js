@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
@@ -14,13 +15,12 @@ import TestDriveSuccess from './pages/TestDrive/TestDriveSucess';
 import TestDriveHistory from './pages/TestDrive/TestDriveHistory';
 import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
-import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
-import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
-import OrderList from './pages/OrderDetails/OrderList';
-import Checkout from './pages/OrderDetails/Checkout';
 import InsuranceList from './pages/Insurance/InsuranceList';
 import CarFilter from './pages/HomePage/CarFilter';
 import News from './pages/News/News';
+import NewsDetail from './pages/News/NewsDetail';
+
+
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
@@ -64,16 +64,10 @@ function App() {
         <Route path="/cars" element={<CarFilter />} />
         <Route path="/car-loan" element={<CarLoan />} />
         <Route path="/insurance" element={<InsuranceList />} />
-        <Route
-          path="/order-confirmation/:orderId"
-          element={<OrderConfirmation />}
-        />
-        <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
-        <Route path="/order-list" element={<OrderList />} />
-        <Route path="/checkout" element={<Checkout />} />
+       
         <Route path="/news" element={<News />} />
-                <Route path="/news" element={<News />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/news/:id" element={<NewsDetail/>} />              
+               <Route path="*" element={<NotFound />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>
       <Footer />

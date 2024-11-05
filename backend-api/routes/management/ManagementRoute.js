@@ -68,6 +68,12 @@ import {
   queryTestDrive,
   updateTestDrive,
 } from '../../controllers/management/TestDriveController.js';
+import {
+  getProfile,
+  updateProfile,
+  changePassword,
+} from '../../controllers/management/ProfileController.js';
+
 import { queryCars } from '../../controllers/management/CarController.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -186,6 +192,11 @@ router.use(
   verifyStaffToken(['Director', 'Sale']),
   testDriveRoute
 );
+const profileRoute = express.Router();
+profileRoute.get('/', verifyStaffToken([]), getProfile); 
+profileRoute.put('/update', verifyStaffToken([]), updateProfile); 
+profileRoute.post('/  password', verifyStaffToken([]), changePassword); 
+router.use('/profile', profileRoute);
 
 const carRoute = express.Router();
 carRoute.get('/query', queryCars);

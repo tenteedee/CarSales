@@ -130,6 +130,14 @@ const Header = () => {
               </div>
             </div>
           </div>
+          <nav className="b-topBar__nav">
+                <ul style={{ display: 'flex', gap: '10px' }}>
+                  
+                  <li>
+                    <Link to={'/cart'}>{t('Cart')}</Link>
+                  </li>
+                </ul>
+              </nav>
         </div>
       </div>
     </header>

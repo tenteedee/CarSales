@@ -116,72 +116,79 @@ function CarFilter() {
     );
   }
 
-  
   return (
     <section className="b-search">
-        <div className="container">
+      <div className="container">
+        <h1>{t('SEARCH.HEADER')}</h1>
+        <div className="b-search__main">
+          <h4>{t('SEARCH.SUBHEADER')}</h4>
+          <form onSubmit={handleSearch} className="b-search__main-form">
+            <div className="row">
+              <div className="col-xs-16 col-md-12">
+                <div className="m-firstSelects">
+                  <div className="col-md-3">
+                    <select
+                      value={selectedBrand}
+                      onChange={(e) => setSelectedBrand(e.target.value)}
+                    >
+                      <option value="">{t('SEARCH.SELECT_BRAND')}</option>
+                      {brands.map((brand) => (
+                        <option key={brand.id} value={brand.id}>
+                          {brand.name}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="fa fa-caret-down"></span>
+                  </div>
 
-            <div className="b-search__main" style={{ minHeight: '500px' }}>
-                <h1>{t('SEARCH.HEADER')}</h1><br />
-                <h4>{t('SEARCH.SUBHEADER')}</h4>
-                <form onSubmit={handleSearch} className="b-search__main-form">
-                    <div className="row">
-                        <div className="col-xs-16 col-md-12">
-                            <div className="m-firstSelects">
-                                <div className="col-md-3">
-                                    <select
-                                        value={selectedBrand}
-                                        onChange={(e) => setSelectedBrand(e.target.value)}
-                                    >
-                                        <option value="">{t('SEARCH.SELECT_BRAND')}</option>
-                                        {brands.map((brand) => (
-                                            <option key={brand.id} value={brand.id}>
-                                                {brand.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <span className="fa fa-caret-down"></span>
-                                </div>
-                                <div className="col-md-3">
-                                    <select
-                                        value={selectedType}
-                                        onChange={(e) => setSelectedType(e.target.value)}
-                                    >
-                                        <option value="">{t('SEARCH.SELECT_TYPE')}</option>
-                                        {types.map((type) => (
-                                            <option key={type.id} value={type.id}>
-                                                {type.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <span className="fa fa-caret-down"></span>
-                                </div>
-                                <div className="col-md-2">
-                                    <input
-                                        type="text"
-                                        placeholder={t('SEARCH.MIN_PRICE')}
-                                        value={minPrice}
-                                        onChange={handleMinPriceChange}
-                                        style={{ width: '150px' }}
-                                    />
-                                </div>
-                                <div className="col-md-2">
-                                    <input
-                                        type="text"
-                                        placeholder={t('SEARCH.MAX_PRICE')}
-                                        value={maxPrice}
-                                        onChange={handleMaxPriceChange}
-                                        style={{ width: '150px' }}
-                                    />
-                                </div>
-                                <button type="submit" className="col-md-2">
-                                    {t('SEARCH.SEARCH') + ' '}
-                                    <span className="fa fa-search"></span>
-                                </button>
-                            </div>
-                        </div>
+                  <div className="col-md-3">
+                    <select
+                      value={selectedType}
+                      onChange={(e) => setSelectedType(e.target.value)}
+                    >
+                      <option value="">{t('SEARCH.SELECT_TYPE')}</option>
+                      {types.map((type) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="fa fa-caret-down"></span>
+                  </div>
+
+                  <div className="col-md-4">
+                    <Slider
+                      range
+                      min={100000000}
+                      max={2500000000}
+                      value={[minPrice || 100000000, maxPrice || 2500000000]}
+                      onChange={([newMinPrice, newMaxPrice]) => {
+                        setMinPrice(newMinPrice);
+                        setMaxPrice(newMaxPrice);
+                      }}
+                      step={10000000}
+                      tipFormatter={(value) => `${formatCurrency(value)}`}
+                    />
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginTop: '10px',
+                      }}
+                    >
+                      <span>{formatCurrency(minPrice)}</span>
+                      <span>{formatCurrency(maxPrice)}</span>
                     </div>
-                </form>
+                  </div>
+
+                  <button type="submit" className="col-md-2">
+                    {t('SEARCH.SEARCH') + ' '}
+                    <span className="fa fa-search"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
                 <div className="car-results flex justify-center">
                     <h3>{t('SEARCH.SEARCH_RESULTS')}</h3>
                     <div className="car-container">

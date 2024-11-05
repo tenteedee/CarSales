@@ -42,8 +42,8 @@ export function setupAssociations() {
   Brand.belongsTo(Car, { foreignKey: "id", targetKey: "brand_id", as: "brandCar" }); // Changed alias to "brandCar"
   Car.hasOne(CarType, { foreignKey: "id", sourceKey: "type_id", as: "type" });
   CarType.belongsTo(Car, { foreignKey: "id", targetKey: "type_id", as: "typeCar" }); // Changed alias to "typeCar"
-  Car.hasMany(OrderDetails, { foreignKey: "car_id", as: "order_details" });
-  OrderDetails.belongsTo(Car, { foreignKey: "car_id", as: "orderDetailsCar" }); // Changed alias to "orderDetailsCar"
+  // Car.hasMany(OrderDetails, { foreignKey: "car_id", as: "order_details" });
+  // OrderDetails.belongsTo(Car, { foreignKey: "car_id", as: "orderDetailsCar" }); // Changed alias to "orderDetailsCar"
 
   //Order
   Customer.hasMany(Orders, { foreignKey: "customer_id", as: "order" });

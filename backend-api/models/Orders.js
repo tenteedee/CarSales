@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 import Customer from './Customer.js';
+import Car from './Car.js';
 
 
 
@@ -22,6 +23,7 @@ const Orders = db.define(
 
       primaryKey: true,
     },
+    
     
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
@@ -58,5 +60,7 @@ const Orders = db.define(
     updatedAt: 'updated_at',
   }
 );
+Car.hasMany(Orders, { foreignKey: 'car_id' });
+  Orders.belongsTo(Car, { foreignKey: 'car_id' });
 
 export default Orders;

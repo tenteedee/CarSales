@@ -1,12 +1,17 @@
 import express from 'express';
-import { getNews, queryNews } from '../../controllers/management/NewsController.js';
+import { getNews, queryNews, updateViewCount } from '../../controllers/shop/NewsController.js';
 const router = express.Router();
 
-// Route để lấy danh sách tin tức với phân trang và tìm kiếm
+// Route to get list of news with pagination and search
 router.route('/list')
     .get(queryNews);
-//Route để lấy chi tiết một tin tức
-router.route('/details/:id')
+
+// Route to get details of a news article
+router.route('/detail/:id')
     .get(getNews);
+
+// Route to update the view count of a news article
+router.route('/list/:id/views')
+    .put(updateViewCount); // Add this line
 
 export default router;

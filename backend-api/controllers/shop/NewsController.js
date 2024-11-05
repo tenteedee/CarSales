@@ -150,3 +150,28 @@ export const queryNews = async (req, res) => {
     res.status(500).json({ error: error || "Something went wrong" });
   }
 };
+export const updateViewCount = async (req, res) => {
+  const { id } = req.params;
+
+  if (isNaN(id)) {
+      return res.status(400).json({ error: "ID không hợp lệ" });
+  }
+
+  try {
+      // Find the news article by ID
+      const news = await News.findOne({ where: { id: id } });
+
+      if (!news) {
+          return res.status(404).json({ error: "Tin tức không tồn tại" });
+      }
+
+      // Increment the views
+      news.views += 1;
+      await news.save(); // Save the updated views back to the database
+
+      return res.status(200).json({ message: "View count updated successfully", views: news.views });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Lỗi máy chủ" });
+  }
+};

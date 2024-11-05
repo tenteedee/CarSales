@@ -39,26 +39,39 @@ export const getOrderById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const createOrder = async (req, res) => {
   try {
-    const { customer_id, total_price, order_status, order_details } = req.body;
-    const newOrder = await Orders.create({
-      customer_id,
-      total_price,
-      order_status
-    });
-    if (order_details && order_details.length > 0) {
-      await OrderDetails.bulkCreate(
-        order_details.map(detail => ({
-          ...detail,
-          order_id: newOrder.id
-        }))
+      const { cartItems } = req.body;
+
+      // Tạo từng đơn hàng cho mỗi sản phẩm trong giỏ
+      const newOrders = await Promise.all(
+          cartItems.map(async (item) => {
+              const order = await Orders.create({
+                  customer_id: req.user.id, 
+                  car_id: item.car_id,
+                  showroom_id: item.showroom_id,
+                  quantity: item.quantity,
+                  total_price: item.total_price,
+                  order_status: 'pending',
+              });
+
+              const fullOrder = await Orders.findByPk(order.id, {
+                  include: [
+                      {
+                          model: Customer,
+                          attributes: ['id', 'name', 'email'] 
+                      },
+                      // Có thể thêm các model khác như Car, Showroom, v.v. nếu cần
+                  ],
+              });
+
+              return fullOrder;
+          })
       );
-    }
-    res.status(201).json({ message: 'Order created successfully!', order: newOrder });
+
+      res.status(201).json({ message: 'Order created successfully!', orders: newOrders });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
   }
 };
 

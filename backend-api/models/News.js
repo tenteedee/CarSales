@@ -28,7 +28,12 @@ const News = db.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    
+    views: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+
     status: {
       type: DataTypes.ENUM('draft', 'published', 'archived'), // Giả sử enum có các giá trị này
       allowNull: false,

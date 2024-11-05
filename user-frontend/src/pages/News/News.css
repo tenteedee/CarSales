@@ -1,3 +1,4 @@
+
 /*
 	 Template Name: Newsone - News Magazine HTML Template
 	 Author: Tripples
@@ -2167,4 +2168,145 @@ span.post-comment span {
     margin: 40px auto;
     overflow-x: hidden;
     box-shadow: 0 7px 13px rgba(0, 0, 0, 0.15);
+}
+/* News.css */
+
+.featured-post-area {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.news-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.news-item:hover {
+    transform: scale(1.02);
+}
+
+.post-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.post-heading {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.post-date {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+strong {
+    color: #333;
+}
+.news-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.article-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.article-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.article-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.article-content {
+    margin: 20px 0;
+}
+
+.article-meta {
+    font-size: 0.9em;
+    color: #555;
+}
+/* user-frontend/src/pages/News/News.css */
+.custom-article-container {
+    max-width: 800px; /* Adjust width as needed */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add padding */
+}
+
+.custom-title {
+    font-size: 2.5em; /* Adjust font size */
+    font-weight: bold; /* Make title bold */
+}
+
+.custom-heading {
+    font-size: 1.5em; /* Adjust font size */
+    color: #555; /* Change color if needed */
+}
+
+.custom-meta {
+    font-size: 1em; /* Adjust font size */
+    margin: 10px 0; /* Add margin */
+}
+.image-container {
+    width: 100%; /* Make the container full width */
+    overflow: hidden; /* Hide overflow */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the image */
+}
+
+.image-container img {
+    max-width: 100%; /* Ensure the image is responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional: add rounded corners */
+}
+/* user-frontend/src/pages/News/News.css */
+
+.pagination-controls {
+    display: flex;
+    justify-content: center; /* Căn giữa các nút */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    margin: 15px 0; /* Khoảng cách trên và dưới */
+}
+
+.pagination-controls button {
+    background-color: #007bff; /* Màu nền nút */
+    color: white; /* Màu chữ */
+    border: none; /* Không có viền */
+    border-radius: 4px; /* Bo góc */
+    padding: 8px 12px; /* Khoảng cách bên trong */
+    margin: 0 5px; /* Khoảng cách giữa các nút */
+    cursor: pointer; /* Con trỏ khi di chuột */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+    font-size: 14px; /* Kích thước chữ */
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc; /* Màu nền cho nút bị vô hiệu hóa */
+    cursor: not-allowed; /* Con trỏ không cho phép */
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: #0056b3; /* Màu nền khi di chuột qua nút */
+}
+
+.pagination-controls span {
+    margin: 0 10px; /* Khoảng cách giữa nút và số trang */
+    font-size: 14px; /* Kích thước chữ */
+    color: #333; /* Màu chữ */
 }

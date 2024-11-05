@@ -15,7 +15,7 @@ const HeaderUserMenu: FC = () => {
       <div className='menu-item px-3'>
         <div className='menu-content d-flex align-items-center px-3'>
           <div className='symbol symbol-50px me-5'>
-            <img alt='Logo' src={toAbsoluteUrl('/media/avatars/300-1.jpg')} />
+            <img alt='Logo' src={currentUser?.avatar_url ?? toAbsoluteUrl( "/media/avatars/300-1.jpg")} />
           </div>
 
           <div className='d-flex flex-column'>
@@ -33,7 +33,7 @@ const HeaderUserMenu: FC = () => {
       <div className='separator my-2'></div>
 
       <div className='menu-item px-5'>
-        <Link to={`/staff-profile/${currentUser?.id}`} className='menu-link px-5'>
+        <Link to={`/profile`} className='menu-link px-5'>
           My Profile
         </Link>
       </div>

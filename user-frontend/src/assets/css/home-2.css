@@ -98,10 +98,12 @@
   height: 1000px;
  
   /* Other existing styles */
+
+  /* vị trí nút bấm */
 }
 .m-home .b-search__main .pagination-container {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
   left: 0;
   right: 0;
   width: 100%;

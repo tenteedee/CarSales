@@ -8,7 +8,6 @@ import { verifyToken } from '../../middleware/Auth.js';
 import showroomRouter from './ShowroomRoute.js';
 import OrderRouter from './OrderRoute.js';
 import InsuranceRouter from './InsuranceRoute.js';
-import NewsRouter from './NewsRoute.js';
 
 import newsRouter from './NewsRoute.js';
 const router = express.Router();
@@ -21,6 +20,5 @@ router.use('/showroom', showroomRouter);
 router.get('/settings', getAllSettings);
 router.use('/order', OrderRouter);
 router.use('/insurance', InsuranceRouter);
-router.use('/news', NewsRouter);
 router.use('/news', newsRouter);
 export default router;

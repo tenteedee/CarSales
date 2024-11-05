@@ -5,17 +5,6 @@ import {Table} from '../../../../_metronic/partials/table/Table'
 import {carsColumns} from './table/column/columns'
 
 export const CarList = () => {
-<<<<<<< HEAD
-  return (
-    <>
-      <TableFilter filters={carFilters} />
-      <KTCard>
-        <Table columns={carsColumns} />
-      </KTCard>
-    </>
-  )
-}
-=======
     return (
         <>
             <TableFilter filters={carFilters} />
@@ -25,4 +14,3 @@ export const CarList = () => {
         </>
     )
 }
->>>>>>> 9cc06efd1fd29e13b24a720c79354ebe1f368e86
