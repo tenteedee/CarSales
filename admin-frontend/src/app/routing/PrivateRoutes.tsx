@@ -17,6 +17,7 @@ import ShowroomPage from "../modules/showroom/ShowroomPage";
 import CustomerPage from "../modules/customer/CustomerPage";
 import CarsPage from "../modules/car/CarsPage";
 import InsurancePage from "../modules/insurance/InsurancePage";
+import OrderPage from "../modules/order/OrderPage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -31,6 +32,16 @@ const PrivateRoutes = () => {
                 <Route path='builder' element={<BuilderPageWrapper/>}/>
                 <Route path='menu-test' element={<MenuTestPage/>}/>
                 {/* Lazy Modules */}
+                {(hasRole("Director") || hasRole("Sale") || hasRole("Insurance") || hasRole("Technical")) && (
+                    <Route
+                        path='orders/*'
+                        element={
+                            <SuspensedView>
+                                <OrderPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
                 {(hasRole("Director") || hasRole("Sale")) && (
                     <Route
                         path='test-drive/*'
