@@ -93,6 +93,7 @@ import {
   queryInsuranceProvider,
   updateInsuranceProvider,
 } from "../../controllers/management/InsuranceController.js";
+import { queryOrder } from "../../controllers/management/OrdersController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -203,6 +204,14 @@ newsRoute.post("/create", createNews);
 newsRoute.get("/:id", getNews);
 newsRoute.post("/:id", updateNews);
 router.use("/news", verifyStaffToken(["Director"]), newsRoute);
+
+const orderRoute = express.Router();
+orderRoute.get("/query", queryOrder);
+// orderRoute.delete("/delete", deleteOrder);
+// orderRoute.post("/create", createOrder);
+// orderRoute.get("/:id", getOrder);
+// orderRoute.post("/:id", updateOrder);
+router.use("/orders", verifyStaffToken([]), orderRoute);
 
 const testDriveRoute = express.Router();
 testDriveRoute.get("/query", queryTestDrive);

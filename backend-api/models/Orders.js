@@ -1,11 +1,9 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
-import Customer from './Customer.js';
-
-
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
+import Customer from "./Customer.js";
 
 const Orders = db.define(
-  'orders',
+  "orders",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -22,18 +20,23 @@ const Orders = db.define(
 
       primaryKey: true,
     },
-    
+
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
-      defaultValue: 0.00  // Set a default value if appropriate
+      defaultValue: 0.0, // Set a default value if appropriate
     },
 
-
     order_status: {
-      type: DataTypes.ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled'),
+      type: DataTypes.ENUM(
+        "pending",
+        "confirmed",
+        "shipped",
+        "delivered",
+        "cancelled"
+      ),
       allowNull: false,
-      defaultValue: 'pending',
+      defaultValue: "pending",
     },
     created_at: {
       type: DataTypes.DATE,
@@ -45,17 +48,27 @@ const Orders = db.define(
     },
     showroom_id: {
       type: DataTypes.DECIMAL(15, 2),
-      allowNull: true, // Allow null for showroom_id
+      allowNull: true,
     },
-
-
+    sales_staff_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true,
+    },
+    technical_staff_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true,
+    },
+    insurance_staff_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true,
+    },
   },
   {
-    tableName: 'orders',
+    tableName: "orders",
     timestamps: true,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 
