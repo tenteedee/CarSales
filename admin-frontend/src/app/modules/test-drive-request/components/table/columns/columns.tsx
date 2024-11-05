@@ -56,6 +56,18 @@ const testDrivesColumns: ReadonlyArray<Column<TestDrive>> = [
     },
   },
   {
+    Header: (props) => <TableHeader tableProps={props} title='Phone' />,
+    id: 'phone',
+    Cell: ({...props}) => {
+      const testDrive = props.data[props.row.index] as TestDrive
+      return (
+        <>
+          <CopyTextCell value={testDrive?.customer?.phone_number} />
+        </>
+      )
+    },
+  },
+  {
     Header: (props) => <TableHeader tableProps={props} title='Staff' />,
     id: 'sales_staff_id',
     Cell: ({...props}) => {

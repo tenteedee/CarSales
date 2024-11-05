@@ -116,12 +116,10 @@ export const updateTestDrive = async (req, res) => {
 
     if (staff_id) {
       if (status !== 'pending') {
-        return res
-          .status(400)
-          .json({
-            error:
-              'Không thể thay đổi nhân viên Sale khi yêu cầu đã được thực thi',
-          });
+        return res.status(400).json({
+          error:
+            'Không thể thay đổi nhân viên Sale khi yêu cầu đã được thực thi',
+        });
       }
 
       if (hoursUntilTestDrive < 24) {
@@ -233,12 +231,12 @@ export const getTestDrive = async (req, res) => {
         {
           model: Staff,
           as: 'staff',
-          attributes: ['id', 'fullname'],
+          attributes: ['id', 'fullname', 'email'],
         },
         {
           model: Customer,
           as: 'customer',
-          attributes: ['id', 'fullname'],
+          attributes: ['id', 'fullname', 'email', 'phone_number'],
         },
       ],
     });
@@ -306,12 +304,12 @@ export const queryTestDrive = async (req, res) => {
         {
           model: Staff,
           as: 'staff',
-          attributes: ['id', 'fullname'],
+          attributes: ['id', 'fullname', 'email'],
         },
         {
           model: Customer,
           as: 'customer',
-          attributes: ['id', 'fullname'],
+          attributes: ['id', 'fullname', 'email', 'phone_number'],
         },
       ],
       order: [[sortColumn, sortOrder.toUpperCase()]],
