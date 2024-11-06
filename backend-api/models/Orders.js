@@ -47,7 +47,19 @@ const Orders = db.define(
     },
     showroom_id: {
       type: DataTypes.DECIMAL(15, 2),
-      allowNull: true, // Allow null for showroom_id
+      allowNull: true,
+    },
+    sales_staff_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true,
+    },
+    technical_staff_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true,
+    },
+    insurance_staff_id: {
+      type: DataTypes.DECIMAL(15, 2),
+      allowNull: true,
     },
   },
   {

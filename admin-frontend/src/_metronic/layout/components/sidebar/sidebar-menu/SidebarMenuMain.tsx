@@ -27,16 +27,11 @@ const SidebarMenuMain = () => {
             {(hasRole("Director") || hasRole("Insurance")) && (
                 <SidebarMenuItemWithSub fontIcon='bi-layers' icon='abstract-26' to='/insurances' title='Insurance'>
                     <SidebarMenuItem fontIcon='bi-layers' icon='abstract-19' to='/insurances/contracts'
-                                 title='Insurance Contracts'/>
+                                     title='Insurance Contracts'/>
                 </SidebarMenuItemWithSub>
             )}
             {(hasRole("Director") || hasRole("Sale")) && (
-                <SidebarMenuItem
-                    to='/test-drive'
-                    icon='ghost'
-                    title='Test Drive'
-                    fontIcon='bi-layers'
-                />
+                <SidebarMenuItem fontIcon='bi-layers' icon='abstract-4' to='/test-drive' title='Test Drive'/>
             )}
             <div className='menu-item'>
                 <div className='menu-content pt-8 pb-2'>
