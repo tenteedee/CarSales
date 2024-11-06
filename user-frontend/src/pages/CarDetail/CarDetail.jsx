@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import { useDispatch, useSelector } from 'react-redux';
 import formatCurrency from './../../utils/formatCurrency';
-
 import './CarDetail.css';
 import CostEstimate from './CostEstimate';
+import FeedbackList from './FeedbackList';
 
 const CarDetail = () => {
   const navigate = useNavigate();
@@ -340,6 +340,7 @@ const CarDetail = () => {
             />
           </div>
         </div>
+        <FeedbackList carId={id} />
       </div>
     </>
   );

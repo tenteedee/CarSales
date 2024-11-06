@@ -26,7 +26,7 @@ const Chatbot = () => {
           }
         );
 
-        const botMessage = parseBotMessage(response.data.message);
+        const botMessage = response.data.message;
         setMessages([
           ...newMessages,
           { text: botMessage, sender: 'bot', isHtml: true },
@@ -43,10 +43,10 @@ const Chatbot = () => {
 
   const parseBotMessage = (message) => {
     // Replace **text** with <strong>text</strong> for bold
-    message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    message = message.replace(/\*\*(.*?)\*\*/g, '$1');
 
     // Replace * text with <li>text</li> for bullet points
-    message = message.replace(/\* (.*?)\n/g, '<li>$1</li>');
+    message = message.replace(/\* (.*?)\n/g, '$1');
 
     // Wrap bullet points in <ul> tags if there are any <li> elements
     if (message.includes('<li>')) {

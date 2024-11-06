@@ -17,6 +17,10 @@ const Feedback = db.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     content: {
       type: DataTypes.TEXT,
       allowNull: true,

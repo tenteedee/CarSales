@@ -72,7 +72,10 @@ function App() {
         <Route path="/order-list" element={<OrderList />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/news" element={<News />} />
-        <Route path="/feedback/create/:carId" element={<Feedback />} />
+        <Route
+          path="/feedback/create/:carId"
+          element={token ? <Feedback /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<NotFound />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>

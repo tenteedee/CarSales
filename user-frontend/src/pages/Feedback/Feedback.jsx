@@ -5,12 +5,13 @@ import './Feedback.css';
 
 const getCustomerIdFromToken = () => {
   const token = localStorage.getItem('token');
+  if (!token) return null;
   const decodedToken = JSON.parse(atob(token.split('.')[1]));
   return decodedToken.id;
 };
 
 const Feedback = () => {
-  const { carId } = useParams(); // Get carId from URL
+  const { carId } = useParams();
   const navigate = useNavigate();
   const [carInfo, setCarInfo] = useState(null);
   const [customerData, setCustomerData] = useState({});
@@ -22,6 +23,7 @@ const Feedback = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       const customerId = getCustomerIdFromToken();
+      if (!customerId) return;
       try {
         const response = await axios.get('customer/profile', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -43,7 +45,7 @@ const Feedback = () => {
 
     fetchUserProfile();
     fetchCarInfo();
-  }, [carId, navigate]);
+  }, [carId]);
 
   const handleRatingClick = (value) => {
     setRating(value);
@@ -63,18 +65,18 @@ const Feedback = () => {
     }
 
     try {
-      const response = await axios.post('/api/shop/feedback/create', {
+      await axios.post('/feedback/create', {
         customer_id: customerData.id,
-        car_id: carInfo.id,
-        rating: rating,
-        content: content,
+        car_id: carId,
+        rating,
+        content,
       });
 
       setSuccess('Feedback submitted successfully!');
       setError('');
       setContent('');
       setRating(0);
-      navigate('/feedback/success');
+      navigate('/test-drive/history');
     } catch (error) {
       console.error('Error submitting feedback:', error);
       setError('Failed to submit feedback. Please try again.');
@@ -83,54 +85,60 @@ const Feedback = () => {
 
   return (
     <div className="feedback-container">
-      <h2>Submit Feedback</h2>
-      {carInfo && (
-        <div className="car-details">
-          <h1>
-            {carInfo.brand.name} {carInfo.model}
-          </h1>
-          <img src={carInfo.images[0].image_url} alt={carInfo.model} />
-        </div>
-      )}
-      <form onSubmit={handleSubmit} className="feedback-form">
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
+      <div className="feedback-image">
+        <img
+          src={carInfo?.images?.[0]?.image_url}
+          alt={`${carInfo?.brand?.name} ${carInfo?.model}`}
+        />
+      </div>
 
-        <div className="form-group">
-          <label>Customer Name</label>
-          <input type="text" value={customerData.fullname} disabled />
-        </div>
-
-        <div className="form-group rating-group">
-          <label>Rating</label>
-          <div className="rating">
-            {[1, 2, 3, 4, 5].map((value) => (
-              <span
-                key={value}
-                className={`star ${value <= rating ? 'selected' : ''}`}
-                onClick={() => handleRatingClick(value)}
-              >
-                ★
-              </span>
-            ))}
+      <div className="feedback-form">
+        <h2>Submit Feedback</h2>
+        <div className="brand-model">
+          <div>
+            {carInfo?.brand?.name} {carInfo?.model}
           </div>
         </div>
 
-        <div className="form-group content-group">
-          <label htmlFor="content">Feedback Content</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Enter your feedback here"
-            rows="4"
-          />
+        <label htmlFor="customerName">Customer Name</label>
+        <input
+          type="text"
+          id="customerName"
+          value={customerData.name || 'Tran Tien Duc'}
+          readOnly
+        />
+
+        <label htmlFor="rating">Rating</label>
+        <div className="rating">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              onClick={() => handleRatingClick(star)}
+              style={{
+                cursor: 'pointer',
+                color: star <= rating ? '#FFD700' : '#ccc',
+              }}
+            >
+              ★
+            </span>
+          ))}
         </div>
 
-        <button type="submit" className="submit-button">
+        <label htmlFor="feedbackContent">Feedback Content</label>
+        <textarea
+          id="feedbackContent"
+          placeholder="Enter your feedback here"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
+
+        <button type="submit" onClick={handleSubmit}>
           Submit Feedback
         </button>
-      </form>
+      </div>
     </div>
   );
 };

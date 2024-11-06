@@ -2,12 +2,14 @@ import Feedback from './../../models/Feedback.js';
 import Order from './../../models/Orders.js';
 import Car from './../../models/Car.js';
 import Customer from './../../models/Customer.js';
+import TestDriveRequest from '../../models/TestDriveRequest.js';
 
 export const createFeedback = async (req, res) => {
-  const { customer_id, car_id, content } = req.body;
+  const { car_id, rating, content } = req.body;
+  console.log(req.body);
 
   try {
-    const hasPurchased = await Order.findOne({
+    const hasPurchased = await TestDriveRequest.findOne({
       where: {
         customer_id: customer_id,
         car_id: car_id,
@@ -16,13 +18,14 @@ export const createFeedback = async (req, res) => {
 
     if (!hasPurchased) {
       return res.status(403).json({
-        error: 'You can only provide feedback for cars you have purchased.',
+        error: 'You can only provide feedback for cars you have tried.',
       });
     }
 
     const feedback = await Feedback.create({
       customer_id,
       car_id,
+      rating,
       content,
     });
 

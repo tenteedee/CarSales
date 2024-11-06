@@ -177,7 +177,7 @@ export default function ShowHistoryPage() {
                   <td>
                     {item.status.toLowerCase() === 'completed' ? (
                       <Link
-                        to={`/feedback/create/${item.car.id}`}
+                        to={`/feedback/create/${item.car_id}`}
                         className="btn btn-primary btn-sm"
                       >
                         Feedback
