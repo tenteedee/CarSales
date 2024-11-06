@@ -1,8 +1,8 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
 
 const Insurance = db.define(
-  'Insurance',
+  "Insurance",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -19,8 +19,8 @@ const Insurance = db.define(
     insurance_provider_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'insurance_providers',
-        key: 'id',
+        model: "insurance_providers",
+        key: "id",
       },
       allowNull: false,
     },
@@ -33,8 +33,9 @@ const Insurance = db.define(
       allowNull: false,
     },
     price: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+      defaultValue: 0.0, // Set a default value if appropriate
     },
     created_at: {
       type: DataTypes.DATE,
@@ -46,11 +47,11 @@ const Insurance = db.define(
     },
   },
   {
-    tableName: 'insurances',
+    tableName: "insurances",
     timestamps: true,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 

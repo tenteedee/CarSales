@@ -1,13 +1,12 @@
-import {TableFilter} from "../../../../_metronic/partials/table/filter/TableFilter";
 import {KTCard} from "../../../../_metronic/helpers";
 import {Table} from "../../../../_metronic/partials/table/Table";
-import {orderFilter} from "./table/filters/OrderFilter";
 import {orderColumns} from "./table/columns/columns";
+import {OrderFiltersComponent} from "./table/filters/OrderFilter";
 
 export const OrderList = () => {
     return (
         <>
-            <TableFilter filters={orderFilter}/>
+            <OrderFiltersComponent/>
             <KTCard>
                 <Table columns={orderColumns}/>
             </KTCard>

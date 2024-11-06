@@ -5,7 +5,7 @@ import {OrderEditWrapper, OrderListWrapper} from "./Order";
 const orderBreadcrumbs: Array<PageLink> = [
     {
         title: 'Order',
-        path: '/orders/provider',
+        path: '/orders',
         isSeparator: false,
         isActive: false,
     },
@@ -40,7 +40,7 @@ const OrderPage = () => {
                 {/*    }*/}
                 {/*/>*/}
                 <Route
-                    path="edit/:id"
+                    path="edit/:id/*"
                     element={
                         <>
                             <PageTitle breadcrumbs={orderBreadcrumbs}>Edit Order</PageTitle>

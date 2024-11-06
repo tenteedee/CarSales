@@ -93,7 +93,11 @@ import {
   queryInsuranceProvider,
   updateInsuranceProvider,
 } from "../../controllers/management/InsuranceController.js";
-import { queryOrder } from "../../controllers/management/OrdersController.js";
+import {
+  deleteOrders,
+  getOrder,
+  queryOrder,
+} from "../../controllers/management/OrdersController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -207,9 +211,9 @@ router.use("/news", verifyStaffToken(["Director"]), newsRoute);
 
 const orderRoute = express.Router();
 orderRoute.get("/query", queryOrder);
-// orderRoute.delete("/delete", deleteOrder);
+orderRoute.delete("/delete", deleteOrders);
 // orderRoute.post("/create", createOrder);
-// orderRoute.get("/:id", getOrder);
+orderRoute.get("/:id", getOrder);
 // orderRoute.post("/:id", updateOrder);
 router.use("/orders", verifyStaffToken([]), orderRoute);
 

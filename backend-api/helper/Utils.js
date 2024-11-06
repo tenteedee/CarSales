@@ -1,3 +1,5 @@
+import Setting from "../models/Setting.js";
+
 export function randomPassword(length = 12) {
   const lowercase = "abcdefghijklmnopqrstuvwxyz";
   const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -21,3 +23,15 @@ export function randomPassword(length = 12) {
     .sort(() => 0.5 - Math.random())
     .join("");
 }
+export const getSetting = async (key) => {
+  try {
+    const setting = await Setting.findOne({
+      where: { key }, // Tìm giá trị với key
+    });
+
+    return setting ? setting.value : ""; // Trả về value nếu tìm thấy, ngược lại trả về ""
+  } catch (error) {
+    console.error(`Error fetching setting for key "${key}":`, error);
+    return "";
+  }
+};

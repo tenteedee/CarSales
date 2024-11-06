@@ -66,7 +66,7 @@ function App() {
         <Route path="/insurance" element={<InsuranceList />} />
         <Route
           path="/order-confirmation/:orderId"
-          element={<OrderConfirmation />}
+          element={!token ? <Login /> :<OrderConfirmation />}
         />
         <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
         <Route path="/order-list" element={<OrderList />} />

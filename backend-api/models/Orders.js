@@ -1,9 +1,9 @@
-import { DataTypes } from 'sequelize';
-import db from '../config/Database.js';
-import Customer from './Customer.js';
+import { DataTypes } from "sequelize";
+import db from "../config/Database.js";
+import Customer from "./Customer.js";
 
 const Orders = db.define(
-  'orders',
+  "orders",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -17,25 +17,26 @@ const Orders = db.define(
     },
     car_id: {
       type: DataTypes.INTEGER,
+
       primaryKey: true,
     },
 
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
-      defaultValue: 0.0,
+      defaultValue: 0.0, // Set a default value if appropriate
     },
 
     order_status: {
       type: DataTypes.ENUM(
-        'pending',
-        'confirmed',
-        'shipped',
-        'delivered',
-        'cancelled'
+        "pending",
+        "paying",
+        "confirmed",
+        "completed",
+        "cancelled"
       ),
       allowNull: false,
-      defaultValue: 'pending',
+      defaultValue: "pending",
     },
     created_at: {
       type: DataTypes.DATE,
@@ -63,11 +64,11 @@ const Orders = db.define(
     },
   },
   {
-    tableName: 'orders',
+    tableName: "orders",
     timestamps: true,
     underscored: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 

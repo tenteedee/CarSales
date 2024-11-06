@@ -6,6 +6,7 @@ import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider"
 import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
 import {deleteOrders, getOrders} from "./core/requests";
 import {OrderList} from "./components/OrderList";
+import {OrderEdit} from "./components/OrderEdit";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -49,10 +50,11 @@ const OrderListWrapper = () => {
         </>
     );
 }
+
 const OrderEditWrapper = () => {
     return (
         <>
-
+            <OrderEdit></OrderEdit>
         </>
     );
 }

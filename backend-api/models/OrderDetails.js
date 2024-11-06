@@ -10,11 +10,7 @@ const OrderDetails = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    car_id: {
-      type: DataTypes.INTEGER,
 
-      primaryKey: true,
-    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
