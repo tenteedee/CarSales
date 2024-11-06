@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import axios from '../../axios';
+import { Link } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import './TestDriveHistory.css';
@@ -23,7 +24,7 @@ export default function ShowHistoryPage() {
     const fetchShowrooms = async () => {
       try {
         const response = await axios.get('/showroom/list');
-        setShowrooms(response.data); // Lưu danh sách showroom
+        setShowrooms(response.data);
       } catch (error) {
         console.error('Error fetching showrooms:', error);
       }
@@ -44,7 +45,6 @@ export default function ShowHistoryPage() {
     const fetchStaffs = async () => {
       try {
         const response = await axios.get('/staff/all');
-        console.log(response.data);
         setStaffs(response.data);
       } catch (error) {
         console.error('Error fetching staffs:', error);
@@ -62,7 +62,6 @@ export default function ShowHistoryPage() {
 
   const filteredData = customerData.filter((item) => {
     const itemDate = moment(item.test_drive_date);
-
     const dateMatch =
       (!startDate || itemDate.isSameOrAfter(moment(startDate))) &&
       (!endDate || itemDate.isSameOrBefore(moment(endDate)));
@@ -152,6 +151,7 @@ export default function ShowHistoryPage() {
               <th>Showroom Address</th>
               <th>Status</th>
               <th>Sales Staff</th>
+              <th>Feedback</th>
             </tr>
           </thead>
           <tbody>
@@ -174,6 +174,18 @@ export default function ShowHistoryPage() {
                     </span>
                   </td>
                   <td>{getStaffName(item.sales_staff_id)}</td>
+                  <td>
+                    {item.status.toLowerCase() === 'completed' ? (
+                      <Link
+                        to={`/feedback/create/${item.car.id}`}
+                        className="btn btn-primary btn-sm"
+                      >
+                        Feedback
+                      </Link>
+                    ) : (
+                      'N/A'
+                    )}
+                  </td>
                 </tr>
               );
             })}

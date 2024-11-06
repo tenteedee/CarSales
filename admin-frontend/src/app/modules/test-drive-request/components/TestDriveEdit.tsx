@@ -248,7 +248,7 @@ export const TestDriveEdit: FC<Props> = ({...props}) => {
             <label className='col-lg-4 fw-bold text-muted'>Date Test</label>
             <div className='col-lg-8'>
               <Datetime
-                value={testDrive?.test_drive_date ? moment(testDrive.test_drive_date) : ''}
+                value={testDrive?.test_drive_date ? moment(testDrive?.test_drive_date) : ''}
                 dateFormat='YYYY-MM-DD'
                 timeFormat='HH:mm:ss'
                 onChange={handleDateChange}

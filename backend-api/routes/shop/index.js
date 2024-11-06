@@ -10,6 +10,11 @@ import staffRouter from './StaffRoute.js';
 import OrderRouter from './OrderRoute.js';
 import newsRouter from './NewsRoute.js';
 import InsuranceRouter from './InsuranceRoute.js';
+import FeedbackRouter from './FeedbackRoute.js';
+import {
+  getChatResponse,
+  getChatResponseTogetherAI,
+} from '../../controllers/shop/ChatbotController.js';
 
 const router = express.Router();
 
@@ -19,9 +24,12 @@ router.use('/customer', customerRouter);
 router.use('/test-drive', testDriveRouter);
 router.use('/showroom', showroomRouter);
 router.use('/staff', staffRouter);
-router.get('/settings', getAllSettings);
 router.use('/order', OrderRouter);
 router.use('/insurance', InsuranceRouter);
 router.use('/news', newsRouter);
+router.use('/feedback', FeedbackRouter);
+
+router.get('/settings', getAllSettings);
+router.post('/chat', getChatResponseTogetherAI);
 
 export default router;

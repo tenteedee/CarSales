@@ -2,8 +2,6 @@ import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
 import Customer from './Customer.js';
 
-
-
 const Orders = db.define(
   'orders',
   {
@@ -19,19 +17,23 @@ const Orders = db.define(
     },
     car_id: {
       type: DataTypes.INTEGER,
-
       primaryKey: true,
     },
-    
+
     total_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
-      defaultValue: 0.00  // Set a default value if appropriate
+      defaultValue: 0.0,
     },
 
-
     order_status: {
-      type: DataTypes.ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled'),
+      type: DataTypes.ENUM(
+        'pending',
+        'confirmed',
+        'shipped',
+        'delivered',
+        'cancelled'
+      ),
       allowNull: false,
       defaultValue: 'pending',
     },
@@ -47,8 +49,6 @@ const Orders = db.define(
       type: DataTypes.DECIMAL(15, 2),
       allowNull: true, // Allow null for showroom_id
     },
-
-
   },
   {
     tableName: 'orders',

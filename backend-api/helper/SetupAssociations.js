@@ -16,6 +16,8 @@ import News from '../models/News.js';
 import Insurance from '../models/Insurance.js';
 import InsuranceProvider from '../models/InsuranceProvider.js';
 import InsuranceContract from '../models/InsuranceContract.js';
+import Feedback from '../models/Feedback.js';
+
 export function setupAssociations() {
   // News
   NewsCategory.hasMany(News, { foreignKey: 'category_id' });
@@ -108,4 +110,11 @@ export function setupAssociations() {
     foreignKey: 'insurance_id',
     as: 'insurance',
   });
+
+  // Feedback
+  Feedback.belongsTo(Car, { foreignKey: 'car_id', as: 'car' });
+  Car.hasMany(Feedback, { foreignKey: 'car_id', as: 'feedbacks' });
+
+  Feedback.belongsTo(Customer, { foreignKey: 'customer_id', as: 'customer' });
+  Customer.hasMany(Feedback, { foreignKey: 'customer_id', as: 'feedbacks' });
 }

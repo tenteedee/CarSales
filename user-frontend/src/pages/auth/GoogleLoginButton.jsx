@@ -10,12 +10,17 @@ const GoogleLoginButton = () => {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
+  console.log('Google client ID:', process.env.REACT_APP_GOOGLE_CLIENT_ID);
+
   const handleLoginSuccess = async (credentialResponse) => {
     console.log('Google token:', credentialResponse.credential);
     try {
-      const response = await axios.post('http://localhost:3001/api/shop/auth/google', {
-        idToken: credentialResponse.credential,
-      });
+      const response = await axios.post(
+        'http://localhost:3001/api/shop/auth/google',
+        {
+          idToken: credentialResponse.credential,
+        }
+      );
 
       console.log('Response:', response.data);
 

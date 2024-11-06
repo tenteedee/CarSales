@@ -1,8 +1,8 @@
-import { DataTypes } from "sequelize";
-import db from "../config/Database.js";
+import { DataTypes } from 'sequelize';
+import db from '../config/Database.js';
 
 const Brand = db.define(
-  "brand",
+  'brand',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -15,7 +15,7 @@ const Brand = db.define(
     },
   },
   {
-    tableName: "brands",
+    tableName: 'brands',
     timestamps: false,
     underscored: true,
   }

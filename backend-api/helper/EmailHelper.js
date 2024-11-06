@@ -24,9 +24,9 @@ export function generateTestDriveEmailCustomer(user, testDriveInfo, staff) {
             </p>
             
             <p style="font-size: 16px; color: #333333; font-weight: bold;">
-              Current Status: <span style="color: #ff6600;">${
+              Current Status: <span style="color: #ff6600;">${toupperCase(
                 testDriveInfo.status
-              }</span>
+              )}</span>
             </p>
             
             ${
@@ -36,9 +36,9 @@ export function generateTestDriveEmailCustomer(user, testDriveInfo, staff) {
                 Here is the information of your assigned staff member:
               </p>
               <ul style="font-size: 16px; color: #666666;">
-                <li><strong>Name:</strong> ${staff.full_name}</li>
-                <li><strong>Email:</strong> ${staff.email}</li>
-                <li><strong>Phone:</strong> ${staff.phone}</li>
+                <li><strong>Name:</strong> ${staff.fullname}</li>
+                <li><strong>Email:</strong> ${staff.email}</li> 
+                <li><strong>Phone:</strong> ${staff.phone_number}</li>
               </ul>
             `
                 : `
