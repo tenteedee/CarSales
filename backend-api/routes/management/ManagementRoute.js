@@ -195,7 +195,7 @@ router.use(
 const profileRoute = express.Router();
 profileRoute.get('/', verifyStaffToken([]), getProfile); 
 profileRoute.put('/update', verifyStaffToken([]), updateProfile); 
-profileRoute.post('/  password', verifyStaffToken([]), changePassword); 
+profileRoute.post('/password', verifyStaffToken([]), changePassword); 
 router.use('/profile', profileRoute);
 
 const carRoute = express.Router();
