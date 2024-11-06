@@ -56,6 +56,7 @@ import {
   createNews,
 } from "../../controllers/management/NewsController.js";
 import {
+  getTopSellingCars,
   homeStatistic,
   updateState,
   uploadFile,
@@ -87,16 +88,22 @@ import {
   updateCar,
 } from "../../controllers/management/CarController.js";
 import {
+  createInsurance,
   createInsuranceProvider,
+  deleteInsurance,
   deleteInsuranceProvider,
+  getInsurance,
   getInsuranceProvider,
+  queryInsurance,
   queryInsuranceProvider,
+  updateInsurance,
   updateInsuranceProvider,
 } from "../../controllers/management/InsuranceController.js";
 import {
   deleteOrders,
   getOrder,
   queryOrder,
+  updateOrder,
 } from "../../controllers/management/OrdersController.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -151,6 +158,12 @@ const homeRouter = express.Router();
 homeRouter.post("/uploads", upload.single("upload"), uploadFile);
 homeRouter.post("/update-state", verifyStaffToken([]), updateState);
 homeRouter.get("/statistic", verifyStaffToken([]), homeStatistic);
+homeRouter.get(
+  "/car/statistic",
+  verifyStaffToken(["Director"]),
+  getTopSellingCars
+);
+
 router.use("/home", homeRouter);
 
 const authRouter = express.Router();
@@ -214,7 +227,7 @@ orderRoute.get("/query", queryOrder);
 orderRoute.delete("/delete", deleteOrders);
 // orderRoute.post("/create", createOrder);
 orderRoute.get("/:id", getOrder);
-// orderRoute.post("/:id", updateOrder);
+orderRoute.post("/:id", verifyStaffToken(["Director"]), updateOrder);
 router.use("/orders", verifyStaffToken([]), orderRoute);
 
 const testDriveRoute = express.Router();
@@ -238,17 +251,26 @@ insuranceProviderRoute.post(
   validateCreateInsuranceProvider,
   createInsuranceProvider
 );
-insuranceProviderRoute.get(
+insuranceProviderRoute.get("/:id", getInsuranceProvider);
+insuranceProviderRoute.post(
   "/:id",
   validateUpdateInsuranceProvider,
-  getInsuranceProvider
+  updateInsuranceProvider
 );
-insuranceProviderRoute.post("/:id", updateInsuranceProvider);
 insuranceRoute.use(
   "/providers",
   verifyStaffToken(["Director"]),
   insuranceProviderRoute
 );
+
+const insuranceBaseRoute = express.Router();
+insuranceBaseRoute.get("/query", queryInsurance);
+insuranceBaseRoute.delete("/delete", deleteInsurance);
+insuranceBaseRoute.post("/create", createInsurance);
+insuranceBaseRoute.get("/:id", getInsurance);
+insuranceBaseRoute.post("/:id", updateInsurance);
+insuranceRoute.use("/base", verifyStaffToken(["Director"]), insuranceBaseRoute);
+
 router.use(
   "/insurances",
   verifyStaffToken(["Director", "Insurance"]),
@@ -257,12 +279,14 @@ router.use(
 
 const carRoute = express.Router();
 carRoute.get("/query", queryCars);
-carRoute.route("/detail/:id").get(getCarById);
-carRoute.route("/delete").delete(deleteCar);
-carRoute.route("/edit/:id").patch(updateCar);
-carRoute.post("/create", createNewCar);
-carRoute.route("/brand").get(getAllBrands);
-carRoute.route("/type").get(getAllTypes);
-router.use("/cars", verifyStaffToken(["Director"]), carRoute);
 
+const protectedCarRoute = express.Router();
+protectedCarRoute.route("/detail/:id").get(getCarById);
+protectedCarRoute.route("/delete").delete(deleteCar);
+protectedCarRoute.route("/edit/:id").patch(updateCar);
+protectedCarRoute.post("/create", createNewCar);
+protectedCarRoute.route("/brand").get(getAllBrands);
+protectedCarRoute.route("/type").get(getAllTypes);
+router.use("/cars", carRoute);
+router.use("/cars", verifyStaffToken(["Director"]), protectedCarRoute);
 export default router;

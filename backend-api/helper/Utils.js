@@ -1,4 +1,5 @@
 import Setting from "../models/Setting.js";
+import Staff from "../models/Staff.js";
 
 export function randomPassword(length = 12) {
   const lowercase = "abcdefghijklmnopqrstuvwxyz";
@@ -34,4 +35,15 @@ export const getSetting = async (key) => {
     console.error(`Error fetching setting for key "${key}":`, error);
     return "";
   }
+};
+export const getRandomStaffByRole = async (role_id) => {
+  const staff = await Staff.findAll({
+    where: { role_id },
+  });
+
+  if (staff.length === 0) return null; // Trả về null nếu không có nhân viên nào với role_id
+
+  // Chọn ngẫu nhiên một nhân viên từ danh sách
+  const randomIndex = Math.floor(Math.random() * staff.length);
+  return staff[randomIndex];
 };

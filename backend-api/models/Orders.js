@@ -26,7 +26,11 @@ const Orders = db.define(
       allowNull: true,
       defaultValue: 0.0, // Set a default value if appropriate
     },
-
+    payment_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+      defaultValue: 0.0, // Set a default value if appropriate
+    },
     order_status: {
       type: DataTypes.ENUM(
         "pending",

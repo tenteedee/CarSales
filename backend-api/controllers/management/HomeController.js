@@ -5,7 +5,7 @@ import Brand from "../../models/Brand.js";
 import Car from "../../models/Car.js";
 import Customer from "../../models/Customer.js";
 import Orders from "../../models/Orders.js";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 
 const allowedTables = ["news", "customers"];
 const allowedColumns = ["status", "is_pin"];
@@ -13,6 +13,37 @@ const allowedColumns = ["status", "is_pin"];
 const tableRoles = {
   news: ["Director"],
   customers: ["Director"],
+};
+
+export const getTopSellingCars = async (req, res) => {
+  try {
+    const topSellingCars = await Orders.findAll({
+      attributes: [
+        "car_id",
+        [Sequelize.fn("COUNT", Sequelize.col("car_id")), "sales_count"], // Đếm số lượng car_id
+      ],
+      include: [
+        {
+          model: Car,
+          as: "car",
+          include: [
+            {
+              model: Brand,
+              as: "brand",
+            },
+          ],
+          //attributes: ["model"], // Lấy tên xe từ bảng Car
+        },
+      ],
+      group: ["car_id", "car.id"], // Nhóm theo car_id và car.id để JOIN chính xác
+      order: [[Sequelize.literal("sales_count"), "DESC"]], // Sắp xếp giảm dần theo số lượng bán
+      limit: 10, // Giới hạn top 10 xe bán chạy nhất
+    });
+
+    res.status(200).json({ data: topSellingCars });
+  } catch (error) {
+    res.status(500).json({ error: error.message || "Something went wrong" });
+  }
 };
 
 export const homeStatistic = async (req, res) => {
@@ -87,6 +118,7 @@ export const homeStatistic = async (req, res) => {
         },
       ],
       where: whereCondition,
+      limit: 5, // Giới hạn kết quả trả về là 10 bản ghi
     });
     return res.status(200).json({ data: orders });
   } catch (err) {

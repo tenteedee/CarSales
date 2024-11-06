@@ -24,31 +24,29 @@ const SidebarMenuMain = () => {
                     <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Transations</span>
                 </div>
             </div>
-            {/*{(hasRole("Director") || hasRole("Insurance")) && (*/}
-            {/*    <SidebarMenuItemWithSub fontIcon='bi-layers' icon='abstract-26' to='/insurances' title='Insurance'>*/}
-            {/*        <SidebarMenuItem fontIcon='bi-layers' icon='abstract-19' to='/insurances/contracts'*/}
-            {/*                         title='Insurance Contracts'/>*/}
-            {/*    </SidebarMenuItemWithSub>*/}
-            {/*)}*/}
+
             {(hasRole("Director") || hasRole("Sale")) && (
                 <SidebarMenuItem fontIcon='bi-layers' icon='abstract-4' to='/test-drive' title='Test Drive'/>
             )}
             {(hasRole("Director") || hasRole("Sale") || hasRole("Insurance") || hasRole("Technical")) && (
                 <SidebarMenuItem fontIcon='bi-layers' icon='abstract-22' to='/orders' title='Orders'/>
             )}
-
-            <div className='menu-item'>
-                <div className='menu-content pt-8 pb-2'>
-                    <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
+            {(hasRole("Director")) && (
+                <div className='menu-item'>
+                    <div className='menu-content pt-8 pb-2'>
+                        <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Management</span>
+                    </div>
                 </div>
-            </div>
-
-
-            {(hasRole("Director") || hasRole("Insurance")) && (
-                <SidebarMenuItem fontIcon='bi-layers' icon='abstract-33' to='/insurances/providers'
-                                 title='Insurance Providers'/>
             )}
 
+            {(hasRole("Director")) && (
+                <SidebarMenuItemWithSub fontIcon='bi-layers' icon='abstract-26' to='/insurances' title='Insurance'>
+                    <SidebarMenuItem fontIcon='bi-layers' icon='abstract-19' to='/insurances/base'
+                                     title='Insurance'/>
+                    <SidebarMenuItem fontIcon='bi-layers' icon='abstract-33' to='/insurances/providers'
+                                     title='Insurance Providers'/>
+                </SidebarMenuItemWithSub>
+            )}
             {(hasRole("Director")) && (
                 <SidebarMenuItemWithSub fontIcon='bi-layers' icon='abstract-16' to='/cars' title='Car'>
                     <SidebarMenuItem fontIcon='bi-layers' icon='abstract-4' to='/cars' title='List Car'/>

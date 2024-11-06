@@ -6,14 +6,14 @@ import {Link} from "react-router-dom";
 import {Confirm} from "notiflix";
 import {useQueryResponse} from "../../../../../../_metronic/layout/core/QueryResponseProvider";
 import {useListView} from "../../../../../../_metronic/layout/core/ListViewProvider";
-import {handleDeleteProvider} from "../../../Insurance";
+import {handleDelete} from "../../../Insurance";
 
 type Props = {
     id: ID;
     value?: string; // Assuming "value" may be passed in
 };
 
-const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
+const InsuranceActionsCell: FC<Props> = ({id, value, ...props}) => {
     useEffect(() => {
         MenuComponent.reinitialization()
     }, [])
@@ -21,7 +21,7 @@ const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
     const {clearSelected} = useListView()
     const onDeleteClick = () => {
         Confirm.show('Xác nhận', 'Bạn có chắc muốn xóa bản ghi này không?', 'Yes', 'No', () => {
-            handleDeleteProvider([id]).finally(() => {
+            handleDelete([id]).finally(() => {
                 refetch()
                 clearSelected()
             })
@@ -46,7 +46,7 @@ const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
             >
                 {/* begin::Menu item */}
                 <div className='menu-item px-3'>
-                    <Link className='menu-link px-3' to={`/insurances/providers/edit/${id}`}>
+                    <Link className='menu-link px-3' to={`/insurances/base/edit/${id}`}>
                         Edit
                     </Link>
                 </div>
@@ -70,4 +70,4 @@ const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
     );
 };
 
-export {InsuranceProviderActionsCell};
+export {InsuranceActionsCell};

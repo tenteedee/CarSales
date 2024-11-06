@@ -1,6 +1,6 @@
 import Orders from "../../models/Orders.js";
 import OrderDetails from "../../models/OrderDetails.js";
-import { getSetting } from "../../helper/Utils.js";
+import { getRandomStaffByRole, getSetting } from "../../helper/Utils.js";
 import Insurance from "../../models/Insurance.js";
 import Car from "../../models/Car.js";
 import Staff from "../../models/Staff.js";
@@ -113,27 +113,22 @@ export const createOrder = async (req, res) => {
       bodyInsuranceFee +
       mandatoryInsurancePrice * 1;
     let sales_staff_id = null;
-    const sales_staff = await Staff.findOne({
-      where: { role_id: 2 },
-    });
+    const sales_staff = await getRandomStaffByRole(2);
     if (sales_staff) {
       sales_staff_id = sales_staff.id;
     }
+
     let technical_staff_id = null;
-    const technical_staff = await Staff.findOne({
-      where: { role_id: 1 },
-    });
-    if (sales_staff) {
+    const technical_staff = await getRandomStaffByRole(1);
+    if (technical_staff) {
       technical_staff_id = technical_staff.id;
     }
+
     let insurance_staff_id = null;
-    const insurance_staff = await Staff.findOne({
-      where: { role_id: 3 },
-    });
+    const insurance_staff = await getRandomStaffByRole(3);
     if (insurance_staff) {
       insurance_staff_id = insurance_staff.id;
     }
-
     const newOrder = await Orders.create({
       customer_id: req.user.id,
       insurance_staff_id,

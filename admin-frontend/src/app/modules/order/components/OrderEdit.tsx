@@ -3,13 +3,14 @@ import {QueryResponse} from '../../../utils/model/models'
 import {toast} from 'react-toastify'
 import {Link, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useParams} from 'react-router-dom'
 import {Car} from '../../car/core/models'
-import {getCars} from '../../car/core/requests'
 import {Staff} from '../../staffs/core/models'
 import {getStaffs} from '../../staffs/core/requests'
 import 'react-datetime/css/react-datetime.css'
 import {getOrder, updateOrder} from "../core/requests";
 import {Order, OrderDetail} from "../core/models";
 import {KTIcon} from "../../../../_metronic/helpers";
+import {numberFormat} from "../../../utils/helpers/helpers";
+import {useAuth} from "../../auth";
 
 type PropsDeltails = {
     order: Order | null
@@ -23,7 +24,8 @@ export const OrderEditDetails: FC<PropsDeltails> = ({...props}) => {
     }
     useEffect(() => {
         setOrder(props.order)
-    }, [order, navigate])
+    }, [props.order])
+    const {hasRole} = useAuth()
 
     return (
         <>
@@ -41,6 +43,7 @@ export const OrderEditDetails: FC<PropsDeltails> = ({...props}) => {
                                     <label className='col-lg-4 fw-bold text-muted'>{detail.description}</label>
                                     <div className='col-lg-8'>
                                         <input
+                                            disabled={!hasRole('Director')}
                                             type='text'
                                             className='form-control form-control-lg form-control-solid'
                                             value={detail?.price || ''}
@@ -52,11 +55,11 @@ export const OrderEditDetails: FC<PropsDeltails> = ({...props}) => {
                     ) : (
                         <p>Không có chi tiết đơn hàng.</p>
                     )}
-                    <div className='d-flex my-4'>
-                        <button className='btn btn-primary' onClick={handleUpdate}>
-                            Cập nhật
-                        </button>
-                    </div>
+                    {/*<div className='d-flex my-4'>*/}
+                    {/*    <button className='btn btn-primary' onClick={handleUpdate}>*/}
+                    {/*        Cập nhật*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </>
@@ -69,33 +72,15 @@ type PropsIndex = {
 export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
     // const order = props.order;
     const [order, setOrder] = useState<Order | null>(null)
-    const [cars, setCars] = useState<Car[]>([])
-    const [sales, setSales] = useState<Staff[]>([])
+    const [staffs, setStaffs] = useState<Staff[]>([])
     const navigate = useNavigate()
+    const {hasRole} = useAuth()
+
     const getData = () => {
-        if (order) {
-            getCars('')
-                .then((response: QueryResponse) => {
-                    setCars(response.data || [])
-                })
-                .catch((error) => {
-                    const errorMessage =
-                        error && error.response && error.response.data && error.response.data.error
-                            ? error.response.data.error
-                            : 'Có lỗi xảy ra khi lấy dữ liệu'
-                    toast.error(errorMessage, {
-                        position: 'top-right',
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
-                })
+        if (hasRole("Director")) {
             getStaffs('')
                 .then((response: QueryResponse) => {
-                    setSales(response.data || [])
+                    setStaffs(response.data || [])
                 })
                 .catch((error) => {
                     const errorMessage =
@@ -112,7 +97,6 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
                         progress: undefined,
                     })
                 })
-
         }
     }
     const handleInputChange = (key: string, value: string) => {
@@ -157,23 +141,156 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
     useEffect(() => {
         setOrder(props.order)
         getData()
-    }, [order, navigate])
+
+    }, [props.order])
 
     return (
         <>
             <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
                 <div className='card-header cursor-pointer'>
                     <div className='card-title m-0'>
-                        <h3 className='fw-bolder m-0'>Cập nhật đơn hàng</h3>
+                        <h3 className='fw-bolder m-0'>Chi tiết đơn hàng</h3>
                     </div>
                 </div>
                 <div className='card-body p-9'>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Sale</label>
+                        <div className='col-lg-8'>
+                            <select
+                                className='form-control'
+                                disabled={!hasRole('Director')}
+                                value={order?.sales_staff_id || ''}
+                                onChange={(e) => {
+                                    const selected = Number(e.target.value)
+                                    setOrder({...order, sales_staff_id: selected})
+                                }}
+                            >
+                                {hasRole('Director') ? (
+                                    <>
+                                        <option value=''>Select Sale</option>
+                                        {staffs
+                                            .filter((sale) => sale.role_id === 2 && sale.showroom_id === order?.showroom_id)
+                                            .map((sale) => (
+                                                <option key={sale.id} value={sale.id || ''}>
+                                                    {sale.fullname} - {sale.email}
+                                                </option>
+                                            ))}
+                                    </>
+                                ) : (
+                                    <option key={order?.sales_staff?.email} value="">
+                                        {order?.sales_staff?.fullname}
+                                    </option>
+                                )}
 
-                    <div className='d-flex my-4'>
-                        <button className='btn btn-primary' onClick={handleUpdate}>
-                            Cập nhật
-                        </button>
+                            </select>
+                        </div>
                     </div>
+
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Technical</label>
+                        <div className='col-lg-8'>
+                            <select
+                                className='form-control'
+                                disabled={!hasRole('Director')}
+                                value={order?.technical_staff_id || ''}
+                                onChange={(e) => {
+                                    const selected = Number(e.target.value)
+                                    setOrder({...order, technical_staff_id: selected})
+                                }}
+                            >
+                                {hasRole('Director') ? (
+                                    <>
+                                        <option value="">Select Technical</option>
+                                        {staffs
+                                            .filter((sale) => sale.role_id === 1 && sale.showroom_id === order?.showroom_id)
+                                            .map((sale) => (
+                                                <option key={sale.id} value={sale.id || ''}>
+                                                    {sale.fullname} - {sale.email}
+                                                </option>
+                                            ))}
+                                    </>
+                                ) : (
+                                    <option key={order?.technical_staff?.email} value="">
+                                        {order?.technical_staff?.fullname}
+                                    </option>
+                                )}
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Insurance</label>
+                        <div className='col-lg-8'>
+                            <select
+                                className='form-control'
+                                disabled={!hasRole('Director')}
+                                value={order?.insurance_staff_id || ''}
+                                onChange={(e) => {
+                                    const selected = Number(e.target.value)
+                                    setOrder({...order, insurance_staff_id: selected})
+                                }}
+                            >
+                                {hasRole('Director') ? (
+                                    <>
+                                        <option value=''>Select Insurance</option>
+                                        {staffs
+                                            .filter((sale) => sale.role_id === 3 && sale.showroom_id === order?.showroom_id)
+                                            .map((sale) => (
+                                                <option key={sale.id} value={sale.id || ''}>
+                                                    {sale.fullname} - {sale.email}
+                                                </option>
+                                            ))}
+                                    </>
+                                ) : (
+                                    <option key={order?.insurance_staff?.email} value="">
+                                        {order?.insurance_staff?.fullname}
+                                    </option>
+                                )}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Status</label>
+                        <div className='col-lg-8'>
+                            <select
+                                className='form-control'
+                                value={order?.order_status || ''}
+                                disabled={!hasRole('Director')}
+                                onChange={(e) => {
+                                    const selected = e.target.value
+                                    setOrder({...order, order_status: selected})
+                                }}
+                            >
+                                <option value=''>Select Car</option>
+                                <option key={order?.id} value={'pending'}>
+                                    Pending
+                                </option>
+                                <option key={order?.id} value={'confirmed'}>
+                                    Confirmed
+                                </option>
+                                <option key={order?.id} value={'paying'}>
+                                    Paying
+                                </option>
+                                <option key={order?.id} value={'completed'}>
+                                    Completed
+                                </option>
+                                <option key={order?.id} value={'cancelled'}>
+                                    Cancelled
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    {hasRole('Director') && (
+                        <div className='d-flex my-4'>
+                            <button className='btn btn-primary' onClick={handleUpdate}>
+                                Cập nhật
+                            </button>
+                        </div>
+                    )}
+
                 </div>
             </div>
         </>
@@ -289,7 +406,7 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                             <div className='d-flex flex-column'>
                                 <div className='d-flex align-items-center mb-2'>
                                     <a href='#' className='text-gray-800 text-hover-primary fs-2 fw-bolder me-1'>
-                                        Max Smith
+                                        {props.order?.customer?.fullname}
                                     </a>
                                     <a href='#'>
                                         <KTIcon iconName='verify' className='fs-1 text-primary'/>
@@ -302,21 +419,15 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                         className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
                                     >
                                         <KTIcon iconName='profile-circle' className='fs-4 me-1'/>
-                                        Developer
+                                        {props.order?.customer?.phone_number}
                                     </a>
-                                    <a
-                                        href='#'
-                                        className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
-                                    >
-                                        <KTIcon iconName='geolocation' className='fs-4 me-1'/>
-                                        SF, Bay Area
-                                    </a>
+
                                     <a
                                         href='#'
                                         className='d-flex align-items-center text-gray-400 text-hover-primary mb-2'
                                     >
                                         <KTIcon iconName='sms' className='fs-4 me-1'/>
-                                        max@kt.com
+                                        {props.order?.customer?.email}
                                     </a>
                                 </div>
                             </div>
@@ -330,29 +441,36 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                     <div
                                         className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                                         <div className='d-flex align-items-center'>
-                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2'/>
-                                            <div className='fs-2 fw-bolder'>4500$</div>
+                                            <div
+                                                className='fs-2 fw-bolder'>{props.order?.car?.brand?.name} - {props.order?.car?.model}</div>
                                         </div>
 
-                                        <div className='fw-bold fs-6 text-gray-400'>Earnings</div>
+                                        <div className='fw-bold fs-6 text-gray-400'>Car</div>
                                     </div>
-
-                                </div>
-                            </div>
-
-                            <div className='d-flex align-items-center w-200px w-sm-300px flex-column mt-3'>
-                                <div className='d-flex justify-content-between w-100 mt-auto mb-2'>
-                                    <span className='fw-bold fs-6 text-gray-400'>Profile Compleation</span>
-                                    <span className='fw-bolder fs-6'>50%</span>
-                                </div>
-                                <div className='h-5px mx-3 w-100 bg-light mb-3'>
                                     <div
-                                        className='bg-success rounded h-5px'
-                                        role='progressbar'
-                                        style={{width: '50%'}}
-                                    ></div>
+                                        className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                                        <div className='d-flex align-items-center'>
+                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2'/>
+                                            <div
+                                                className='fs-2 fw-bolder'>{numberFormat(props.order?.total_price)}</div>
+                                        </div>
+
+                                        <div className='fw-bold fs-6 text-gray-400'>Total price</div>
+                                    </div>
+                                    <div
+                                        className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
+                                        <div className='d-flex align-items-center'>
+                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2'/>
+                                            <div
+                                                className='fs-2 fw-bolder'>{numberFormat(props.order?.payment_price)}</div>
+                                        </div>
+
+                                        <div className='fw-bold fs-6 text-gray-400'>Total pay</div>
+                                    </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>

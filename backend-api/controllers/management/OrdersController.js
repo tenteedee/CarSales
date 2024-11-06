@@ -6,6 +6,164 @@ import Customer from "../../models/Customer.js";
 import Car from "../../models/Car.js";
 import OrderDetails from "../../models/OrderDetails.js";
 import Showroom from "../../models/Showroom.js";
+import Brand from "../../models/Brand.js";
+export const updateOrder = async (req, res) => {
+  const { id } = req.params;
+  const staff = req.user;
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID không hợp lệ" });
+  }
+  try {
+    const {
+      sales_staff_id,
+      technical_staff_id,
+      insurance_staff_id,
+      order_status,
+    } = req.body;
+
+    if (
+      sales_staff_id &&
+      (!Number.isInteger(sales_staff_id) || sales_staff_id <= 0)
+    ) {
+      return res.status(400).json({ error: "sales_staff_id không hợp lệ" });
+    }
+
+    if (
+      technical_staff_id &&
+      (!Number.isInteger(technical_staff_id) || technical_staff_id <= 0)
+    ) {
+      return res.status(400).json({ error: "technical_staff_id không hợp lệ" });
+    }
+
+    if (
+      insurance_staff_id &&
+      (!Number.isInteger(insurance_staff_id) || insurance_staff_id <= 0)
+    ) {
+      return res.status(400).json({ error: "insurance_staff_id không hợp lệ" });
+    }
+
+    const validStatuses = [
+      "pending",
+      "confirmed",
+      "paying",
+      "completed",
+      "cancelled",
+    ];
+    if (!validStatuses.includes(order_status)) {
+      return res.status(400).json({ error: "Statsu không hợp lệ" });
+    }
+
+    const order = await Orders.findOne({
+      where: { id },
+      include: [
+        {
+          model: Staff,
+          as: "technical_staff",
+          attributes: [
+            "fullname",
+            "email",
+            "phone_number",
+            "showroom_id",
+            "role_id",
+          ],
+        },
+        {
+          model: Staff,
+          as: "sales_staff",
+          attributes: [
+            "fullname",
+            "email",
+            "phone_number",
+            "showroom_id",
+            "role_id",
+          ],
+        },
+        {
+          model: Staff,
+          as: "insurance_staff",
+          attributes: [
+            "fullname",
+            "email",
+            "phone_number",
+            "showroom_id",
+            "role_id",
+          ],
+        },
+        {
+          model: Customer,
+          as: "customer",
+          attributes: ["fullname", "email", "phone_number"],
+        },
+        {
+          model: Car,
+          include: [{ model: Brand, as: "brand" }],
+          as: "car",
+        },
+        {
+          model: Showroom,
+          as: "showroom",
+        },
+        {
+          model: OrderDetails,
+          as: "order_details",
+        },
+      ],
+    });
+
+    if (!order) {
+      return res.status(404).json({ error: "Yêu cầu không tồn tại" });
+    }
+    if (sales_staff_id) {
+      const saleCheck = await Staff.findOne({
+        where: { id: sales_staff_id, role_id: 2 },
+      });
+      if (!saleCheck) {
+        return res.status(400).json({ error: "Sale không tồn tại" });
+      }
+      if (saleCheck.showroom_id != order.showroom_id) {
+        return res
+          .status(400)
+          .json({ error: "Sale không làm việc tại showroom khách chọn!" });
+      }
+      await order.setSales_staff(saleCheck);
+    }
+    if (technical_staff_id) {
+      const technicalCheck = await Staff.findOne({
+        where: { id: technical_staff_id, role_id: 1 },
+      });
+      if (!technicalCheck) {
+        return res.status(400).json({ error: "Technical không tồn tại" });
+      }
+      if (technicalCheck.showroom_id != order.showroom_id) {
+        return res
+          .status(400)
+          .json({ error: "Technical không làm việc tại showroom khách chọn!" });
+      }
+      await order.setTechnical_staff(technicalCheck);
+    }
+    if (insurance_staff_id) {
+      const insuranceCheck = await Staff.findOne({
+        where: { id: insurance_staff_id, role_id: 3 },
+      });
+      if (!insuranceCheck) {
+        return res.status(400).json({ error: "Insurance không tồn tại" });
+      }
+      if (insuranceCheck.showroom_id != order.showroom_id) {
+        return res
+          .status(400)
+          .json({ error: "Insurance không làm việc tại showroom khách chọn!" });
+      }
+      await order.setInsurance_staff(insuranceCheck);
+    }
+    order.order_status = order_status || order.order_status;
+    await order.save();
+
+    const data = order.toJSON();
+    return res.status(200).json({ data: data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message ?? "Lỗi máy chủ" });
+  }
+};
 export const getOrder = async (req, res) => {
   const { id } = req.params;
   const staff = req.user;
@@ -19,17 +177,35 @@ export const getOrder = async (req, res) => {
         {
           model: Staff,
           as: "technical_staff",
-          attributes: ["fullname", "email", "phone_number"],
+          attributes: [
+            "fullname",
+            "email",
+            "phone_number",
+            "showroom_id",
+            "role_id",
+          ],
         },
         {
           model: Staff,
           as: "sales_staff",
-          attributes: ["fullname", "email", "phone_number"],
+          attributes: [
+            "fullname",
+            "email",
+            "phone_number",
+            "showroom_id",
+            "role_id",
+          ],
         },
         {
           model: Staff,
           as: "insurance_staff",
-          attributes: ["fullname", "email", "phone_number"],
+          attributes: [
+            "fullname",
+            "email",
+            "phone_number",
+            "showroom_id",
+            "role_id",
+          ],
         },
         {
           model: Customer,
@@ -38,6 +214,7 @@ export const getOrder = async (req, res) => {
         },
         {
           model: Car,
+          include: [{ model: Brand, as: "brand" }],
           as: "car",
         },
         {
@@ -121,6 +298,7 @@ export const queryOrder = async (req, res) => {
     } else if (staff.role.name == "Technical") {
       searchConditions.technical_staff_id = staff.id;
     }
+
     const totalOrders = await Orders.count({
       where: searchConditions,
     });

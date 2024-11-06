@@ -1,14 +1,14 @@
 import {ChangeEvent, FC, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import {Insurance} from "../core/models";
+import {InsuranceProvider} from "../core/models";
 import {createInsuranceProvider} from "../core/requests";
 
 type Props = {};
 
 export const InsuranceProviderCreate: FC<Props> = ({...props}) => {
     const navigate = useNavigate();
-    const [insuranceProvider, setInsuranceProvider] = useState<Partial<Insurance>>({
+    const [insuranceProvider, setInsuranceProvider] = useState<Partial<InsuranceProvider>>({
         name: "",
         phone_number: "",
         email: "",
