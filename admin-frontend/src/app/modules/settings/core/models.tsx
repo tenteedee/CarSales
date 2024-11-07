@@ -8,5 +8,4 @@ export type Settings = {
     attribute ?: string
     type ?: string
     uploadFile?: File | null;
-
 }

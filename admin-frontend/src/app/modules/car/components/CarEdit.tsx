@@ -1,11 +1,11 @@
 import {Brand, Car, Type} from '../core/models'
 import React, {FC, useEffect, useState} from 'react'
-import {Link, Outlet, useNavigate, useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {getBrands, getCar, getTypes, updateCar} from '../core/requests'
 import {QueryResponse} from '../../../utils/model/models'
 import {toast} from 'react-toastify'
-import {KTIcon} from '../../../../_metronic/helpers'
 import {CKEditorForm} from "../../../../_metronic/partials/form/ckfinder/CKEditorForm";
+import {numberFormat} from "../../../utils/helpers/helpers";
 
 type Props = {}
 export const CarEdit: FC<Props> = ({...props}) => {
@@ -75,12 +75,25 @@ export const CarEdit: FC<Props> = ({...props}) => {
 
     const handleUpdate = () => {
         if (car && id) {
-            updateCar(id, car)
+            const formData = new FormData();
+            formData.append("model", car.model || "");
+            formData.append("brand_id", car.brand_id?.toString() || "");
+            formData.append("type_id", car.type_id?.toString() || "");
+            formData.append("price", car.price?.toString().replace(/,/g, '') || "");
+            formData.append("description", car.description || "");
+            formData.append("stock", car.stock?.toString() || "");
+            formData.append("content", car.content || "");
+            formData.append("images", JSON.stringify(car.images));
+            car.images?.forEach((image, index) => {
+                if (image.upload) {
+                    formData.append(`images[${index}][file]`, image.upload);
+                }
+            });
+            updateCar(id, formData)
                 .then((response) => {
                     const carData = response.data
                     if (carData && !Array.isArray(carData)) {
-                        setCar(carData)
-                        setCar({...car})
+
                         toast.success('Cập nhật thông tin thành công', {
                             position: 'top-right',
                             autoClose: 3000,
@@ -90,6 +103,7 @@ export const CarEdit: FC<Props> = ({...props}) => {
                             draggable: true,
                             progress: undefined,
                         })
+                        navigate('/cars', {state: {reload: true}});
 
                     } else {
                         setError(true)
@@ -121,6 +135,38 @@ export const CarEdit: FC<Props> = ({...props}) => {
                 })
         }
     }
+    const handleImageAdd = () => {
+        setCar({...car, images: [...(car?.images || []), {image_url: ''}]});
+    };
+
+    const handleImageChange = (index: number, url: string) => {
+        if (car?.images) {
+            const updatedImages = car.images.map((img, i) =>
+                i === index ? {image_url: url} : img
+            );
+            setCar({...car, images: updatedImages});
+        }
+    };
+
+    const handleImageUpload = (index: number, file: File) => {
+        if (car?.images) {
+            const updatedImages = [...car.images];
+            updatedImages[index] = {
+                ...updatedImages[index],
+                image_url: file.name,
+                upload: file
+            };
+            setCar({ ...car, images: updatedImages });
+        }
+    };
+
+
+    const handleImageRemove = (index: number) => {
+        if (car?.images) {
+            const updatedImages = car.images.filter((_, i) => i !== index);
+            setCar({...car, images: updatedImages});
+        }
+    };
 
     if (loading) {
         return <div>Loading...</div>
@@ -149,7 +195,6 @@ export const CarEdit: FC<Props> = ({...props}) => {
                 <div className='card-body p-9'>
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>Model</label>
-
                         <div className='col-lg-8'>
                             <input
                                 type='text'
@@ -159,8 +204,17 @@ export const CarEdit: FC<Props> = ({...props}) => {
                             />
                         </div>
                     </div>
-
-
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Description</label>
+                        <div className='col-lg-8'>
+                            <input
+                                type='text'
+                                className='form-control'
+                                value={car?.description  || ''}
+                                onChange={(e) => setCar({...car, description : e.target.value})}
+                            />
+                        </div>
+                    </div>
                     <div className='row mb-7'>
                         <label className='col-lg-4 fw-bold text-muted'>Brand</label>
                         <div className='col-lg-8'>
@@ -208,7 +262,7 @@ export const CarEdit: FC<Props> = ({...props}) => {
                             <input
                                 type='text'
                                 className='form-control'
-                                value={car?.price || ''}
+                                value={numberFormat(car?.price) || ''}
                                 onChange={(e) => setCar({...car, price: parseFloat(e.target.value)})}
                             />
                         </div>
@@ -234,7 +288,53 @@ export const CarEdit: FC<Props> = ({...props}) => {
                             />
                         </div>
                     </div>
-
+                    <hr/>
+                    {/* Image Upload Section */}
+                    <div className='row mb-7'>
+                        <label className='col-lg-4 fw-bold text-muted'>Images</label>
+                        <div className='col-lg-8'>
+                            {car?.images?.map((image, index) => (
+                                <div key={index} className="d-flex align-items-center mb-2">
+                                    <input
+                                        type="text"
+                                        className="form-control me-2"
+                                        value={typeof image.image_url === "string" ? image.image_url : ""}
+                                        disabled={!!image.upload}
+                                        onChange={(e) => handleImageChange(index, e.target.value)}
+                                    />
+                                    <label
+                                        className="btn btn-secondary btn-sm"
+                                        style={{padding: "5px 10px"}}
+                                        onClick={() => document.getElementById(`file-input-${index}`)?.click()}
+                                    >
+                                        Chọn hình ảnh
+                                    </label>
+                                    <label
+                                        className="btn btn-danger btn-sm ms-2"
+                                        style={{padding: "5px 10px"}}
+                                        onClick={() => handleImageRemove(index)}
+                                    >
+                                        Xoá ảnh
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id={`file-input-${index}`}
+                                        style={{display: "none"}}
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            if (e.target.files && e.target.files[0]) {
+                                                handleImageUpload(index, e.target.files[0]);
+                                                e.target.value = "";
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                            <button className='btn btn-primary btn-sm mt-2' onClick={handleImageAdd}>
+                                + Thêm hình ảnh
+                            </button>
+                        </div>
+                    </div>
                     <div className='d-flex my-4'>
                         <button className='btn btn-primary' onClick={handleUpdate}>
                             Update

@@ -30,11 +30,23 @@ export const getCar = async (id: string): Promise<QueryResponse> => {
     .get(`${CAR_URL}/detail/${id}`)
     .then((response: AxiosResponse<QueryResponse>) => response.data)
 }
-export const updateCar = async (id: string, car: Car): Promise<QueryResponse> => {
+// export const updateCar = async (id: string, car: Car): Promise<QueryResponse> => {
+//   return axios
+//     .patch(`${CAR_URL}/edit/${id}`, car)
+//     .then((response: AxiosResponse<QueryResponse>) => response.data)
+// }
+
+export const updateCar = (id: string,formData: FormData): Promise<QueryResponse> => {
   return axios
-    .patch(`${CAR_URL}/edit/${id}`, car)
-    .then((response: AxiosResponse<QueryResponse>) => response.data)
+      .patch(`${CAR_URL}/edit/${id}`, formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response: AxiosResponse<QueryResponse>) => response.data);
 }
+
+
 export const createCar = async (car: Car): Promise<QueryResponse> => {
   const newCar = {
     model: car.model,

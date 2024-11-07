@@ -3,9 +3,8 @@ import {Settings} from "../core/models";
 import {QueryResponse} from "../../../utils/model/models";
 import {toast} from "react-toastify";
 import {getSettings, updateSettings} from "../core/requests";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
+import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import BalloonEditor from "@ckeditor/ckeditor5-build-balloon"; // Import the full-featured Balloon editor
 
 type Props = {};
 export const GeneralSettings: FC<Props> = () => {
