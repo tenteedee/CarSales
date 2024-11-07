@@ -262,7 +262,7 @@ export const CarEdit: FC<Props> = ({...props}) => {
                             <input
                                 type='text'
                                 className='form-control'
-                                value={numberFormat(car?.price) || ''}
+                                value={(car?.price) || ''}
                                 onChange={(e) => setCar({...car, price: parseFloat(e.target.value)})}
                             />
                         </div>
