@@ -2178,3 +2178,19 @@ a.m-langLink {
 .car-filter-section {
   margin-top: 20px
 }
+.overlay-image-container {
+  position: relative;
+  width: 400px; /* Điều chỉnh kích thước phù hợp */
+  height: 400px;
+  border-radius: 50%; /* Tạo hình tròn */
+  overflow: hidden;
+  margin: 0 auto; /* Căn giữa */
+  z-index: 2;
+}
+
+.overlay-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+

@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/HomePage/Home';
@@ -20,16 +19,15 @@ import CarFilter from './pages/HomePage/CarFilter';
 import News from './pages/News/News';
 import NewsDetail from './pages/News/NewsDetail';
 
-
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
 
-  // Các đường dẫn muốn ẩn Navbar
+  // Paths where Navbar should be hidden
   const hideNavbarPaths = ['/login', '/register'];
 
   return (
-    <div>
+    <div >
       <Header />
 
       {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
@@ -64,10 +62,9 @@ function App() {
         <Route path="/cars" element={<CarFilter />} />
         <Route path="/car-loan" element={<CarLoan />} />
         <Route path="/insurance" element={<InsuranceList />} />
-       
         <Route path="/news" element={<News />} />
-        <Route path="/news/:id" element={<NewsDetail/>} />              
-               <Route path="*" element={<NotFound />} />
+        <Route path="/news/:id" element={<NewsDetail />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>
       <Footer />

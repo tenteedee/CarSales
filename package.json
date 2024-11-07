@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@gsap/react": "^2.1.1",
     "bootstrap": "^5.3.3",
     "react-bootstrap": "^2.10.5",
     "react-toastify": "^10.0.6"
