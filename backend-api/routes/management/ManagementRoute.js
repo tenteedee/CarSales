@@ -283,7 +283,7 @@ carRoute.get("/query", queryCars);
 const protectedCarRoute = express.Router();
 protectedCarRoute.route("/detail/:id").get(getCarById);
 protectedCarRoute.route("/delete").delete(deleteCar);
-protectedCarRoute.route("/edit/:id").patch(updateCar);
+protectedCarRoute.route("/edit/:id").patch(upload.any(), updateCar); // Apply upload.any() middleware here
 protectedCarRoute.post("/create", createNewCar);
 protectedCarRoute.route("/brand").get(getAllBrands);
 protectedCarRoute.route("/type").get(getAllTypes);

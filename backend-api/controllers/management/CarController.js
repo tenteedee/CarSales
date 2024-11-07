@@ -4,6 +4,7 @@ import Car from "../../models/Car.js";
 import Brand from "../../models/Brand.js";
 import CarType from "../../models/CarType.js";
 import CarImage from "../../models/CarImage.js";
+import { APP_URL } from "../../config/Config.js";
 
 export const queryCars = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
@@ -229,12 +230,16 @@ export const updateCar = async (req, res) => {
   try {
     const carId = req.params.id;
     const { model, brand_id, type_id, price, stock, content } = req.body;
+    const files = req.files;
 
+    // Find the car by ID
     const car = await Car.findByPk(carId);
 
     if (!car) {
       return res.status(404).json({ message: "Car not found" });
     }
+
+    // Update the brand if brand_id is provided
     if (brand_id) {
       const brand = await Brand.findOne({ where: { id: brand_id } });
       if (!brand) {
@@ -242,6 +247,8 @@ export const updateCar = async (req, res) => {
       }
       await car.setBrand(brand);
     }
+
+    // Update the type if type_id is provided
     if (type_id) {
       const type = await CarType.findOne({ where: { id: type_id } });
       if (!type) {
@@ -249,12 +256,71 @@ export const updateCar = async (req, res) => {
       }
       await car.setType(type);
     }
-    car.content = content || car.content;
+
+    // Update regular fields
     car.model = model || car.model;
     car.price = price || car.price;
     car.stock = stock || car.stock;
-
+    car.content = content || car.content;
     await car.save();
+    // Parse `req.body.images`
+    const deletedCount = await CarImage.destroy({
+      where: {
+        car_id: car.id,
+      },
+    });
+    // Parse `req.body.images`
+    let images = [];
+    try {
+      images = JSON.parse(req.body.images || "[]").map((image) => ({
+        ...image,
+      }));
+    } catch (error) {
+      return res.status(400).json({ error: "Invalid images format" });
+    }
+
+    console.log("Parsed images from req.body:", images);
+    console.log("Files received in req.files:", req.files);
+
+    // Set to track indices with uploaded files
+    const processedIndices = new Set();
+
+    // Process uploaded files
+    for (const file of req.files) {
+      const match = file.fieldname.match(/images\[(\d+)]\[file\]/);
+      if (match) {
+        const index = parseInt(match[1], 10);
+        const filePath = `${APP_URL}assets/images/${file.filename}`;
+
+        await CarImage.create({
+          car_id: car.id,
+          image_url: filePath,
+        });
+
+        // Mark this index as processed
+        processedIndices.add(index);
+      }
+    }
+
+    // Process URL-based images, skipping those with uploaded files
+    for (const [index, image] of images.entries()) {
+      if (!processedIndices.has(index) && image.image_url) {
+        if (/\.(jpg|jpeg|png|gif|webp)$/.test(image.image_url)) {
+          // Handle valid URL
+          await CarImage.create({
+            car_id: car.id,
+            image_url: image.image_url,
+          });
+        } else {
+          // Handle invalid URL format
+          return res
+            .status(400)
+            .json({ error: "Vui lòng nhập link hình ảnh đúng định dạng" });
+        }
+      }
+    }
+
+    // Retrieve the updated car with associated data
     const updatedCar = await Car.findOne({
       where: { id: carId },
       include: [
@@ -275,9 +341,11 @@ export const updateCar = async (req, res) => {
         },
       ],
     });
+
     return res.status(200).json({ data: updatedCar });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Có lỗi xảy ra:", error);
+    return res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật xe" });
   }
 };
 export const getAllBrands = async (req, res) => {
