@@ -79,7 +79,7 @@ export const CarEdit: FC<Props> = ({...props}) => {
             formData.append("model", car.model || "");
             formData.append("brand_id", car.brand_id?.toString() || "");
             formData.append("type_id", car.type_id?.toString() || "");
-            formData.append("price", car.price?.toString().replace(/,/g, '') || "");
+            formData.append("price", car.price?.toString() || "");
             formData.append("description", car.description || "");
             formData.append("stock", car.stock?.toString() || "");
             formData.append("content", car.content || "");
@@ -262,7 +262,7 @@ export const CarEdit: FC<Props> = ({...props}) => {
                             <input
                                 type='text'
                                 className='form-control'
-                                value={(car?.price) || ''}
+                                value={numberFormat(car?.price) || ''}
                                 onChange={(e) => setCar({...car, price: parseFloat(e.target.value)})}
                             />
                         </div>
