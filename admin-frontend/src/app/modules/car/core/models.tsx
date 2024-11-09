@@ -11,7 +11,11 @@ export type Car = {
     description?: string
     stock?: number
     content?: string
-    images?: string[]
+    images?: CarImage[]
+}
+export type CarImage = {
+    image_url?: string | File
+    upload ?:  File;
 }
 export type Brand = {
     id?: string

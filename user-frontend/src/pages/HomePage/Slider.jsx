@@ -22,7 +22,7 @@ function Slider() {
 
     return (
         <div>
-            <section className="b-slider">
+            <section className="b-slider parallax">
                 <div className="custom-slider">
                     <div className="slider-container">
                         {images.map((image, index) => (
@@ -31,9 +31,15 @@ function Slider() {
                                 key={index}
                                 style={{ transform: `translateX(${(index - currentIndex) * 100}%)` }}
                             >
-                                <img src={image.src} alt="sliderImg" />
+                                {/* Add the parallax background class here */}
+                                <div className="parallax__bg">
+                                    <img src={image.src} alt={image.title} />
+                                </div>
                                 <div className="container">
-                                    
+                                    {/* Add any slider content here */}
+                                    <h2>{image.title}</h2>
+                                    <p>{image.price}</p>
+                                    <span>{image.model}</span>
                                 </div>
                             </div>
                         ))}

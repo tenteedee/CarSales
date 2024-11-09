@@ -288,6 +288,7 @@ const resources = {
         INTEREST_RATE: 'Interest Rate (%)',
         PAYMENT_TYPE: 'Payment Type',
         DECLINING_BALANCE: 'Declining Balance',
+        APPLY_FOR_LOAN:'borrow now',
         FIXED_PAYMENT: 'Fixed Payment',
         CALCULATION_RESULTS: 'Calculation Results',
         TOTAL_INTEREST: 'Total Interest',

@@ -1,8 +1,7 @@
-const formatCurrency = (value) => {
+export const formatCurrency = (value) => {
   if (!value) return '';
 
-  const lang = localStorage.getItem('language') || 'en';
-
+  const lang = localStorage.getItem('language');
   if (lang === 'en') {
     const usdValue = value / 25000;
     return new Intl.NumberFormat('en-US', {

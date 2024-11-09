@@ -16,7 +16,7 @@ type Props = {
     className: string;
 };
 
-const TablesRight: React.FC<Props> = ({className}) => {
+const TableRight: React.FC<Props> = ({className}) => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [activeTab, setActiveTab] = useState('Month');
     const [loading, setLoading] = useState(true);
@@ -161,4 +161,4 @@ const TablesRight: React.FC<Props> = ({className}) => {
     );
 };
 
-export {TablesRight};
+export {TableRight};

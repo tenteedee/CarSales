@@ -5,6 +5,8 @@ import './TestDriveSuccess.css';
 const TestDriveSuccess = () => {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+
   const handleBackToHome = () => {
     navigate('/');
   };
@@ -23,7 +25,9 @@ const TestDriveSuccess = () => {
 
       <div className="success-actions">
         <button onClick={handleBackToHome}>Back to Home</button>
-        <button onClick={handleViewHistory}>View Test Drive History</button>
+        {token && (
+          <button onClick={handleViewHistory}>View Test Drive History</button>
+        )}
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import axios from '../../axios';
+import { Link } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import './TestDriveHistory.css';
 
 const getCustomerIdFromToken = () => {
   const token = localStorage.getItem('token');
@@ -16,13 +18,13 @@ export default function ShowHistoryPage() {
   const [showrooms, setShowrooms] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [salesStaffs, setSalesStaffs] = useState([]);
+  const [staffs, setStaffs] = useState([]);
 
   useEffect(() => {
     const fetchShowrooms = async () => {
       try {
         const response = await axios.get('/showroom/list');
-        setShowrooms(response.data); // Lưu danh sách showroom
+        setShowrooms(response.data);
       } catch (error) {
         console.error('Error fetching showrooms:', error);
       }
@@ -40,21 +42,18 @@ export default function ShowHistoryPage() {
       }
     };
 
-    const fetchSalesStaff = async () => {
+    const fetchStaffs = async () => {
       try {
-        const response = await axios.get('/staff/list');
-        console.log(response.data);
-        setSalesStaffs(response.data);
+        const response = await axios.get('/staff/all');
+        setStaffs(response.data);
       } catch (error) {
-        console.error('Error fetching sales staff:', error);
+        console.error('Error fetching staffs:', error);
       }
     };
 
     fetchShowrooms();
     fetchCustomerData();
-    fetchSalesStaff();
-
-    console.log(salesStaffs);
+    fetchStaffs();
   }, []);
 
   const handleFilterChange = (event) => {
@@ -63,7 +62,6 @@ export default function ShowHistoryPage() {
 
   const filteredData = customerData.filter((item) => {
     const itemDate = moment(item.test_drive_date);
-
     const dateMatch =
       (!startDate || itemDate.isSameOrAfter(moment(startDate))) &&
       (!endDate || itemDate.isSameOrBefore(moment(endDate)));
@@ -77,30 +75,28 @@ export default function ShowHistoryPage() {
     return showrooms.find((showroom) => showroom.id === showroomId);
   };
 
-  const findSalesStaffById = (salesStaffId) => {
-    if (!Array.isArray(salesStaffs)) {
-      console.error('salesStaffs is not an array:', salesStaffs);
-      return 'N/A';
-    }
-
-    const staff = salesStaffs.find((staff) => staff.id === salesStaffId);
-    return staff ? staff.fullname : 'N/A';
+  const getStaffName = (staffId) => {
+    const staff = staffs.find((s) => s.id === staffId);
+    return staff ? staff.fullname : 'Unknown';
   };
 
   const getStatusBadgeClass = (status) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'completed':
         return 'bg-success';
       case 'approved':
         return 'bg-primary';
       case 'pending':
         return 'bg-warning';
+      case 'cancelled':
+        return 'bg-danger';
       default:
         return 'bg-secondary';
     }
   };
 
   return (
+   
     <div className="container mt-4">
       <h1 className="mb-4">Test Drive History</h1>
       <div className="row mb-3">
@@ -156,6 +152,7 @@ export default function ShowHistoryPage() {
               <th>Showroom Address</th>
               <th>Status</th>
               <th>Sales Staff</th>
+              <th>Feedback</th>
             </tr>
           </thead>
           <tbody>
@@ -177,13 +174,27 @@ export default function ShowHistoryPage() {
                         item.status.slice(1)}
                     </span>
                   </td>
-                  <td>{findSalesStaffById(item.sales_staff_id)}</td>
+                  <td>{getStaffName(item.sales_staff_id)}</td>
+                  <td>
+                    {item.status.toLowerCase() === 'completed' ? (
+                      <Link
+                        to={`/feedback/create/${item.car_id}`}
+                        className="btn btn-primary btn-sm"
+                      >
+                        Feedback
+                      </Link>
+                    ) : (
+                      'N/A'
+                    )}
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+      
+    
   );
 }

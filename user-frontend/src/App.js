@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/HomePage/Home';
@@ -10,30 +10,36 @@ import Footer from './components/Footer';
 import UserProfile from './pages/Profile/Profile';
 import CarDetail from './pages/CarDetail/CarDetail';
 import TestDrive from './pages/TestDrive/TestDrive';
-import TestDriveSuccess from './pages/TestDrive/TestDriveSucess';
+import TestDriveSuccess from './pages/TestDrive/TestDriveSuccess';
 import TestDriveHistory from './pages/TestDrive/TestDriveHistory';
 import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
-import InsuranceList from './pages/Insurance/InsuranceList';
-import CarFilter from './pages/HomePage/CarFilter';
+import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
+import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
+import OrderHistory from './pages/OrderDetails/OrderHistory';
+import Checkout from './pages/OrderDetails/Checkout';
 import News from './pages/News/News';
 import NewsDetail from './pages/News/NewsDetail';
+import InsuranceList from './pages/Insurance/InsuranceList';
+import Chatbot from './pages/Chatbot/Chatbot';
+import Feedback from './pages/Feedback/Feedback';
 
 function App() {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
 
-  // Paths where Navbar should be hidden
-  const hideNavbarPaths = ['/login', '/register'];
+  // Các đường dẫn muốn ẩn Navbar
+  const hideNavbarHeaderPaths = ['/login', '/register'];
+
+  // Kiểm tra xem trang hiện tại có phải là trang Home không
 
   return (
-    <div >
-      <Header />
-
+    <div>
       {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
-      {!hideNavbarPaths.includes(location.pathname) && (
+      {!hideNavbarHeaderPaths.includes(location.pathname) && (
         <>
-          <Navbar />
+          <Header />
+          <Navbar  /> 
         </>
       )}
 
@@ -59,15 +65,26 @@ function App() {
           element={token ? <TestDriveHistory /> : <Navigate to="/login" />}
         />
         <Route path="/contacts" element={<Contacts />} />
-        <Route path="/cars" element={<CarFilter />} />
         <Route path="/car-loan" element={<CarLoan />} />
         <Route path="/insurance" element={<InsuranceList />} />
+        <Route
+          path="/order-confirmation/:orderId"
+          element={!token ? <Login /> : <OrderConfirmation />}
+        />
+        <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
+        <Route path="/order-history" element={<OrderHistory />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/news" element={<News />} />
         <Route path="/news/:id" element={<NewsDetail />} />
+        <Route
+          path="/feedback/create/:carId"
+          element={token ? <Feedback /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<NotFound />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>
-      <Footer />
+      <Chatbot />
+      
     </div>
   );
 }
@@ -80,5 +97,6 @@ const NotFound = () => {
     </div>
   );
 };
+
 
 export default App;

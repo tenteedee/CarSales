@@ -177,3 +177,10 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.test-drive-form input,
+.test-drive-form select,
+.test-drive-form .form-control {
+  font-size: 15px; /* Increase font size */
+  padding: 10px; /* Optional: Increase padding for better readability */
+}

@@ -2,25 +2,27 @@
 import {FC} from 'react'
 import {useIntl} from 'react-intl'
 import {PageTitle} from '../../../_metronic/layout/core'
-import {MixedWidget8,} from '../../../_metronic/partials/widgets'
-import {TablesRight} from "./menu/TablesRight";
+import {TableRight} from "./menu/TableRight";
+import {useAuth} from "../../modules/auth";
+import TopSellingCars from "./menu/TopSellingCars";
 
-const DashboardPage: FC = () => (
-    <>
+const DashboardPage: FC = () => {
+    const {hasRole} = useAuth()
+
+    return (<>
         <div className='row g-5 gx-xxl-8'>
-            <div className='col-xxl-4'>
-                <MixedWidget8
-                    className='card-xxl-stretch mb-xl-3'
-                    chartColor='success'
-                    chartHeight='150px'
-                />
-            </div>
-            <div className='col-xxl-8'>
-                <TablesRight className='card-xxl-stretch mb-5 mb-xxl-8'/>
+            {hasRole("Director") && (
+                <div className='col-xxl-4'>
+                    <TopSellingCars/>
+                </div>
+            )}
+            <div className={`col-xxl-${hasRole("Director") ? 8 : 12}`}>
+                <TableRight className='card-xxl-stretch mb-5 mb-xxl-8'/>
             </div>
         </div>
-    </>
-)
+    </>);
+}
+
 
 const DashboardWrapper: FC = () => {
     const intl = useIntl()

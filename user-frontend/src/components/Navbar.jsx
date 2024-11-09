@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'; // Import the hook
 
 const Navbar = () => {
+  const [showNavbar, setShowNavbar] = useState(false);
   const { t } = useTranslation(); // Call the hook to get the t function
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState({
@@ -26,7 +27,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="b-nav">
+    
+    <nav className={`navbar ${showNavbar ? 'show' : ''}`}>
       <div className="container">
         <div className="row">
           <div className="col-sm-3 col-xs-4">
@@ -58,8 +60,9 @@ const Navbar = () => {
                 </button>
               </div>
               <div
-                className={`collapse navbar-collapse navbar-main-slide ${isNavbarOpen ? 'in' : ''
-                  }`}
+                className={`collapse navbar-collapse navbar-main-slide ${
+                  isNavbarOpen ? 'in' : ''
+                }`}
                 id="nav"
               >
                 <ul className="navbar-nav-menu">
@@ -67,8 +70,9 @@ const Navbar = () => {
                     <Link to="/">{t('TRANG CHỦ')}</Link>
                   </li>
                   <li
-                    className={`dropdown ${isDropdownOpen.buyCar ? 'open' : ''
-                      }`}
+                    className={`dropdown ${
+                      isDropdownOpen.buyCar ? 'open' : ''
+                    }`}
                     onMouseEnter={() => handleMouseEnter('buyCar')}
                     onMouseLeave={() => handleMouseLeave('buyCar')}
                   >
@@ -77,9 +81,9 @@ const Navbar = () => {
                     </Link>
                     {isDropdownOpen.buyCar && (
                       <ul className="dropdown-menu h-nav">
-                        <li>
+                        {/* <li>
                           <Link to="/cars">{t('DANH SÁCH XE')}</Link>
-                        </li>
+                        </li> */}
                         <li>
                           <Link to="/car-loan">{t('ƯỚC TÍNH VAY')}</Link>
                         </li>
@@ -96,8 +100,9 @@ const Navbar = () => {
                     <Link to="/article">{t('KHUYẾN MÃI')}</Link>
                   </li>
                   <li
-                    className={`dropdown ${isDropdownOpen.services ? 'open' : ''
-                      }`}
+                    className={`dropdown ${
+                      isDropdownOpen.services ? 'open' : ''
+                    }`}
                     onMouseEnter={() => handleMouseEnter('services')}
                     onMouseLeave={() => handleMouseLeave('services')}
                   >

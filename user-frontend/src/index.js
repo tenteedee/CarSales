@@ -9,6 +9,8 @@ import { store, persistor } from './reduxStore/store';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n'; // Ensure correct import for i18n
 import resources from './i18n/resources'; // Import your language resources
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 
 // Initialize i18next with resources
 i18n.init({
@@ -28,6 +30,7 @@ root.render(
                 <I18nextProvider i18n={i18n}>
                     <Router>
                         <App />
+                        <ToastContainer/>
                     </Router>
                 </I18nextProvider>
             </PersistGate>

@@ -11,7 +11,7 @@
 - Author:  Andrey Sokoltsov
 - Profile:	http://themeforest.net/user/andreysokoltsov
 
--------------------------------------------------------------------*/
+----------------------------------------------------------------    ---*/
 
 /* Global */
 body {
@@ -248,7 +248,7 @@ body {
 }
 
 .b-welcome:after {
-    background: rgba(255, 255, 255, 0.3);
+    background:  #2C4444 ;
 }
 
 .b-welcome__text {
@@ -328,7 +328,7 @@ body {
 }
 
 .b-asks__first {
-    background: #555;
+    background: #7C9595;
 }
 
 .b-asks__first:hover .b-asks__first-circle {
@@ -353,15 +353,15 @@ body {
 
 .b-asks__first-arrow span {
     background: #ffffff;
-    color: #707070;
+    color: #7C9595;
 }
 
 .b-asks__first.m-second {
-    background: #555555;
+    background: #7C9595;
 }
 
 .b-asks__call {
-    color: #525252;
+    color: #7C9595;
 }
 
 /*b-asks*/

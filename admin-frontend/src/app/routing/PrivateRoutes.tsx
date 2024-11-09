@@ -16,6 +16,8 @@ import TestDrivePage from "../modules/test-drive-request/TestDrivePage";
 import ShowroomPage from "../modules/showroom/ShowroomPage";
 import CustomerPage from "../modules/customer/CustomerPage";
 import CarsPage from "../modules/car/CarsPage";
+import InsurancePage from "../modules/insurance/InsurancePage";
+import OrderPage from "../modules/order/OrderPage";
 import ProfilePage from '../modules/profile/ProfilePage'
 
 const PrivateRoutes = () => {
@@ -31,6 +33,16 @@ const PrivateRoutes = () => {
                 <Route path='builder' element={<BuilderPageWrapper/>}/>
                 <Route path='menu-test' element={<MenuTestPage/>}/>
                 {/* Lazy Modules */}
+                {(hasRole("Director") || hasRole("Sale") || hasRole("Insurance") || hasRole("Technical")) && (
+                    <Route
+                        path='orders/*'
+                        element={
+                            <SuspensedView>
+                                <OrderPage/>
+                            </SuspensedView>
+                        }
+                    />
+                )}
                 {(hasRole("Director") || hasRole("Sale")) && (
                     <Route
                         path='test-drive/*'
@@ -93,16 +105,6 @@ const PrivateRoutes = () => {
                 )}
                 {hasRole("Director") && (
                     <Route
-                        path='profile/*'
-                        element={
-                            <SuspensedView>
-                                <ProfilePage/>
-                            </SuspensedView>
-                        }
-                    />
-                )}
-                {hasRole("Director") && (
-                    <Route
                         path='news/*'
                         element={
                             <SuspensedView>
@@ -117,6 +119,26 @@ const PrivateRoutes = () => {
                         element={
                             <SuspensedView>
                                 <CarsPage />
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {hasRole('Director') && (
+                    <Route
+                        path='insurances/*'
+                        element={
+                            <SuspensedView>
+                                <InsurancePage />
+                            </SuspensedView>
+                        }
+                    />
+                )}
+                {(hasRole("Director") || hasRole("Sale") || hasRole("Insurance") || hasRole("Technical")) && (
+                    <Route
+                        path='profile/*'
+                        element={
+                            <SuspensedView>
+                                <ProfilePage/>
                             </SuspensedView>
                         }
                     />

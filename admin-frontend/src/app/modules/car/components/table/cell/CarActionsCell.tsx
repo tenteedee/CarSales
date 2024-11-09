@@ -1,24 +1,24 @@
-import React, {FC, useEffect} from 'react'
-import {ID, KTIcon} from '../../../../../../_metronic/helpers'
+import React, { FC, useEffect } from 'react'
+import { ID, KTIcon } from '../../../../../../_metronic/helpers'
 
-import {MenuComponent} from '../../../../../../_metronic/assets/ts/components'
-import {Link} from 'react-router-dom'
-import {Confirm} from 'notiflix'
-import {useQueryResponse} from '../../../../../../_metronic/layout/core/QueryResponseProvider'
-import {useListView} from '../../../../../../_metronic/layout/core/ListViewProvider'
-import {handleDelete} from '../../../Cars'
+import { MenuComponent } from '../../../../../../_metronic/assets/ts/components'
+import { Link } from 'react-router-dom'
+import { Confirm } from 'notiflix'
+import { useQueryResponse } from '../../../../../../_metronic/layout/core/QueryResponseProvider'
+import { useListView } from '../../../../../../_metronic/layout/core/ListViewProvider'
+import { handleDelete } from '../../../Cars'
 
 type Props = {
     id: ID
     value?: string // Assuming "value" may be passed in
 }
 
-const CarActionsCell: FC<Props> = ({id, value, ...props}) => {
+const CarActionsCell: FC<Props> = ({ id, value, ...props }) => {
     useEffect(() => {
         MenuComponent.reinitialization()
     }, [])
-    const {refetch} = useQueryResponse()
-    const {clearSelected} = useListView()
+    const { refetch } = useQueryResponse()
+    const { clearSelected } = useListView()
     const onDeleteClick = () => {
         Confirm.show('Xác nhận', 'Bạn có chắc muốn xóa bản ghi này không?', 'Yes', 'No', () => {
             handleDelete([id]).finally(() => {
@@ -66,4 +66,4 @@ const CarActionsCell: FC<Props> = ({id, value, ...props}) => {
     )
 }
 
-export {CarActionsCell}
+export { CarActionsCell }

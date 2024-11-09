@@ -1,0 +1,45 @@
+.feedback-list {
+    margin-top: 20px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+  }
+  
+  .feedback-list {
+    margin-bottom: 15px;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .feedback-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .feedback-item:last-child {
+    border-bottom: none;
+  }
+  
+  .feedback-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
+  
+  .feedback-header strong {
+    font-size: 1.75rem;
+    color: #333;
+  }
+  
+  .rating {
+    color: #ffd700;
+    font-size: 1.25rem;
+  }
+  
+  .content {
+    color: #555;
+    font-size: 1.5rem;
+    margin-top: 5px;
+    font-style: italic;
+  }
