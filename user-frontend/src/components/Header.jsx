@@ -134,7 +134,7 @@ const Header = () => {
             <ul style={{ display: 'flex', gap: '10px' }}>
 
               <li>
-                <Link to={'/cart'}>{t('Cart')}</Link>
+                <Link to={'/order-history'}>{t('Cart')}</Link>
               </li>
             </ul>
           </nav>
