@@ -190,6 +190,7 @@ export const updateTestDrive = async (req, res) => {
 
     // Send email to customer with the updated information
     if (status) {
+      console.log(status);
       try {
         const html = generateTestDriveEmailCustomer(
           customer,

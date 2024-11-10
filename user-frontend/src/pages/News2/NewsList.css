@@ -1,0 +1,93 @@
+.news-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.news-list {
+    width: 60%; /* Adjust this width as needed */
+    max-width: 900px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: left;
+}
+
+.news-list h2 {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.news-cards {
+    display: flex;
+    flex-direction: column; /* Stack cards vertically */
+    gap: 20px;
+}
+
+.news-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    width: 100%;
+}
+
+.news-card:hover {
+    transform: scale(1.02);
+}
+
+.news-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.news-info {
+    padding: 15px;
+    background-color: #fff;
+}
+
+.news-title {
+    font-size: 2rem;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.news-date {
+    font-size: 1.2rem;
+    color: #777;
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    color: #333;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button.active {
+    background-color: #007bff;
+    color: white;
+    cursor: default;
+}
+
+.pagination button:hover:not(.active) {
+    background-color: #e0e0e0;
+}
+
+.pagination button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

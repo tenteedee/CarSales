@@ -24,9 +24,7 @@ export function generateTestDriveEmailCustomer(user, testDriveInfo, staff) {
             </p>
             
             <p style="font-size: 16px; color: #333333; font-weight: bold;">
-              Current Status: <span style="color: #ff6600;">${toupperCase(
-                testDriveInfo.status
-              )}</span>
+              Current Status: <span style="color: #ff6600;">${testDriveInfo.status.toUpperCase()}</span>
             </p>
             
             ${
