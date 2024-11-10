@@ -30,7 +30,6 @@ const AppRoutes: FC = () => {
           {currentUser ? (
             <>
               <Route path='/*' element={<PrivateRoutes />} />
-              <Route path="/staff-profile/:id" element={<StaffProfilePage />} />
               <Route index element={<Navigate to='/dashboard' />} />
             </>
           ) : (

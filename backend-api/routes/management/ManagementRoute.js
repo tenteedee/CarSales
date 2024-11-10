@@ -105,6 +105,11 @@ import {
   queryOrder,
   updateOrder,
 } from "../../controllers/management/OrdersController.js";
+import {
+  changePassword,
+  getProfile,
+  updateProfile,
+} from "../../controllers/management/ProfileController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -171,6 +176,12 @@ authRouter.post("/login", validateLogin, login);
 authRouter.post("/login-google", loginWithGoogle);
 authRouter.post("/verify_token", verifyStaffToken([]), verify_token);
 router.use("/auth", authRouter);
+
+const staffProfile = express.Router();
+staffProfile.get("/", getProfile);
+staffProfile.post("/update", updateProfile);
+staffProfile.post("/password", changePassword);
+router.use("/profile", verifyStaffToken([]), staffProfile);
 
 const userRouter = express.Router();
 userRouter.get("/query", query);

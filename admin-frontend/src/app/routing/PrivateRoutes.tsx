@@ -18,6 +18,7 @@ import CustomerPage from "../modules/customer/CustomerPage";
 import CarsPage from "../modules/car/CarsPage";
 import InsurancePage from "../modules/insurance/InsurancePage";
 import OrderPage from "../modules/order/OrderPage";
+import ProfilePage from "../modules/profile/ProfilePage";
 
 const PrivateRoutes = () => {
     const {hasRole} = useAuth()
@@ -117,7 +118,7 @@ const PrivateRoutes = () => {
                         path='cars/*'
                         element={
                             <SuspensedView>
-                                <CarsPage />
+                                <CarsPage/>
                             </SuspensedView>
                         }
                     />
@@ -127,11 +128,19 @@ const PrivateRoutes = () => {
                         path='insurances/*'
                         element={
                             <SuspensedView>
-                                <InsurancePage />
+                                <InsurancePage/>
                             </SuspensedView>
                         }
                     />
                 )}
+                <Route
+                    path='profile/*'
+                    element={
+                        <SuspensedView>
+                            <ProfilePage />
+                        </SuspensedView>
+                    }
+                />
                 {/* Page Not Found */}
                 <Route path='*' element={<Navigate to='/error/404'/>}/>
             </Route>
