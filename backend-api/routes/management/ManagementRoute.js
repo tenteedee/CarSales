@@ -289,4 +289,4 @@ protectedCarRoute.route("/brand").get(getAllBrands);
 protectedCarRoute.route("/type").get(getAllTypes);
 router.use("/cars", carRoute);
 router.use("/cars", verifyStaffToken(["Director"]), protectedCarRoute);
-export default router;
+export default router;  

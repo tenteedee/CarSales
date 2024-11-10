@@ -1,7 +1,7 @@
-import {QueryResponse} from '../../../utils/model/models'
-import axios, {AxiosResponse} from 'axios'
-import {ID} from '../../../../_metronic/helpers'
-import {Car} from './models'
+import { QueryResponse } from '../../../utils/model/models'
+import axios, { AxiosResponse } from 'axios'
+import { ID } from '../../../../_metronic/helpers'
+import { Car } from './models'
 
 const API_URL = process.env.REACT_APP_API_URL
 const CAR_URL = `${API_URL}/cars`
@@ -20,7 +20,7 @@ export const getCars = async (query: string): Promise<QueryResponse> => {
 export const deleteCar = async (carId: Array<ID>): Promise<QueryResponse> => {
   return axios
     .delete(`${CAR_URL}/delete`, {
-      data: {ids: carId},
+      data: { ids: carId },
     })
     .then((response: AxiosResponse<QueryResponse>) => response.data)
 }
@@ -36,14 +36,14 @@ export const getCar = async (id: string): Promise<QueryResponse> => {
 //     .then((response: AxiosResponse<QueryResponse>) => response.data)
 // }
 
-export const updateCar = (id: string,formData: FormData): Promise<QueryResponse> => {
+export const updateCar = (id: string, formData: FormData): Promise<QueryResponse> => {
   return axios
-      .patch(`${CAR_URL}/edit/${id}`, formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response: AxiosResponse<QueryResponse>) => response.data);
+    .patch(`${CAR_URL}/edit/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((response: AxiosResponse<QueryResponse>) => response.data);
 }
 
 

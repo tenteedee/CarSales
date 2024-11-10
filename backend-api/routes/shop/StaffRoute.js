@@ -1,11 +1,11 @@
 import express from 'express';
 import {
-  getStaff,
-  getAllStaff,
+  getAllStaffs,
+  getStaffById,
 } from '../../controllers/shop/StaffController.js';
 
-const router = express.Router();
-router.route('/get/:id').get(getStaff);
-router.route('/all').get(getAllStaff);
+const route = express.Router();
+route.route('/list').get(getAllStaffs);
+route.route('/:id').get(getStaffById);
 
-export default router;
+export default route;

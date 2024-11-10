@@ -18,7 +18,7 @@ const Header = () => {
 
   const handleChangeLanguage = (lang) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem('language', lang);
+    localStorage.setItem('language', lang); // Save the selected language to localStorage
     setIsDropdownOpen((prevState) => ({ ...prevState, language: false })); // Close dropdown after language selection
   };
 
@@ -112,17 +112,17 @@ const Header = () => {
                     <li>
                       <a
                         className="m-langLink"
-                        onClick={() => handleChangeLanguage('vn')}
+                        onClick={() => handleChangeLanguage('en')}
                       >
-                        <span className="b-topBar__lang-flag m-vn"></span> VN
+                        <span className="b-topBar__lang-flag m-en"></span> EN
                       </a>
                     </li>
                     <li>
                       <a
                         className="m-langLink"
-                        onClick={() => handleChangeLanguage('en')}
+                        onClick={() => handleChangeLanguage('vi')}
                       >
-                        <span className="b-topBar__lang-flag m-en"></span> EN
+                        <span className="b-topBar__lang-flag m-vn"></span> VN
                       </a>
                     </li>
                   </ul>
@@ -130,6 +130,14 @@ const Header = () => {
               </div>
             </div>
           </div>
+          <nav className="b-topBar__nav">
+            <ul style={{ display: 'flex', gap: '10px' }}>
+
+              <li>
+                <Link to={'/cart'}>{t('Cart')}</Link>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </header>

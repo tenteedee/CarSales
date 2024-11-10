@@ -1,63 +1,57 @@
-import Showroom from '../../models/Showroom.js';
 import Staff from '../../models/Staff.js';
 import StaffRole from '../../models/StaffRole.js';
-import { Op } from 'sequelize';
 
-export const getStaff = async (req, res) => {
-  const { id } = req.params;
-  if (isNaN(id)) {
-    return res.status(400).json({ error: 'ID không hợp lệ' });
-  }
+export const getAllStaffs = async (req, res) => {
   try {
-    const staff = await Staff.findOne({
+    const staffs = await Staff.findAll({
+      attributes: [
+        'id',
+        'fullname',
+        'email',
+        'phone_number',
+        'role_id',
+        'showroom_id',
+      ],
+    });
+    res.status(200).json({
+      data: staffs,
+    });
+  } catch (error) {
+    console.error('Error fetching all staffs:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+export const getStaffById = async (req, res) => {
+  const { id } = req.params; // Lấy ID từ req.params
+
+  try {
+    const staff = await Staff.findByPk({
       where: {
         id: {
           [Op.eq]: id,
         },
       },
-      include: [
-        {
-          model: StaffRole,
-          as: 'role',
-          attributes: ['id', 'name'],
-        },
-        {
-          model: Showroom,
-          as: 'showroom',
-          attributes: ['id', 'name'],
-        },
+      attributes: [
+        'id',
+        'fullname',
+        'email',
+        'phone_number',
+        'role_id',
+        'showroom_id',
       ],
     });
 
     if (!staff) {
-      return res.status(404).json({ error: 'Nhân viên không tồn tại' });
+      return res.status(404).json({ error: 'Staff member not found.' });
     }
-    const staffData = staff.toJSON();
-    staffData.password = '';
-    return res.status(200).json({ data: staffData });
-  } catch (error) {
-    return res.status(500).json({ error: 'Lỗi máy chủ' });
-  }
-};
 
-export const getAllStaff = async (req, res) => {
-  try {
-    const staff = await Staff.findAll({
-      include: [
-        {
-          model: StaffRole,
-          as: 'role',
-          attributes: ['id', 'name'],
-        },
-        {
-          model: Showroom,
-          as: 'showroom',
-          attributes: ['id', 'name'],
-        },
-      ],
+    res.status(200).json({
+      message: `Details of staff member with ID: ${id}`,
+      data: staff,
     });
-    return res.status(200).json(staff);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi máy chủ' });
+    console.error(`Error fetching staff with ID ${id}:`, error);
+    res.status(500).json({ error: 'Internal server error.' });
   }
 };

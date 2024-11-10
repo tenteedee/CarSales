@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import db from "../config/Database.js";
-import NewsCategory from "./NewsCategory.js";
-import Staff from "./Staff.js";
+import { DataTypes } from 'sequelize';
+import db from '../config/Database.js';
+import NewsCategory from './NewsCategory.js';
+import Staff from './Staff.js';
 
 const News = db.define(
-  "news",
+  'news',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -28,9 +28,14 @@ const News = db.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    
+    views: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+
     status: {
-      type: DataTypes.ENUM("draft", "published", "archived"), // Giả sử enum có các giá trị này
+      type: DataTypes.ENUM('draft', 'published', 'archived'), // Giả sử enum có các giá trị này
       allowNull: false,
     },
     is_pin: {
@@ -52,7 +57,7 @@ const News = db.define(
       allowNull: false,
       references: {
         model: Staff,
-        key: "id",
+        key: 'id',
       },
     },
     category_id: {
@@ -60,16 +65,16 @@ const News = db.define(
       allowNull: false,
       references: {
         model: NewsCategory,
-        key: "id",
+        key: 'id',
       },
     },
   },
   {
-    tableName: "news",
+    tableName: 'news',
     timestamps: true,
     underscored: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   }
 );
 

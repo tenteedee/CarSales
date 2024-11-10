@@ -1,4 +1,3 @@
-// controllers/chatController.js
 import OpenAI from 'openai';
 import { TOGETHER_AI_API_KEY, OPENAI_API_KEY } from '../../config/Config.js';
 
@@ -42,9 +41,7 @@ export const getChatResponseTogetherAI = async (req, res) => {
       messages: [
         {
           role: 'user',
-          content:
-            'You are an expert about cars, engines and realted topics. Using number bullets, give me a response to: ' +
-            message,
+          content: message,
         },
       ],
       max_tokens: 200,

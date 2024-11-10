@@ -10,10 +10,12 @@ export const requestTestDrive = async (req, res) => {
   const { car_id, test_drive_date, showroom_id, customer_info, customer_id } =
     req.body;
 
+  // Basic validation for required fields
   if (!car_id || !test_drive_date || !showroom_id) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
+  // Date validation to ensure at least 2 days from today
   const selectedDate = new Date(test_drive_date);
   const minDate = new Date();
   minDate.setDate(minDate.getDate() + 2);
@@ -25,22 +27,24 @@ export const requestTestDrive = async (req, res) => {
   }
 
   try {
-    let finalCustomerId = customer_id;
+    let finalCustomerId = customer_id; // Use customer_id if provided (logged-in user)
 
+    // For non-logged-in users, create a new customer
     if (!customer_id && customer_info) {
       const { fullname, email, phone_number } = customer_info;
 
+      // Ensure customer info is complete
       if (!fullname || !email || !phone_number) {
         return res
           .status(400)
           .json({ error: 'Customer information is incomplete.' });
       }
 
-      // Check if customer already exists based on email
-      let customer = await Customer.findOne({ where: { email } });
+      // Check if a customer already exists with this email and phone number
+      let customer = await Customer.findOne({ where: { email, phone_number } });
 
       if (!customer) {
-        // Create new customer if not found
+        // Create a new customer if not found
         customer = await Customer.create({
           fullname,
           email,
@@ -52,31 +56,38 @@ export const requestTestDrive = async (req, res) => {
         console.log('Existing customer found with ID:', customer.id);
       }
 
+      // Use the new or existing customer's ID
       finalCustomerId = customer.id;
     }
 
+    // Ensure finalCustomerId is set
     if (!finalCustomerId) {
       return res
         .status(400)
         .json({ error: 'Customer ID could not be determined.' });
     }
 
-    // Find all available sales staff in the selected showroom
+    // Verify the selected car exists
+    const car = await Car.findByPk(car_id);
+    if (!car) {
+      return res.status(404).json({ error: 'Car not found.' });
+    }
+
+    // Retrieve available sales staff for the selected showroom
     const salesStaff = await Staff.findAll({
       where: { role_id: 2, showroom_id: showroom_id },
     });
-
     if (!salesStaff.length) {
       return res
         .status(404)
         .json({ error: 'No sales staff available for the selected showroom.' });
     }
 
-    // Select a random sales staff member from the available list
+    // Randomly assign one of the available sales staff
     const randomSalesStaff =
       salesStaff[Math.floor(Math.random() * salesStaff.length)];
 
-    // Proceed to create the test drive request with assigned sales staff
+    // Create the test drive request record
     const testDriveRequest = await TestDriveRequest.create({
       customer_id: finalCustomerId,
       car_id,
@@ -85,6 +96,7 @@ export const requestTestDrive = async (req, res) => {
       sales_staff_id: randomSalesStaff.id,
     });
 
+    // Return a successful response
     return res.status(201).json({
       data: testDriveRequest,
       message: 'Test drive request successfully created.',

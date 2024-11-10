@@ -12,45 +12,30 @@ const CostEstimate = ({ price }) => {
     registration_fee: 0,
     road_usage_fee: 0,
   });
-  const [mandatoryInsurance, setMandatoryInsurance] = useState(0);
+  const bodyInsurance = 481000;
 
   const [currentLang, setCurrentLang] = useState(
     localStorage.getItem('language') || 'en'
   );
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const response = await axios.get('/settings');
+    axios
+      .get('/settings')
+      .then((response) => {
         const { tax, inpection_fee, registration_fee, road_usage_fee } =
           response.data;
+        // console.log('Raw API data:', response.data);
+
         setFees({
           tax: parseFloat(tax) || 0,
           inpection_fee: parseInt(inpection_fee, 10) || 0,
           registration_fee: parseInt(registration_fee, 10) || 0,
           road_usage_fee: parseInt(road_usage_fee, 10) || 0,
         });
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Failed to fetch settings:', error);
-      }
-    };
-
-    const fetchInsurances = async () => {
-      try {
-        const response = await axios.get('/insurance/all');
-        const mandatoryInsuranceData = response.data.find(
-          (insurance) => insurance.type === 1
-        );
-        setMandatoryInsurance(
-          mandatoryInsuranceData ? mandatoryInsuranceData.price : 0
-        );
-      } catch (error) {
-        console.error('Failed to fetch insurances:', error);
-      }
-    };
-
-    fetchInsurances();
-    fetchSettings();
+      });
   }, []);
 
   useEffect(() => {
@@ -76,7 +61,7 @@ const CostEstimate = ({ price }) => {
       fees.inpection_fee * 1 +
       fees.registration_fee * 1 +
       fees.road_usage_fee * 1 +
-      mandatoryInsurance * 1
+      bodyInsurance
     );
   };
 
@@ -94,7 +79,7 @@ const CostEstimate = ({ price }) => {
         <div className="cost-item">
           <strong>Giá xe:</strong> <span>{formatCurrency(price)}</span>
         </div>
-
+        <hr />
         <div className="cost-item">
           <strong>Phí bắt buộc</strong>
         </div>
@@ -118,9 +103,9 @@ const CostEstimate = ({ price }) => {
         </div>
         <div className="cost-item">
           <span>Bảo hiểm TNDS:</span>{' '}
-          <span>{formatCurrency(mandatoryInsurance)}</span>
+          <span>{formatCurrency(bodyInsurance)}</span>
         </div>
-
+        <hr />
         <div className="cost-total">
           <strong>Tổng tiền:</strong> <span>{formatCurrency(totalCost())}</span>
         </div>

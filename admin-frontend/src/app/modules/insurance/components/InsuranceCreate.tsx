@@ -1,14 +1,14 @@
-import React, {FC, useEffect, useState} from "react";
-import {QueryResponse} from "../../../utils/model/models";
-import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
-import {getInsuranceProviders, createInsurance} from "../core/requests";
-import {Insurance, InsuranceProvider} from "../core/models";
-import {News} from "../../news/core/models";
+import React, { FC, useEffect, useState } from "react";
+import { QueryResponse } from "../../../utils/model/models";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { getInsuranceProviders, createInsurance } from "../core/requests";
+import { Insurance, InsuranceProvider } from "../core/models";
+import { News } from "../../news/core/models";
 
 type Props = {};
 
-export const InsuranceCreate: FC<Props> = ({...props}) => {
+export const InsuranceCreate: FC<Props> = ({ ...props }) => {
     const navigate = useNavigate();
     const [insurance, setInsurance] = useState<Partial<Insurance>>({
         type: 0,
@@ -46,7 +46,7 @@ export const InsuranceCreate: FC<Props> = ({...props}) => {
     }, []);
 
     const handleInputChange = (key: string, value: any) => {
-        setInsurance((prev) => ({...prev, [key]: value}));
+        setInsurance((prev) => ({ ...prev, [key]: value }));
     };
 
     const handleCreate = () => {
@@ -61,7 +61,7 @@ export const InsuranceCreate: FC<Props> = ({...props}) => {
                     draggable: true,
                     progress: undefined,
                 });
-                navigate('/insurances/base', {state: {reload: true}});
+                navigate('/insurances/base', { state: { reload: true } });
             })
             .catch((error) => {
                 const errorMessage = error && error.response && error.response.data && error.response.data.error
@@ -110,7 +110,7 @@ export const InsuranceCreate: FC<Props> = ({...props}) => {
                                 value={insurance.type}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value);
-                                    setInsurance({...insurance, type: selected});
+                                    setInsurance({ ...insurance, type: selected });
                                 }}                             >
                                 <option value=''>Select Type</option>
                                 <option value={'1'}>Bắt buộc</option>
@@ -150,7 +150,7 @@ export const InsuranceCreate: FC<Props> = ({...props}) => {
                                 value={insurance.insurance_provider_id}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value);
-                                    setInsurance({...insurance, insurance_provider_id: selected});
+                                    setInsurance({ ...insurance, insurance_provider_id: selected });
                                 }}                            >
                                 <option value=''>Select Provider</option>
                                 {providers.map((provider) => (
@@ -170,7 +170,7 @@ export const InsuranceCreate: FC<Props> = ({...props}) => {
                                 value={insurance.type_price}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value);
-                                    setInsurance({...insurance, type_price: selected});
+                                    setInsurance({ ...insurance, type_price: selected });
                                 }}                             >
                                 <option value=''>Select</option>
                                 <option value={'1'}>Cố định</option>

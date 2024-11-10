@@ -96,6 +96,7 @@ export default function ShowHistoryPage() {
   };
 
   return (
+   
     <div className="container mt-4">
       <h1 className="mb-4">Test Drive History</h1>
       <div className="row mb-3">
@@ -192,6 +193,8 @@ export default function ShowHistoryPage() {
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+      
+    
   );
 }

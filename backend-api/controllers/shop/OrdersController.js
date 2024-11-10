@@ -218,3 +218,29 @@ export const deleteOrder = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getOrderHistory = async (req, res) => {
+  try {
+    const customerId = req.user.id;
+
+    // Fetch all orders associated with the logged-in customer
+    const orders = await Orders.findAll({
+      where: { customer_id: customerId },
+      include: [
+        {
+          model: OrderDetails,
+          as: "order_details",
+        },
+      ],
+      order: [["created_at", "DESC"]], // Optional: Orders by the latest first
+    });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No order history found!" });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

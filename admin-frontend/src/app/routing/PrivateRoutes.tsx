@@ -1,14 +1,14 @@
-import {FC, Suspense} from 'react'
-import {Navigate, Route, Routes} from 'react-router-dom'
-import {MasterLayout} from '../../_metronic/layout/MasterLayout'
+import { FC, Suspense } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { MasterLayout } from '../../_metronic/layout/MasterLayout'
 import TopBarProgress from 'react-topbar-progress-indicator'
-import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
-import {MenuTestPage} from '../pages/MenuTestPage'
-import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
-import {WithChildren} from '../../_metronic/helpers'
+import { DashboardWrapper } from '../pages/dashboard/DashboardWrapper'
+import { MenuTestPage } from '../pages/MenuTestPage'
+import { getCSSVariableValue } from '../../_metronic/assets/ts/_utils'
+import { WithChildren } from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import StaffPage from "../modules/staffs/StaffsPage";
-import {useAuth} from "../modules/auth";
+import { useAuth } from "../modules/auth";
 import SettingsPage from "../modules/settings/SettingsPage";
 import NewsPage from "../modules/news/NewsPage";
 import CategoryPage from "../modules/category/CategoryPage";
@@ -18,26 +18,27 @@ import CustomerPage from "../modules/customer/CustomerPage";
 import CarsPage from "../modules/car/CarsPage";
 import InsurancePage from "../modules/insurance/InsurancePage";
 import OrderPage from "../modules/order/OrderPage";
+import ProfilePage from '../modules/profile/ProfilePage'
 
 const PrivateRoutes = () => {
-    const {hasRole} = useAuth()
+    const { hasRole } = useAuth()
     return (
         <Routes>
-            <Route element={<MasterLayout/>}>
+            <Route element={<MasterLayout />}>
                 {/* Redirect to Dashboard after success login/registartion */}
-                <Route path='auth/*' element={<Navigate to='/dashboard'/>}/>
+                <Route path='auth/*' element={<Navigate to='/dashboard' />} />
                 {/* Pages */}
-                <Route path='/' element={<DashboardWrapper/>}/>
-                <Route path='dashboard' element={<DashboardWrapper/>}/>
-                <Route path='builder' element={<BuilderPageWrapper/>}/>
-                <Route path='menu-test' element={<MenuTestPage/>}/>
+                <Route path='/' element={<DashboardWrapper />} />
+                <Route path='dashboard' element={<DashboardWrapper />} />
+                <Route path='builder' element={<BuilderPageWrapper />} />
+                <Route path='menu-test' element={<MenuTestPage />} />
                 {/* Lazy Modules */}
                 {(hasRole("Director") || hasRole("Sale") || hasRole("Insurance") || hasRole("Technical")) && (
                     <Route
                         path='orders/*'
                         element={
                             <SuspensedView>
-                                <OrderPage/>
+                                <OrderPage />
                             </SuspensedView>
                         }
                     />
@@ -47,7 +48,7 @@ const PrivateRoutes = () => {
                         path='test-drive/*'
                         element={
                             <SuspensedView>
-                                <TestDrivePage/>
+                                <TestDrivePage />
                             </SuspensedView>
                         }
                     />
@@ -57,7 +58,7 @@ const PrivateRoutes = () => {
                         path='staffs/*'
                         element={
                             <SuspensedView>
-                                <StaffPage/>
+                                <StaffPage />
                             </SuspensedView>
                         }
                     />
@@ -67,7 +68,7 @@ const PrivateRoutes = () => {
                         path='customers/*'
                         element={
                             <SuspensedView>
-                                <CustomerPage/>
+                                <CustomerPage />
                             </SuspensedView>
                         }
                     />
@@ -77,7 +78,7 @@ const PrivateRoutes = () => {
                         path='categories/*'
                         element={
                             <SuspensedView>
-                                <CategoryPage/>
+                                <CategoryPage />
                             </SuspensedView>
                         }
                     />
@@ -87,7 +88,7 @@ const PrivateRoutes = () => {
                         path='showrooms/*'
                         element={
                             <SuspensedView>
-                                <ShowroomPage/>
+                                <ShowroomPage />
                             </SuspensedView>
                         }
                     />
@@ -97,7 +98,7 @@ const PrivateRoutes = () => {
                         path='settings/*'
                         element={
                             <SuspensedView>
-                                <SettingsPage/>
+                                <SettingsPage />
                             </SuspensedView>
                         }
                     />
@@ -107,7 +108,7 @@ const PrivateRoutes = () => {
                         path='news/*'
                         element={
                             <SuspensedView>
-                                <NewsPage/>
+                                <NewsPage />
                             </SuspensedView>
                         }
                     />
@@ -132,14 +133,24 @@ const PrivateRoutes = () => {
                         }
                     />
                 )}
+                {(hasRole("Director") || hasRole("Sale") || hasRole("Insurance") || hasRole("Technical")) && (
+                    <Route
+                        path='profile/*'
+                        element={
+                            <SuspensedView>
+                                <ProfilePage />
+                            </SuspensedView>
+                        }
+                    />
+                )}
                 {/* Page Not Found */}
-                <Route path='*' element={<Navigate to='/error/404'/>}/>
+                <Route path='*' element={<Navigate to='/error/404' />} />
             </Route>
         </Routes>
     )
 }
 
-const SuspensedView: FC<WithChildren> = ({children}) => {
+const SuspensedView: FC<WithChildren> = ({ children }) => {
     const baseColor = getCSSVariableValue('--bs-primary')
     TopBarProgress.config({
         barColors: {
@@ -148,7 +159,7 @@ const SuspensedView: FC<WithChildren> = ({children}) => {
         barThickness: 1,
         shadowBlur: 5,
     })
-    return <Suspense fallback={<TopBarProgress/>}>{children}</Suspense>
+    return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
 }
 
-export {PrivateRoutes}
+export { PrivateRoutes }

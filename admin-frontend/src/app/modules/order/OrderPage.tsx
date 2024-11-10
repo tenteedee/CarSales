@@ -1,6 +1,6 @@
-import {PageLink, PageTitle} from "../../../_metronic/layout/core";
-import {Navigate, Outlet, Route, Routes} from "react-router-dom";
-import {OrderEditWrapper, OrderListWrapper} from "./Order";
+import { PageLink, PageTitle } from "../../../_metronic/layout/core";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { OrderEditWrapper, OrderListWrapper } from "./Order";
 
 const orderBreadcrumbs: Array<PageLink> = [
     {
@@ -20,13 +20,13 @@ const orderBreadcrumbs: Array<PageLink> = [
 const OrderPage = () => {
     return (
         <Routes>
-            <Route element={<Outlet/>}>
+            <Route element={<Outlet />}>
                 <Route
                     index
                     element={
                         <>
                             <PageTitle breadcrumbs={orderBreadcrumbs}>Orders List</PageTitle>
-                            <OrderListWrapper/>
+                            <OrderListWrapper />
                         </>
                     }
                 />
@@ -44,16 +44,15 @@ const OrderPage = () => {
                     element={
                         <>
                             <PageTitle breadcrumbs={orderBreadcrumbs}>Edit Order</PageTitle>
-                            <OrderEditWrapper/>
+                            <OrderEditWrapper />
                         </>
                     }
                 />
             </Route>
 
-            <Route path='*' element={<Navigate to='/error/404'/>}/>
+            <Route path='*' element={<Navigate to='/error/404' />} />
         </Routes>
     )
 }
 
 export default OrderPage
-

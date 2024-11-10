@@ -1,13 +1,13 @@
-import {useEffect, useState} from 'react';
-import {Filters} from "../../../../../utils/model/models";
-import {TableFilter} from "../../../../../../_metronic/partials/table/filter/TableFilter";
-import {getCars} from "../../../../car/core/requests";
-import {getStaffs} from "../../../../staffs/core/requests";
-import {useAuth} from "../../../../auth";
+import { useEffect, useState } from 'react';
+import { Filters } from "../../../../../utils/model/models";
+import { TableFilter } from "../../../../../../_metronic/partials/table/filter/TableFilter";
+import { getCars } from "../../../../car/core/requests";
+import { getStaffs } from "../../../../staffs/core/requests";
+import { useAuth } from "../../../../auth";
 
 export const OrderFiltersComponent = () => {
     const [carOptions, setCarOptions] = useState<Array<{ value: number; label: string }>>([]);
-    const [salesOptions, setSalesOptions] = useState<Array<{ value: number; label: string, role_id : number }>>([]);
+    const [salesOptions, setSalesOptions] = useState<Array<{ value: number; label: string, role_id: number }>>([]);
 
     const fetchCarsOptions = async () => {
         try {
@@ -35,7 +35,7 @@ export const OrderFiltersComponent = () => {
                 const salesOptions = response.data.map((sale: any) => ({
                     value: sale.id,
                     label: sale.fullname + " - " + sale.email,
-                    role_id : sale.role_id
+                    role_id: sale.role_id
                 }));
                 return [
                     ...salesOptions
@@ -48,7 +48,7 @@ export const OrderFiltersComponent = () => {
             return [];
         }
     };
-    const {hasRole} = useAuth()
+    const { hasRole } = useAuth()
 
     const loadOptions = async () => {
         const options = await fetchCarsOptions();
@@ -64,31 +64,31 @@ export const OrderFiltersComponent = () => {
 
     const newsFilters: Array<Filters> = [
         ...(hasRole("Director")
-                ? [{
-                    name: 'sales_staff_id',
-                    label: 'Sale',
-                    type: 'select',
-                    options: salesOptions.filter(option => option.role_id === 2),
-                }]
-                : []
+            ? [{
+                name: 'sales_staff_id',
+                label: 'Sale',
+                type: 'select',
+                options: salesOptions.filter(option => option.role_id === 2),
+            }]
+            : []
         ),
         ...(hasRole("Director")
-                ? [{
-                    name: 'technical_staff_id',
-                    label: 'Technical',
-                    type: 'select',
-                    options: salesOptions.filter(option => option.role_id === 1),
-                }]
-                : []
+            ? [{
+                name: 'technical_staff_id',
+                label: 'Technical',
+                type: 'select',
+                options: salesOptions.filter(option => option.role_id === 1),
+            }]
+            : []
         ),
         ...(hasRole("Director")
-                ? [{
-                    name: 'insurance_staff_id',
-                    label: 'Insurance',
-                    type: 'select',
-                    options: salesOptions.filter(option => option.role_id === 3),
-                }]
-                : []
+            ? [{
+                name: 'insurance_staff_id',
+                label: 'Insurance',
+                type: 'select',
+                options: salesOptions.filter(option => option.role_id === 3),
+            }]
+            : []
         ),
         {
             name: 'car_id',
@@ -127,7 +127,7 @@ export const OrderFiltersComponent = () => {
 
     return (
         <div>
-            <TableFilter filters={newsFilters}/>
+            <TableFilter filters={newsFilters} />
         </div>
     );
 };

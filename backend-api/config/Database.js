@@ -11,7 +11,7 @@ import {
 const db = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOST || 'localhost',
   dialect: DB_CONNECTION || 'mysql',
-  logging: NODE_ENV === 'development' ? console.log : false, // Log only in development
+  logging: NODE_ENV === 'development' ? console.log : false,
 });
 
 export default db;

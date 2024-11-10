@@ -1,12 +1,12 @@
-import {ID} from "../../../_metronic/helpers";
-import {QueryResponse} from "../../utils/model/models";
-import {toast} from "react-toastify";
-import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
-import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider";
-import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
-import {deleteOrders, getOrders} from "./core/requests";
-import {OrderList} from "./components/OrderList";
-import {OrderEdit} from "./components/OrderEdit";
+import { ID } from "../../../_metronic/helpers";
+import { QueryResponse } from "../../utils/model/models";
+import { toast } from "react-toastify";
+import { QueryResponseProvider } from "../../../_metronic/layout/core/QueryResponseProvider";
+import { ListViewProvider } from "../../../_metronic/layout/core/ListViewProvider";
+import { QueryRequestProvider } from "../../../_metronic/layout/core/QueryRequestProvider";
+import { deleteOrders, getOrders } from "./core/requests";
+import { OrderList } from "./components/OrderList";
+import { OrderEdit } from "./components/OrderEdit";
 
 export const handleDelete = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -43,7 +43,7 @@ const OrderListWrapper = () => {
             <QueryRequestProvider>
                 <QueryResponseProvider id={"orders"} request={getOrders}>
                     <ListViewProvider onDelete={handleDelete}>
-                        <OrderList/>
+                        <OrderList />
                     </ListViewProvider>
                 </QueryResponseProvider>
             </QueryRequestProvider>
@@ -59,4 +59,4 @@ const OrderEditWrapper = () => {
     );
 }
 
-export {OrderListWrapper, OrderEditWrapper}
+export { OrderListWrapper, OrderEditWrapper }

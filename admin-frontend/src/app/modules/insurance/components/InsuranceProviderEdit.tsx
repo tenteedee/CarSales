@@ -1,14 +1,14 @@
-import React, {FC, useEffect, useState} from "react";
-import {QueryResponse} from "../../../utils/model/models";
-import {toast} from "react-toastify";
-import {useNavigate, useParams} from "react-router-dom";
-import {getInsuranceProvider, updateInsuranceProvider} from "../core/requests";
-import {InsuranceProvider} from "../core/models";
+import React, { FC, useEffect, useState } from "react";
+import { QueryResponse } from "../../../utils/model/models";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { getInsuranceProvider, updateInsuranceProvider } from "../core/requests";
+import { InsuranceProvider } from "../core/models";
 
 type Props = {};
 
-export const InsuranceProviderEdit: FC<Props> = ({...props}) => {
-    const {id} = useParams(); // Get ID from URL
+export const InsuranceProviderEdit: FC<Props> = ({ ...props }) => {
+    const { id } = useParams(); // Get ID from URL
     const navigate = useNavigate();
     const [insurance, setInsurance] = useState<InsuranceProvider | null>(null);
     const [loading, setLoading] = useState(true);
@@ -56,7 +56,7 @@ export const InsuranceProviderEdit: FC<Props> = ({...props}) => {
     const handleInputChange = (key: string, value: string) => {
         setInsurance((prev) => {
             if (!prev) return null;
-            return {...prev, [key]: value};
+            return { ...prev, [key]: value };
         });
     };
 
@@ -73,7 +73,7 @@ export const InsuranceProviderEdit: FC<Props> = ({...props}) => {
                         draggable: true,
                         progress: undefined,
                     });
-                    navigate('/insurances/providers', {state: {reload: true}});
+                    navigate('/insurances/providers', { state: { reload: true } });
                 })
                 .catch((error) => {
                     const errorMessage = error && error.response && error.response.data && error.response.data.error

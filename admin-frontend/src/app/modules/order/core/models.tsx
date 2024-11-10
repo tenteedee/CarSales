@@ -1,8 +1,8 @@
-import {ID} from "../../../../_metronic/helpers";
-import {Car} from "../../car/core/models";
-import {Customer} from "../../customer/core/models";
-import {Staff} from "../../staffs/core/models";
-import {Showroom} from "../../showroom/core/models";
+import { ID } from "../../../../_metronic/helpers";
+import { Car } from "../../car/core/models";
+import { Customer } from "../../customer/core/models";
+import { Staff } from "../../staffs/core/models";
+import { Showroom } from "../../showroom/core/models";
 
 export type Order = {
     id?: ID

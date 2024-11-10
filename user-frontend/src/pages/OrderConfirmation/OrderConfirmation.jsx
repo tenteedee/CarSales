@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from '../../axios';
 import './OrderConfirmation.css';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -39,6 +39,11 @@ const OrderConfirmation = () => {
         <p>Total Amount: {formatCurrency(orderDetails.total_price)}</p>
       </div>
       <p>Thank you for shopping with us!</p>
+
+      {/* Button to view order history */}
+      <Link to="/order-history" className="order-history-button">
+        View Order History
+      </Link>
     </div>
   );
 };

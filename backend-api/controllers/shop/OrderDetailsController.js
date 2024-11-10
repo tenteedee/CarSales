@@ -20,13 +20,13 @@ export const getOrderDetailsByOrderId = async (req, res) => {
 
 export const createOrderDetail = async (req, res) => {
     try {
-        const { order_id, car_id, price, color_id } = req.body;
+        const { order_id,  price, color_id } = req.body;
         if (!order_id || isNaN(order_id)) {
             return res.status(400).json({ error: 'Invalid or missing order ID' });
         }
         const newOrderDetail = await OrderDetails.create({
             order_id,
-            car_id,
+            
             price,
             color_id
         });

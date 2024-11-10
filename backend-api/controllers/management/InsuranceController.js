@@ -202,9 +202,8 @@ export const queryInsurance = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(total / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${
-        req.path
-      }?page=${Math.ceil(total / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${req.path
+        }?page=${Math.ceil(total / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -212,17 +211,15 @@ export const queryInsurance = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(total / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage + 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
+          }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage - 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
+          }`
           : null,
       to: currentPage * perPage < total ? currentPage * perPage : total,
       total: total,
@@ -398,9 +395,8 @@ export const queryInsuranceProvider = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(total / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${
-        req.path
-      }?page=${Math.ceil(total / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${req.path
+        }?page=${Math.ceil(total / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -408,17 +404,15 @@ export const queryInsuranceProvider = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(total / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage + 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
+          }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage - 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
+          }`
           : null,
       to: currentPage * perPage < total ? currentPage * perPage : total,
       total: total,

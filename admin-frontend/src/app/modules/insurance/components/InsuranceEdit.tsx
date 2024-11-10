@@ -1,14 +1,14 @@
-import React, {FC, useEffect, useState} from "react";
-import {QueryResponse} from "../../../utils/model/models";
-import {toast} from "react-toastify";
-import {useNavigate, useParams} from "react-router-dom";
-import {getInsurance, getInsuranceProviders, updateInsurance} from "../core/requests";
-import {Insurance, InsuranceProvider} from "../core/models";
+import React, { FC, useEffect, useState } from "react";
+import { QueryResponse } from "../../../utils/model/models";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { getInsurance, getInsuranceProviders, updateInsurance } from "../core/requests";
+import { Insurance, InsuranceProvider } from "../core/models";
 
 type Props = {};
 
-export const InsuranceEdit: FC<Props> = ({...props}) => {
-    const {id} = useParams(); // Get ID from URL
+export const InsuranceEdit: FC<Props> = ({ ...props }) => {
+    const { id } = useParams(); // Get ID from URL
     const navigate = useNavigate();
     const [insurance, setInsurance] = useState<Insurance | null>(null);
     const [loading, setLoading] = useState(true);
@@ -79,7 +79,7 @@ export const InsuranceEdit: FC<Props> = ({...props}) => {
     const handleInputChange = (key: string, value: string) => {
         setInsurance((prev) => {
             if (!prev) return null;
-            return {...prev, [key]: value};
+            return { ...prev, [key]: value };
         });
     };
 
@@ -96,7 +96,7 @@ export const InsuranceEdit: FC<Props> = ({...props}) => {
                         draggable: true,
                         progress: undefined,
                     });
-                    navigate('/insurances/base', {state: {reload: true}});
+                    navigate('/insurances/base', { state: { reload: true } });
                 })
                 .catch((error) => {
                     const errorMessage = error && error.response && error.response.data && error.response.data.error
@@ -146,7 +146,7 @@ export const InsuranceEdit: FC<Props> = ({...props}) => {
                                 value={insurance?.type || ''}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value)
-                                    setInsurance({...insurance, type: selected})
+                                    setInsurance({ ...insurance, type: selected })
                                 }}
                             >
                                 <option value=''>Select Type</option>
@@ -187,7 +187,7 @@ export const InsuranceEdit: FC<Props> = ({...props}) => {
                                 value={insurance?.insurance_provider_id || ''}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value)
-                                    setInsurance({...insurance, insurance_provider_id: selected})
+                                    setInsurance({ ...insurance, insurance_provider_id: selected })
                                 }}
                             >
                                 <option value=''>Select Provider</option>
@@ -210,7 +210,7 @@ export const InsuranceEdit: FC<Props> = ({...props}) => {
                                 value={insurance?.type_price || ''}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value)
-                                    setInsurance({...insurance, type_price: selected})
+                                    setInsurance({ ...insurance, type_price: selected })
                                 }}
                             >
                                 <option value=''>Select</option>

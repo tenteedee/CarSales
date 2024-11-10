@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {FC} from 'react'
 import {Link} from 'react-router-dom'
-import {IconUserModel} from '../../../../app/modules/profile/ProfileModels'
-import {UsersList} from '../../../../app/modules/profile/components/UsersList'
+// import {IconUserModel} from '../../../../app/modules/profile/AccountProfile'
+// import {UsersList} from '../../../../app/modules/profile/components/UsersList'
 import {toAbsoluteUrl} from '../../../helpers'
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
   date: string
   budget: string
   progress: number
-  users?: Array<IconUserModel>
+  // users?: Array<IconUserModel>
 }
 
 const Card2: FC<Props> = ({
@@ -28,12 +28,12 @@ const Card2: FC<Props> = ({
   date,
   budget,
   progress,
-  users = undefined,
+  // users = undefined,
 }) => {
   return (
     <Link
       to='/crafted/pages/profile/overview'
-      className='card border border-2 border-gray-300 border-hover'
+      // className='card border border-2 border-gray-300 border-hover'
     >
       <div className='card-header border-0 pt-9'>
         <div className='card-title m-0'>
@@ -78,7 +78,7 @@ const Card2: FC<Props> = ({
           ></div>
         </div>
 
-        <UsersList users={users} />
+        {/* <UsersList users={users} /> */}
       </div>
     </Link>
   )

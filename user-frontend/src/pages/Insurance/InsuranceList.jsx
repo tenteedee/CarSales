@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from './../../axios';
 import './InsuranceList.css';
-import { useTranslation } from 'react-i18next';
-import formatCurrency from './../../utils/formatCurrency';
 
 const InsuranceList = () => {
-  const { t, i18n } = useTranslation();
   const [insurances, setInsurances] = useState([]);
-  const [selectedType, setSelectedType] = useState(1);
+  const [selectedType, setSelectedType] = useState('Bắt buộc');
   const [insuranceTypes, setInsuranceTypes] = useState([]);
-  const [currentLang, setCurrentLang] = useState(
-    localStorage.getItem('language') || 'en'
-  );
 
   useEffect(() => {
     // Fetch insurances from the API
@@ -28,18 +22,6 @@ const InsuranceList = () => {
       .catch((error) => console.error('Error fetching insurances:', error));
   }, []);
 
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      const savedLanguage = localStorage.getItem('language') || 'en';
-      setCurrentLang(savedLanguage);
-    };
-
-    i18n.on('languageChanged', handleLanguageChange);
-    return () => {
-      i18n.off('languageChanged', handleLanguageChange);
-    };
-  }, [i18n]);
-
   // Filter insurances based on selected type
   const filteredInsurances = insurances.filter(
     (insurance) => insurance.type === selectedType
@@ -55,13 +37,11 @@ const InsuranceList = () => {
     return formatCurrency(insurance.price);
   };
 
-  const getInsuranceName = (insurance) => {
-    if (insurance === 1) {
-      return `Bắt buộc`;
-    } else if (insurance === 2) {
-      return `Thân vỏ`;
-    }
-    return insurance.name;
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(value);
   };
 
   return (
@@ -75,21 +55,21 @@ const InsuranceList = () => {
             className={`menu-item ${type === selectedType ? 'active' : ''}`}
             onClick={() => setSelectedType(type)}
           >
-            {getInsuranceName(type)}
+            {type}
           </button>
         ))}
       </div>
 
       {/* Main content area */}
       <div className="insurance-details">
-        <h2>Gói Bảo Hiểm - {getInsuranceName(selectedType)}</h2>
+        <h2>Gói Bảo Hiểm - {selectedType}</h2>
         <div className="insurance-cards">
           {filteredInsurances.map((insurance) => (
             <div key={insurance.id} className="insurance-card">
               <h3>{insurance.name}</h3>
               <p>{insurance.description}</p>
               <p>
-                <strong>Giá tham khảo:</strong> <br />
+                <strong>Giá tham khảo:</strong>{' '}
                 {getReferencePriceRange(insurance)}
               </p>
               <div className="provider-info">

@@ -41,7 +41,9 @@ export const loginWithGoogle = async (req, res) => {
     delete staffData.password;
     staffData.api_token = apiToken;
     res.status(200).json(staffData);
-  } catch (e) {}
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 };
 
 export const verify_token = async (req, res) => {
@@ -105,7 +107,6 @@ export const login = async (req, res) => {
     }
 
     const staffData = staff.toJSON();
-    //const isMatch = password == staffData.password;
     const isMatch = await bcrypt.compare(password, staffData.password);
     if (!isMatch) {
       errors.password = "Password is incorrect";
@@ -118,6 +119,41 @@ export const login = async (req, res) => {
     res.status(200).json(staffData);
   } catch (err) {
     errors.error = err.message || "Exception error";
+    res.status(500).json(errors);
+  }
+};
+
+export const changePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user.id; // Lấy ID người dùng từ token đã xác thực
+
+  let errors = {};
+  try {
+    // Tìm nhân viên theo ID
+    const staff = await Staff.findByPk(userId);
+    if (!staff) {
+      errors.error = "Staff not found.";
+      return res.status(404).json(handleErrors(errors, errors.error));
+    }
+
+    // So sánh mật khẩu cũ
+    const isMatch = await bcrypt.compare(oldPassword, staff.password);
+    if (!isMatch) {
+      errors.error = "Old password is incorrect.";
+      return res.status(400).json(handleErrors(errors, errors.error));
+    }
+
+    // Mã hóa mật khẩu mới
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+
+    // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+    staff.password = hashedNewPassword; 
+    await staff.save();
+
+    res.status(200).json({ message: "Password updated successfully." });
+  } catch (error) {
+    errors.error = error.message || "Server error";
     res.status(500).json(errors);
   }
 };

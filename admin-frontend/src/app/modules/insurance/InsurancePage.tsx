@@ -1,5 +1,5 @@
-import {PageLink, PageTitle} from "../../../_metronic/layout/core";
-import {Navigate, Outlet, Route, Routes} from "react-router-dom";
+import { PageLink, PageTitle } from "../../../_metronic/layout/core";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import {
     InsuranceCreateWrapper,
     InsuranceEditWrapper,
@@ -27,14 +27,14 @@ const insuranceBreadcrumbs: Array<PageLink> = [
 const InsurancePage = () => {
     return (
         <Routes>
-            <Route element={<Outlet/>}>
-                <Route path={"base"} element={<Outlet/>}>
+            <Route element={<Outlet />}>
+                <Route path={"base"} element={<Outlet />}>
                     <Route
                         index
                         element={
                             <>
                                 <PageTitle breadcrumbs={insuranceBreadcrumbs}>Insurances List</PageTitle>
-                                <InsuranceListWrapper/>
+                                <InsuranceListWrapper />
                             </>
                         }
                     />
@@ -43,7 +43,7 @@ const InsurancePage = () => {
                         element={
                             <>
                                 <PageTitle breadcrumbs={insuranceBreadcrumbs}>Create Insurance</PageTitle>
-                                <InsuranceCreateWrapper/>
+                                <InsuranceCreateWrapper />
                             </>
                         }
                     />
@@ -52,7 +52,7 @@ const InsurancePage = () => {
                         element={
                             <>
                                 <PageTitle breadcrumbs={insuranceBreadcrumbs}>Edit Insurance</PageTitle>
-                                <InsuranceEditWrapper/>
+                                <InsuranceEditWrapper />
                             </>
                         }
                     />
@@ -60,13 +60,13 @@ const InsurancePage = () => {
 
 
 
-                <Route path={"providers"} element={<Outlet/>}>
+                <Route path={"providers"} element={<Outlet />}>
                     <Route
                         index
                         element={
                             <>
                                 <PageTitle breadcrumbs={insuranceBreadcrumbs}>Insurances Provider List</PageTitle>
-                                <InsuranceProviderListWrapper/>
+                                <InsuranceProviderListWrapper />
                             </>
                         }
                     />
@@ -75,7 +75,7 @@ const InsurancePage = () => {
                         element={
                             <>
                                 <PageTitle breadcrumbs={insuranceBreadcrumbs}>Create Insurance Provider</PageTitle>
-                                <InsuranceProviderCreateWrapper/>
+                                <InsuranceProviderCreateWrapper />
                             </>
                         }
                     />
@@ -84,17 +84,16 @@ const InsurancePage = () => {
                         element={
                             <>
                                 <PageTitle breadcrumbs={insuranceBreadcrumbs}>Edit Insurance Provider</PageTitle>
-                                <InsuranceProviderEditWrapper/>
+                                <InsuranceProviderEditWrapper />
                             </>
                         }
                     />
                 </Route>
 
-                <Route path='*' element={<Navigate to='/error/404'/>}/>
+                <Route path='*' element={<Navigate to='/error/404' />} />
             </Route>
         </Routes>
     )
 }
 
 export default InsurancePage
-

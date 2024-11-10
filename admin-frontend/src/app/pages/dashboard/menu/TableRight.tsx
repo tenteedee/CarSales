@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import axios, {AxiosResponse} from 'axios';
-import {KTIcon, toAbsoluteUrl} from "../../../../_metronic/helpers";
-import {QueryResponse} from "../../../utils/model/models";
-import {Order} from "../../../modules/order/core/models";
-import {toast} from "react-toastify";
-import {numberFormat} from "../../../utils/helpers/helpers";
+import React, { useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { KTIcon, toAbsoluteUrl } from "../../../../_metronic/helpers";
+import { QueryResponse } from "../../../utils/model/models";
+import { Order } from "../../../modules/order/core/models";
+import { toast } from "react-toastify";
+import { numberFormat } from "../../../utils/helpers/helpers";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -16,7 +16,7 @@ type Props = {
     className: string;
 };
 
-const TableRight: React.FC<Props> = ({className}) => {
+const TableRight: React.FC<Props> = ({ className }) => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [activeTab, setActiveTab] = useState('Month');
     const [loading, setLoading] = useState(true);
@@ -72,9 +72,8 @@ const TableRight: React.FC<Props> = ({className}) => {
                         {['Month', 'Week', 'Day'].map((tab) => (
                             <li className='nav-item' key={tab}>
                                 <a
-                                    className={`nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bold px-4 me-1 ${
-                                        activeTab === tab ? 'active' : ''
-                                    }`}
+                                    className={`nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bold px-4 me-1 ${activeTab === tab ? 'active' : ''
+                                        }`}
                                     onClick={() => setActiveTab(tab)}
                                 >
                                     {tab}
@@ -93,64 +92,63 @@ const TableRight: React.FC<Props> = ({className}) => {
 
                                 </thead>
                                 <tbody>
-                                {orders.map((order) => (
-                                    <tr key={order.id}>
-                                        <td>
-                                            <div className='symbol symbol-45px me-2'>
-                                                <span className='symbol-label'>
-                                                      <img
-                                                          src={toAbsoluteUrl('/media/svg/brand-logos/kickstarter.svg')}
-                                                          className='h-50 align-self-center'
-                                                          alt=''
-                                                      />
+                                    {orders.map((order) => (
+                                        <tr key={order.id}>
+                                            <td>
+                                                <div className='symbol symbol-45px me-2'>
+                                                    <span className='symbol-label'>
+                                                        <img
+                                                            src={toAbsoluteUrl('/media/svg/brand-logos/kickstarter.svg')}
+                                                            className='h-50 align-self-center'
+                                                            alt=''
+                                                        />
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span className='text-dark fw-bold mb-1 fs-6'>
+                                                    {order.customer?.fullname}({order.customer?.email})
                                                 </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span className='text-dark fw-bold mb-1 fs-6'>
-                                                {order.customer?.fullname}({order.customer?.email})
-                                            </span>
-                                            <span
-                                                className='text-muted fw-semibold d-block'>{order.car?.brand?.name} - {order.car?.model}</span>
-                                        </td>
-                                        <td className='text-danger fw-bold'>
-                                            {numberFormat(order.total_price)}
-                                        </td>
-                                        <td className='text-end'>
-                                        <span
-                                            className={`badge ${
-                                                order.order_status === "pending"
-                                                    ? "badge-light-warning"
-                                                    : order.order_status === "paying"
-                                                        ? "badge-light-info"
-                                                        : order.order_status === "complete"
-                                                            ? "badge-light-success"
-                                                            : order.order_status === "cancelled"
-                                                                ? "badge-light-danger"
-                                                                : "badge-light-secondary"
-                                            }`}
-                                        >
-                                          {order.order_status === "pending"
-                                              ? "Pending"
-                                              : order.order_status === "paying"
-                                                  ? "Paying"
-                                                  : order.order_status === "complete"
-                                                      ? "Complete"
-                                                      : order.order_status === "cancelled"
-                                                          ? "Cancelled"
-                                                          : "Unknown"}
-                                        </span>
-                                        </td>
-                                        <td className='text-end'>
-                                            <a
-                                                href={`orders/edit/${order.id}`}
-                                                className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'
-                                            >
-                                                <KTIcon iconName='arrow-right' className='fs-2'/>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                <span
+                                                    className='text-muted fw-semibold d-block'>{order.car?.brand?.name} - {order.car?.model}</span>
+                                            </td>
+                                            <td className='text-danger fw-bold'>
+                                                {numberFormat(order.total_price)}
+                                            </td>
+                                            <td className='text-end'>
+                                                <span
+                                                    className={`badge ${order.order_status === "pending"
+                                                            ? "badge-light-warning"
+                                                            : order.order_status === "paying"
+                                                                ? "badge-light-info"
+                                                                : order.order_status === "complete"
+                                                                    ? "badge-light-success"
+                                                                    : order.order_status === "cancelled"
+                                                                        ? "badge-light-danger"
+                                                                        : "badge-light-secondary"
+                                                        }`}
+                                                >
+                                                    {order.order_status === "pending"
+                                                        ? "Pending"
+                                                        : order.order_status === "paying"
+                                                            ? "Paying"
+                                                            : order.order_status === "complete"
+                                                                ? "Complete"
+                                                                : order.order_status === "cancelled"
+                                                                    ? "Cancelled"
+                                                                    : "Unknown"}
+                                                </span>
+                                            </td>
+                                            <td className='text-end'>
+                                                <a
+                                                    href={`orders/edit/${order.id}`}
+                                                    className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'
+                                                >
+                                                    <KTIcon iconName='arrow-right' className='fs-2' />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -161,4 +159,4 @@ const TableRight: React.FC<Props> = ({className}) => {
     );
 };
 
-export {TableRight};
+export { TableRight };

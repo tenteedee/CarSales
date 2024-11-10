@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next';
 import axios from '../../axios';
 import './CarLoan.css';
 import { numberToWords } from '../../utils/numberToWords';
-import FlashyButton from './FlashyButton';
-
 const CarLoanPage = () => {
     const { t } = useTranslation();
     const [loanAmount, setLoanAmount] = useState('');
@@ -65,8 +63,8 @@ const CarLoanPage = () => {
             for (let month = 1; month <= totalMonths; month++) {
                 const interest = remainingBalance * monthlyRate;
                 const total = principalPayment + interest;
-                totalInt += interest;           
-                totalPay += interest;   
+                totalInt += interest;
+                totalPay += interest;
                 newSchedule.push({
                     month,
                     beginningBalance: remainingBalance,
@@ -251,240 +249,245 @@ const CarLoanPage = () => {
 
 
     return (
-        <div className="container-fluid">
-            <div className="row content">
-                <div className="col-sm-3 sidenav">
-                    <h4></h4>
-                    <ul className="nav nav-pills nav-stacked">
-                        <li className={activeSection === 'procedures' ? 'active' : ''}>
-                            <a href="#" onClick={() => setActiveSection('procedures')}>{t('LOAN.LOAN_PROCEDURES')}</a>
-                        </li>
-                        <li className={activeSection === 'calculator' ? 'active' : ''}>
-                            <a href="#" onClick={() => setActiveSection('calculator')}>{t('LOAN.LOAN_CALCULATOR')}</a>
-                        </li>
-                        <li className={activeSection === 'registration' ? 'active' : ''}>
-                            <a href="#" onClick={() => setActiveSection('registration')}>{t('LOAN.REGISTRATION_OPTIONS')}</a>
-                        </li>
-                    </ul><br />
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder={t('LOAN.SEARCH_PLACEHOLDER')}
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && performSearch()}
-                        />
-                        <div className="input-group-btn">
-                            <button className="btn btn-default" type="button" onClick={performSearch}>
-                                <span className="glyphicon glyphicon-search"></span>
-                            </button>
-                            {searchResults.length > 0 && (
-                                <>
-                                    <button className="btn btn-default" onClick={() => navigateResults('prev')}>
-                                        <span className="glyphicon glyphicon-chevron-up"></span>
-                                    </button>
-                                    <button className="btn btn-default" onClick={() => navigateResults('next')}>
-                                        <span className="glyphicon glyphicon-chevron-down"></span>
-                                    </button>
-                                    <span className="search-result-count">
-                                        {currentResultIndex + 1}/{searchResults.length}
-                                    </span>
-                                </>
-                            )}
+        
+            <div className="container-fluid">
+                <div className="row content">
+                    <div className="col-sm-3 sidenav">
+                        <h4></h4>
+                        <ul className="nav nav-pills nav-stacked">
+                            <li className={activeSection === 'procedures' ? 'active' : ''}>
+                                <a href="#" onClick={() => setActiveSection('procedures')}>{t('LOAN.LOAN_PROCEDURES')}</a>
+                            </li>
+                            <li className={activeSection === 'calculator' ? 'active' : ''}>
+                                <a href="#" onClick={() => setActiveSection('calculator')}>{t('LOAN.LOAN_CALCULATOR')}</a>
+                            </li>
+                            <li className={activeSection === 'registration' ? 'active' : ''}>
+                                <a href="#" onClick={() => setActiveSection('registration')}>{t('LOAN.REGISTRATION_OPTIONS')}</a>
+                            </li>
+                        </ul><br />
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder={t('LOAN.SEARCH_PLACEHOLDER')}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && performSearch()}
+                            />
+                            <div className="input-group-btn">
+                                <button className="btn btn-default" type="button" onClick={performSearch}>
+                                    <span className="glyphicon glyphicon-search"></span>
+                                </button>
+                                {searchResults.length > 0 && (
+                                    <>
+                                        <button className="btn btn-default" onClick={() => navigateResults('prev')}>
+                                            <span className="glyphicon glyphicon-chevron-up"></span>
+                                        </button>
+                                        <button className="btn btn-default" onClick={() => navigateResults('next')}>
+                                            <span className="glyphicon glyphicon-chevron-down"></span>
+                                        </button>
+                                        <span className="search-result-count">
+                                            {currentResultIndex + 1}/{searchResults.length}
+                                        </span>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="col-sm-9" id="car-loan-content">
-                    {activeSection === 'procedures' && (
-                        <section id="loan-procedures">
-                            <h2>{t('LOAN.CAR_LOAN_PROCEDURES')}</h2>
-                            <ol className="loan-steps">
-                                <li>
-                                    <h3>{t('LOAN.PROCEDURE_STEP_1')}</h3>
-                                    <p>{t('LOAN.PROCEDURE_STEP_1_DETAIL')}</p>
-                                </li>
-                                <li>
-                                    <h3>{t('LOAN.PROCEDURE_STEP_2')}</h3>
-                                    <p>{t('LOAN.PROCEDURE_STEP_2_DETAIL')}</p>
-                                </li>
-                                <li>
-                                    <h3>{t('LOAN.PROCEDURE_STEP_3')}</h3>
-                                    <p>{t('LOAN.PROCEDURE_STEP_3_DETAIL')}</p>
-                                </li>
-                                <li>
-                                    <h3>{t('LOAN.PROCEDURE_STEP_4')}</h3>
-                                    <p>{t('LOAN.PROCEDURE_STEP_4_DETAIL')}</p>
-                                </li>
-                                <li>
-                                    <h3>{t('LOAN.PROCEDURE_STEP_5')}</h3>
-                                    <p>{t('LOAN.PROCEDURE_STEP_5_DETAIL')}</p>
-                                </li>
-                                <li>
-                                    <h3>{t('LOAN.PROCEDURE_STEP_6')}</h3>
-                                    <p>{t('LOAN.PROCEDURE_STEP_6_DETAIL')}</p>
-                                </li>
-                            </ol>
-                            <div className="loan-note">
-                                <h4>{t('LOAN.SPECIAL_NOTE')}</h4>
-                                <p>{t('LOAN.SPECIAL_NOTE_DETAIL')}</p>
-                            </div>
-                            <div className="more-info">
-                                <p>{t('LOAN.MORE_INFO')} <a href={t('LOAN.MORE_INFO_LINK')} target="_blank" rel="noopener noreferrer">{t('LOAN.MORE_INFO_TEXT')}</a></p>
-                            </div>
-                        </section>
-                    )}
-
-                    {activeSection === 'calculator' && (
-                        <section id="loan-calculator">
-                            <h2>{t('LOAN.LOAN_CALCULATOR')}</h2>
-                            <div className="row">
-                                <div className="col-md-3">
-                                    <div className="calculator-container">
-                                        <div className="input-section">
-                                            <div className="input-group">
-                                                <label>{t('LOAN.LOAN_AMOUNT')}</label>
-                                                <input
-                                                    type="text"
-                                                    value={loanAmount}
-                                                    onChange={handleLoanAmountChange}
-                                                />
-                                                <span className="amount-in-words">{loanAmountInWords}</span>
-                                            </div>
-                                            <div className="input-group">
-                                                <label>{t('LOAN.LOAN_TERM')}</label>
-                                                <div className="input-with-unit">
-                                                    <input
-                                                        type="number"
-                                                        value={loanTerm}
-                                                        onChange={handleLoanTermChange}
-                                                        min="1"
-                                                        step="1"
-                                                    />
-
-                                                </div>
-                                            </div>
-                                            <div className="input-group">
-                                                <label>{t('LOAN.INTEREST_RATE')}</label>
-                                                <div className="input-with-unit">
-                                                    <input
-                                                        type="number"
-                                                        value={interestRate}
-                                                        onChange={handleInterestRateChange}
-                                                        min="0"
-                                                        max="100"
-                                                        step="5"
-                                                    />
-                                                    <span className="input-unit">%</span>
-                                                </div>
-                                            </div>
-                                            <div className="input-group">
-                                                <label>{t('LOAN.PAYMENT_TYPE')}</label>
-                                                <select
-                                                    value={paymentType}
-                                                    onChange={(e) => setPaymentType(e.target.value)}
-                                                >
-                                                    <option value="declining">{t('LOAN.DECLINING_BALANCE')}</option>
-                                                    <option value="fixed">{t('LOAN.FIXED_PAYMENT')}</option>
-                                                </select>
-                                            </div>
-                                            <div className="apply-loan-button-container">
-                                                <FlashyButton onClick={handleApplyLoan}>
-                                                    {t('LOAN.APPLY_FOR_LOAN')}
-                                                </FlashyButton>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div className="col-sm-9" id="car-loan-content">
+                        {activeSection === 'procedures' && (
+                            <section id="loan-procedures">
+                                <h2>{t('LOAN.CAR_LOAN_PROCEDURES')}</h2>
+                                <ol className="loan-steps">
+                                    <li>
+                                        <h3>{t('LOAN.PROCEDURE_STEP_1')}</h3>
+                                        <p>{t('LOAN.PROCEDURE_STEP_1_DETAIL')}</p>
+                                    </li>
+                                    <li>
+                                        <h3>{t('LOAN.PROCEDURE_STEP_2')}</h3>
+                                        <p>{t('LOAN.PROCEDURE_STEP_2_DETAIL')}</p>
+                                    </li>
+                                    <li>
+                                        <h3>{t('LOAN.PROCEDURE_STEP_3')}</h3>
+                                        <p>{t('LOAN.PROCEDURE_STEP_3_DETAIL')}</p>
+                                    </li>
+                                    <li>
+                                        <h3>{t('LOAN.PROCEDURE_STEP_4')}</h3>
+                                        <p>{t('LOAN.PROCEDURE_STEP_4_DETAIL')}</p>
+                                    </li>
+                                    <li>
+                                        <h3>{t('LOAN.PROCEDURE_STEP_5')}</h3>
+                                        <p>{t('LOAN.PROCEDURE_STEP_5_DETAIL')}</p>
+                                    </li>
+                                    <li>
+                                        <h3>{t('LOAN.PROCEDURE_STEP_6')}</h3>
+                                        <p>{t('LOAN.PROCEDURE_STEP_6_DETAIL')}</p>
+                                    </li>
+                                </ol>
+                                <div className="loan-note">
+                                    <h4>{t('LOAN.SPECIAL_NOTE')}</h4>
+                                    <p>{t('LOAN.SPECIAL_NOTE_DETAIL')}</p>
                                 </div>
+                                <div className="more-info">
+                                    <p>{t('LOAN.MORE_INFO')} <a href={t('LOAN.MORE_INFO_LINK')} target="_blank" rel="noopener noreferrer">{t('LOAN.MORE_INFO_TEXT')}</a></p>
+                                </div>
+                            </section>
+                        )}
 
-                                <div className="col-md-9">
-                                    <div className="results-section">
-                                        <h3>{t('LOAN.CALCULATION_RESULTS')}</h3>
-                                        <div className="result-item">
-                                            <label>{t('LOAN.TOTAL_INTEREST')}</label>
-                                            <div className="result-value">{formatCurrency(totalInterest)}</div>
-                                        </div>
-                                        <div className="result-item">
-                                            <label>{t('LOAN.TOTAL_PAYMENT')}</label>
-                                            <div className="result-value">{formatCurrency(totalPayment)}</div>
+                        {activeSection === 'calculator' && (
+                            <section id="loan-calculator">
+                                <h2>{t('LOAN.LOAN_CALCULATOR')}</h2>
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <div className="calculator-container">
+                                            <div className="input-section">
+                                                <div className="input-group">
+                                                    <label>{t('LOAN.LOAN_AMOUNT')}</label>
+                                                    <input
+                                                        type="text"
+                                                        value={loanAmount}
+                                                        onChange={handleLoanAmountChange}
+                                                    />
+                                                    <span className="amount-in-words">{loanAmountInWords}</span>
+                                                </div>
+                                                <div className="input-group">
+                                                    <label>{t('LOAN.LOAN_TERM')}</label>
+                                                    <div className="input-with-unit">
+                                                        <input
+                                                            type="number"
+                                                            value={loanTerm}
+                                                            onChange={handleLoanTermChange}
+                                                            min="1"
+                                                            step="1"
+                                                        />
+
+                                                    </div>
+                                                </div>
+                                                <div className="input-group">
+                                                    <label>{t('LOAN.INTEREST_RATE')}</label>
+                                                    <div className="input-with-unit">
+                                                        <input
+                                                            type="number"
+                                                            value={interestRate}
+                                                            onChange={handleInterestRateChange}
+                                                            min="0"
+                                                            max="100"
+                                                            step="5"
+                                                        />
+                                                        <span className="input-unit">%</span>
+                                                    </div>
+                                                </div>
+                                                <div className="input-group">
+                                                    <label>{t('LOAN.PAYMENT_TYPE')}</label>
+                                                    <select
+                                                        value={paymentType}
+                                                        onChange={(e) => setPaymentType(e.target.value)}
+                                                    >
+                                                        <option value="declining">{t('LOAN.DECLINING_BALANCE')}</option>
+                                                        <option value="fixed">{t('LOAN.FIXED_PAYMENT')}</option>
+                                                    </select>
+                                                </div>
+                                                <div className="apply-loan-button-container">
+                                                    <button onClick={handleApplyLoan}>
+                                                        {t('LOAN.APPLY_FOR_LOAN')}
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="table-responsive">
-                                        <table className="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>{t('LOAN.MONTH')}</th>
-                                                    <th>{t('LOAN.BEGINNING_BALANCE')}</th>
-                                                    <th>{t('LOAN.PRINCIPAL')}</th>
-                                                    <th>{t('LOAN.INTEREST')}</th>
-                                                    <th>{t('LOAN.TOTAL')}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {schedule.map((row) => (
-                                                    <tr key={row.month}>
-                                                        <td>{row.month}</td>
-                                                        <td>{formatCurrency(row.beginningBalance.toFixed(2))}</td>
-                                                        <td>{formatCurrency(row.principal.toFixed(2))}</td>
-                                                        <td>{formatCurrency(row.interest.toFixed(2))}</td>
-                                                        <td>{formatCurrency(row.total.toFixed(2))}</td>
+                                    <div className="col-md-9">
+                                        <div className="results-section">
+                                            <h3>{t('LOAN.CALCULATION_RESULTS')}</h3>
+                                            <div className="result-item">
+                                                <label>{t('LOAN.TOTAL_INTEREST')}</label>
+                                                <div className="result-value">{formatCurrency(totalInterest)}</div>
+                                            </div>
+                                            <div className="result-item">
+                                                <label>{t('LOAN.TOTAL_PAYMENT')}</label>
+                                                <div className="result-value">{formatCurrency(totalPayment)}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="table-responsive">
+                                            <table className="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{t('LOAN.MONTH')}</th>
+                                                        <th>{t('LOAN.BEGINNING_BALANCE')}</th>
+                                                        <th>{t('LOAN.PRINCIPAL')}</th>
+                                                        <th>{t('LOAN.INTEREST')}</th>
+                                                        <th>{t('LOAN.TOTAL')}</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    {schedule.map((row) => (
+                                                        <tr key={row.month}>
+                                                            <td>{row.month}</td>
+                                                            <td>{formatCurrency(row.beginningBalance.toFixed(2))}</td>
+                                                            <td>{formatCurrency(row.principal.toFixed(2))}</td>
+                                                            <td>{formatCurrency(row.interest.toFixed(2))}</td>
+                                                            <td>{formatCurrency(row.total.toFixed(2))}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
-                    )}
-                    {activeSection === 'registration' && (
-                        <section id="registration-options">
-                            <h2>{t('LOAN.REGISTRATION_OPTIONS')}</h2>
-                            <div className="registration-buttons">
-                                <button
-                                    className={`btn ${registrationType === 'home' ? 'btn-success' : 'btn-primary'}`}
-                                    onClick={() => handleRegistration('home')}
-                                >
-                                    {t('LOAN.HOME_VISIT')}
-                                </button>
-                                <button
-                                    className={`btn ${registrationType === 'office' ? 'btn-success' : 'btn-primary'}`}
-                                    onClick={() => handleRegistration('office')}
-                                >
-                                    {t('LOAN.OFFICE_VISIT')}
-                                </button>
-                            </div>
+                            </section>
+                        )}
+                        {activeSection === 'registration' && (
+                            <section id="registration-options">
+                                <h2>{t('LOAN.REGISTRATION_OPTIONS')}</h2>
+                                <div className="registration-buttons">
+                                    <button
+                                        className={`btn ${registrationType === 'home' ? 'btn-success' : 'btn-primary'}`}
+                                        onClick={() => handleRegistration('home')}
+                                    >
+                                        {t('LOAN.HOME_VISIT')}
+                                    </button>
+                                    <button
+                                        className={`btn ${registrationType === 'office' ? 'btn-success' : 'btn-primary'}`}
+                                        onClick={() => handleRegistration('office')}
+                                    >
+                                        {t('LOAN.OFFICE_VISIT')}
+                                    </button>
+                                </div>
 
-                            {registrationType && (
-                                <form onSubmit={handleSubmit} className="registration-form">
-                                    <h3>{t('LOAN.REGISTRATION_FORM')}</h3>
-                                    <div className="form-group">
-                                        <label htmlFor="fullname">{t('LOAN.FULLNAME')}</label>
-                                        <input type="text" id="fullname" name="fullname" value={formData.fullname} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="email">{t('LOAN.EMAIL')}</label>
-                                        <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="phone">{t('LOAN.PHONE')}</label>
-                                        <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="address">{t('LOAN.ADDRESS')}</label>
-                                        <input type="text" id="address" name="address" value={formData.address} onChange={handleInputChange} required />
-                                    </div>
+                                {registrationType && (
+                                    <form onSubmit={handleSubmit} className="registration-form">
+                                        <h3>{t('LOAN.REGISTRATION_FORM')}</h3>
+                                        <div className="form-group">
+                                            <label htmlFor="fullname">{t('LOAN.FULLNAME')}</label>
+                                            <input type="text" id="fullname" name="fullname" value={formData.fullname} onChange={handleInputChange} required />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="email">{t('LOAN.EMAIL')}</label>
+                                            <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="phone">{t('LOAN.PHONE')}</label>
+                                            <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleInputChange} required />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="address">{t('LOAN.ADDRESS')}</label>
+                                            <input type="text" id="address" name="address" value={formData.address} onChange={handleInputChange} required />
+                                        </div>
 
-                                    <button type="submit" className="btn btn-success">{t('LOAN.SUBMIT')}</button>
-                                </form>
-                            )}
-                        </section>
+                                        <button type="submit" className="btn btn-success">{t('LOAN.SUBMIT')}</button>
+                                    </form>
+                                )}
+                            </section>
 
-                    )}
-                </div>
+                        )}
+                    </div>
+              
+
             </div>
+            
+
         </div>
     );
 };

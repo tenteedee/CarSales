@@ -1,12 +1,12 @@
-import {ChangeEvent, FC, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
-import {InsuranceProvider} from "../core/models";
-import {createInsuranceProvider} from "../core/requests";
+import { ChangeEvent, FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { InsuranceProvider } from "../core/models";
+import { createInsuranceProvider } from "../core/requests";
 
 type Props = {};
 
-export const InsuranceProviderCreate: FC<Props> = ({...props}) => {
+export const InsuranceProviderCreate: FC<Props> = ({ ...props }) => {
     const navigate = useNavigate();
     const [insuranceProvider, setInsuranceProvider] = useState<Partial<InsuranceProvider>>({
         name: "",
@@ -31,7 +31,7 @@ export const InsuranceProviderCreate: FC<Props> = ({...props}) => {
                     draggable: true,
                     progress: undefined
                 });
-                navigate('/insurances/providers', {state: {reload: true}});
+                navigate('/insurances/providers', { state: { reload: true } });
             })
             .catch((error) => {
                 const errorMessage = error && error.response && error.response.data && error.response.data.error

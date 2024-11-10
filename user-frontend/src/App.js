@@ -16,9 +16,10 @@ import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
 import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import OrderDetailsPage from './pages/OrderDetails/OrderDetails';
-import OrderList from './pages/OrderDetails/OrderList';
+import OrderHistory from './pages/OrderDetails/OrderHistory';
 import Checkout from './pages/OrderDetails/Checkout';
 import News from './pages/News/News';
+import NewsDetail from './pages/News/NewsDetail';
 import InsuranceList from './pages/Insurance/InsuranceList';
 import Chatbot from './pages/Chatbot/Chatbot';
 import Feedback from './pages/Feedback/Feedback';
@@ -28,14 +29,16 @@ function App() {
   const location = useLocation();
 
   // Các đường dẫn muốn ẩn Navbar
-  const hideNavbarPaths = ['/login', '/register'];
+  const hideNavbarHeaderPaths = ['/login', '/register'];
+
+  // Kiểm tra xem trang hiện tại có phải là trang Home không
 
   return (
     <div>
-      <Header />
       {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
-      {!hideNavbarPaths.includes(location.pathname) && (
+      {!hideNavbarHeaderPaths.includes(location.pathname) && (
         <>
+          <Header />
           <Navbar />
         </>
       )}
@@ -66,12 +69,13 @@ function App() {
         <Route path="/insurance" element={<InsuranceList />} />
         <Route
           path="/order-confirmation/:orderId"
-          element={!token ? <Login /> :<OrderConfirmation />}
+          element={!token ? <Login /> : <OrderConfirmation />}
         />
         <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
-        <Route path="/order-list" element={<OrderList />} />
+        <Route path="/order-history" element={<OrderHistory />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/news" element={<News />} />
+        <Route path="/news/:id" element={<NewsDetail />} />
         <Route
           path="/feedback/create/:carId"
           element={token ? <Feedback /> : <Navigate to="/login" />}
@@ -80,7 +84,7 @@ function App() {
         <Route path="/404" element={<NotFound />} />
       </Routes>
       <Chatbot />
-      <Footer />
+
     </div>
   );
 }
@@ -93,5 +97,6 @@ const NotFound = () => {
     </div>
   );
 };
+
 
 export default App;

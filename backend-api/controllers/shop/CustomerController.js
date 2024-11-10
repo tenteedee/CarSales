@@ -1,5 +1,6 @@
 import Customer from '../../models/Customer.js';
 import { JWT_SECRET } from '../../config/Config.js';
+import jwt from 'jsonwebtoken';
 
 export const getCustomerProfile = async (req, res) => {
   try {

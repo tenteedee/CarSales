@@ -161,11 +161,13 @@
 
 .half-width {
   flex: 1;
-  margin-right: 10px; /* Tạo khoảng trống giữa hai trường */
+  margin-right: 10px;
+  /* Tạo khoảng trống giữa hai trường */
 }
 
 .half-width:last-child {
-  margin-right: 0; /* Trường cuối cùng không cần khoảng cách bên phải */
+  margin-right: 0;
+  /* Trường cuối cùng không cần khoảng cách bên phải */
 }
 
 .form-group select,
@@ -181,6 +183,8 @@
 .test-drive-form input,
 .test-drive-form select,
 .test-drive-form .form-control {
-  font-size: 15px; /* Increase font size */
-  padding: 10px; /* Optional: Increase padding for better readability */
+  font-size: 15px;
+  /* Increase font size */
+  padding: 10px;
+  /* Optional: Increase padding for better readability */
 }

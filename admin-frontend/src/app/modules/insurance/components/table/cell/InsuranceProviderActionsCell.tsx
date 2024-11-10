@@ -1,24 +1,24 @@
-import React, {FC, useEffect} from "react";
-import {ID, KTIcon} from "../../../../../../_metronic/helpers";
+import React, { FC, useEffect } from "react";
+import { ID, KTIcon } from "../../../../../../_metronic/helpers";
 
-import {MenuComponent} from "../../../../../../_metronic/assets/ts/components";
-import {Link} from "react-router-dom";
-import {Confirm} from "notiflix";
-import {useQueryResponse} from "../../../../../../_metronic/layout/core/QueryResponseProvider";
-import {useListView} from "../../../../../../_metronic/layout/core/ListViewProvider";
-import {handleDeleteProvider} from "../../../Insurance";
+import { MenuComponent } from "../../../../../../_metronic/assets/ts/components";
+import { Link } from "react-router-dom";
+import { Confirm } from "notiflix";
+import { useQueryResponse } from "../../../../../../_metronic/layout/core/QueryResponseProvider";
+import { useListView } from "../../../../../../_metronic/layout/core/ListViewProvider";
+import { handleDeleteProvider } from "../../../Insurance";
 
 type Props = {
     id: ID;
     value?: string; // Assuming "value" may be passed in
 };
 
-const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
+const InsuranceProviderActionsCell: FC<Props> = ({ id, value, ...props }) => {
     useEffect(() => {
         MenuComponent.reinitialization()
     }, [])
-    const {refetch} = useQueryResponse()
-    const {clearSelected} = useListView()
+    const { refetch } = useQueryResponse()
+    const { clearSelected } = useListView()
     const onDeleteClick = () => {
         Confirm.show('Xác nhận', 'Bạn có chắc muốn xóa bản ghi này không?', 'Yes', 'No', () => {
             handleDeleteProvider([id]).finally(() => {
@@ -37,7 +37,7 @@ const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
                 data-kt-menu-placement='bottom-end'
             >
                 Actions
-                <KTIcon iconName='down' className='fs-5 m-0'/>
+                <KTIcon iconName='down' className='fs-5 m-0' />
             </a>
             {/* begin::Menu */}
             <div
@@ -70,4 +70,4 @@ const InsuranceProviderActionsCell: FC<Props> = ({id, value, ...props}) => {
     );
 };
 
-export {InsuranceProviderActionsCell};
+export { InsuranceProviderActionsCell };

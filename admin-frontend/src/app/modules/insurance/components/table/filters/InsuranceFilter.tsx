@@ -1,4 +1,4 @@
-import {Filters} from "../../../../../utils/model/models";
+import { Filters } from "../../../../../utils/model/models";
 export const insuranceFilter: Array<Filters> = [
     {
         name: 'name',

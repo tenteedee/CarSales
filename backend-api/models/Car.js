@@ -1,5 +1,12 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/Database.js';
+import CarImage from './CarImage.js';
+import Brand from './Brand.js';
+import CarType from './CarType.js';
+import OrderDetails from './OrderDetails.js';
+import Orders from './Orders.js';
+import CarColors from './CarColors.js';
+import TestDriveRequest from './TestDriveRequest.js';
 
 const Car = db.define(
   'car',
@@ -20,6 +27,14 @@ const Car = db.define(
     type_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    color_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'CarColors',
+        key: 'id'
+      }
     },
     price: {
       type: DataTypes.DECIMAL(15, 2),

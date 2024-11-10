@@ -1,21 +1,21 @@
-import React, {FC, useEffect, useState} from 'react'
-import {QueryResponse} from '../../../utils/model/models'
-import {toast} from 'react-toastify'
-import {Link, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useParams} from 'react-router-dom'
-import {Car} from '../../car/core/models'
-import {Staff} from '../../staffs/core/models'
-import {getStaffs} from '../../staffs/core/requests'
+import React, { FC, useEffect, useState } from 'react'
+import { QueryResponse } from '../../../utils/model/models'
+import { toast } from 'react-toastify'
+import { Link, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Car } from '../../car/core/models'
+import { Staff } from '../../staffs/core/models'
+import { getStaffs } from '../../staffs/core/requests'
 import 'react-datetime/css/react-datetime.css'
-import {getOrder, updateOrder} from "../core/requests";
-import {Order, OrderDetail} from "../core/models";
-import {KTIcon} from "../../../../_metronic/helpers";
-import {numberFormat} from "../../../utils/helpers/helpers";
-import {useAuth} from "../../auth";
+import { getOrder, updateOrder } from "../core/requests";
+import { Order, OrderDetail } from "../core/models";
+import { KTIcon } from "../../../../_metronic/helpers";
+import { numberFormat } from "../../../utils/helpers/helpers";
+import { useAuth } from "../../auth";
 
 type PropsDeltails = {
     order: Order | null
 }
-export const OrderEditDetails: FC<PropsDeltails> = ({...props}) => {
+export const OrderEditDetails: FC<PropsDeltails> = ({ ...props }) => {
     const [order, setOrder] = useState<Order | null>(null)
     const navigate = useNavigate()
 
@@ -25,7 +25,7 @@ export const OrderEditDetails: FC<PropsDeltails> = ({...props}) => {
     useEffect(() => {
         setOrder(props.order)
     }, [props.order])
-    const {hasRole} = useAuth()
+    const { hasRole } = useAuth()
 
     return (
         <>
@@ -69,12 +69,12 @@ export const OrderEditDetails: FC<PropsDeltails> = ({...props}) => {
 type PropsIndex = {
     order: Order | null
 }
-export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
+export const OrderEditIndex: FC<PropsIndex> = ({ ...props }) => {
     // const order = props.order;
     const [order, setOrder] = useState<Order | null>(null)
     const [staffs, setStaffs] = useState<Staff[]>([])
     const navigate = useNavigate()
-    const {hasRole} = useAuth()
+    const { hasRole } = useAuth()
 
     const getData = () => {
         if (hasRole("Director")) {
@@ -102,7 +102,7 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
     const handleInputChange = (key: string, value: string) => {
         setOrder((prevOrders) => {
             if (!prevOrders) return null
-            return {...prevOrders, [key]: value}
+            return { ...prevOrders, [key]: value }
         })
     }
 
@@ -119,7 +119,7 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
                         draggable: true,
                         progress: undefined,
                     })
-                    navigate('/orders', {state: {reload: true}})
+                    navigate('/orders', { state: { reload: true } })
                 })
                 .catch((error) => {
                     const errorMessage =
@@ -162,7 +162,7 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
                                 value={order?.sales_staff_id || ''}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value)
-                                    setOrder({...order, sales_staff_id: selected})
+                                    setOrder({ ...order, sales_staff_id: selected })
                                 }}
                             >
                                 {hasRole('Director') ? (
@@ -195,7 +195,7 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
                                 value={order?.technical_staff_id || ''}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value)
-                                    setOrder({...order, technical_staff_id: selected})
+                                    setOrder({ ...order, technical_staff_id: selected })
                                 }}
                             >
                                 {hasRole('Director') ? (
@@ -229,7 +229,7 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
                                 value={order?.insurance_staff_id || ''}
                                 onChange={(e) => {
                                     const selected = Number(e.target.value)
-                                    setOrder({...order, insurance_staff_id: selected})
+                                    setOrder({ ...order, insurance_staff_id: selected })
                                 }}
                             >
                                 {hasRole('Director') ? (
@@ -261,7 +261,7 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
                                 disabled={!hasRole('Director')}
                                 onChange={(e) => {
                                     const selected = e.target.value
-                                    setOrder({...order, order_status: selected})
+                                    setOrder({ ...order, order_status: selected })
                                 }}
                             >
                                 <option value=''>Select Car</option>
@@ -299,8 +299,8 @@ export const OrderEditIndex: FC<PropsIndex> = ({...props}) => {
 
 type Props = {}
 
-export const OrderEdit: FC<Props> = ({...props}) => {
-    const {id} = useParams()
+export const OrderEdit: FC<Props> = ({ ...props }) => {
+    const { id } = useParams()
     const navigate = useNavigate()
     const [order, setOrders] = useState<Order | null>(null)
     const [loading, setLoading] = useState(true)
@@ -366,14 +366,14 @@ export const OrderEdit: FC<Props> = ({...props}) => {
 
     return (
         <>
-            <OrderEditHeader order={order || null}/>
+            <OrderEditHeader order={order || null} />
             <Routes>
-                <Route element={<Outlet/>}>
+                <Route element={<Outlet />}>
                     <Route
                         index
                         element={
                             <>
-                                <OrderEditIndex order={order || null}/>
+                                <OrderEditIndex order={order || null} />
                             </>
                         }
                     />
@@ -381,12 +381,12 @@ export const OrderEdit: FC<Props> = ({...props}) => {
                         path="details"
                         element={
                             <>
-                                <OrderEditDetails order={order || null}/>
+                                <OrderEditDetails order={order || null} />
                             </>
                         }
                     />
                 </Route>
-                <Route path='*' element={<Navigate to='/error/404'/>}/>
+                <Route path='*' element={<Navigate to='/error/404' />} />
             </Routes>
         </>
     )
@@ -394,7 +394,7 @@ export const OrderEdit: FC<Props> = ({...props}) => {
 type PropsHeader = {
     order: Order | null
 }
-const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
+const OrderEditHeader: React.FC<PropsHeader> = ({ ...props }) => {
     const location = useLocation()
     return (
         <div className='card mb-5 mb-xl-10'>
@@ -409,7 +409,7 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                         {props.order?.customer?.fullname}
                                     </a>
                                     <a href='#'>
-                                        <KTIcon iconName='verify' className='fs-1 text-primary'/>
+                                        <KTIcon iconName='verify' className='fs-1 text-primary' />
                                     </a>
                                 </div>
 
@@ -418,7 +418,7 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                         href='#'
                                         className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
                                     >
-                                        <KTIcon iconName='profile-circle' className='fs-4 me-1'/>
+                                        <KTIcon iconName='profile-circle' className='fs-4 me-1' />
                                         {props.order?.customer?.phone_number}
                                     </a>
 
@@ -426,7 +426,7 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                         href='#'
                                         className='d-flex align-items-center text-gray-400 text-hover-primary mb-2'
                                     >
-                                        <KTIcon iconName='sms' className='fs-4 me-1'/>
+                                        <KTIcon iconName='sms' className='fs-4 me-1' />
                                         {props.order?.customer?.email}
                                     </a>
                                 </div>
@@ -450,7 +450,7 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                     <div
                                         className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                                         <div className='d-flex align-items-center'>
-                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2'/>
+                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2' />
                                             <div
                                                 className='fs-2 fw-bolder'>{numberFormat(props.order?.total_price)}</div>
                                         </div>
@@ -460,7 +460,7 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
                                     <div
                                         className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                                         <div className='d-flex align-items-center'>
-                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2'/>
+                                            <KTIcon iconName='arrow-up' className='fs-3 text-success me-2' />
                                             <div
                                                 className='fs-2 fw-bolder'>{numberFormat(props.order?.payment_price)}</div>
                                         </div>
@@ -506,4 +506,3 @@ const OrderEditHeader: React.FC<PropsHeader> = ({...props}) => {
         </div>
     )
 }
-

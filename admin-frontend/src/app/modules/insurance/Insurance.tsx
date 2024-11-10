@@ -1,16 +1,16 @@
-import {ID} from "../../../_metronic/helpers";
-import {QueryResponse} from "../../utils/model/models";
-import {toast} from "react-toastify";
-import {QueryResponseProvider} from "../../../_metronic/layout/core/QueryResponseProvider";
-import {ListViewProvider} from "../../../_metronic/layout/core/ListViewProvider";
-import {QueryRequestProvider} from "../../../_metronic/layout/core/QueryRequestProvider";
-import {InsuranceProviderList} from "./components/InsuranceProviderList";
-import {InsuranceProviderEdit} from "./components/InsuranceProviderEdit";
-import {InsuranceProviderCreate} from "./components/InsuranceProviderCreate";
-import {deleteInsuranceProviders, deleteInsurances, getInsuranceProviders, getInsurances} from "./core/requests";
-import {InsuranceList} from "./components/InsuranceList";
-import {InsuranceEdit} from "./components/InsuranceEdit";
-import {InsuranceCreate} from "./components/InsuranceCreate";
+import { ID } from "../../../_metronic/helpers";
+import { QueryResponse } from "../../utils/model/models";
+import { toast } from "react-toastify";
+import { QueryResponseProvider } from "../../../_metronic/layout/core/QueryResponseProvider";
+import { ListViewProvider } from "../../../_metronic/layout/core/ListViewProvider";
+import { QueryRequestProvider } from "../../../_metronic/layout/core/QueryRequestProvider";
+import { InsuranceProviderList } from "./components/InsuranceProviderList";
+import { InsuranceProviderEdit } from "./components/InsuranceProviderEdit";
+import { InsuranceProviderCreate } from "./components/InsuranceProviderCreate";
+import { deleteInsuranceProviders, deleteInsurances, getInsuranceProviders, getInsurances } from "./core/requests";
+import { InsuranceList } from "./components/InsuranceList";
+import { InsuranceEdit } from "./components/InsuranceEdit";
+import { InsuranceCreate } from "./components/InsuranceCreate";
 
 export const handleDeleteProvider = async (ids: Array<ID>): Promise<QueryResponse> => {
     try {
@@ -101,28 +101,28 @@ const InsuranceProviderListWrapper = () => {
 const InsuranceEditWrapper = () => {
     return (
         <>
-            <InsuranceEdit/>
+            <InsuranceEdit />
         </>
     );
 }
 const InsuranceProviderEditWrapper = () => {
     return (
         <>
-            <InsuranceProviderEdit/>
+            <InsuranceProviderEdit />
         </>
     );
 }
 const InsuranceProviderCreateWrapper = () => {
     return (
         <>
-            <InsuranceProviderCreate/>
+            <InsuranceProviderCreate />
         </>
     );
 }
 const InsuranceCreateWrapper = () => {
     return (
         <>
-            <InsuranceCreate/>
+            <InsuranceCreate />
         </>
     );
 }

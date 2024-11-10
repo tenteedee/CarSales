@@ -1,142 +1,142 @@
-import {Column} from 'react-table';
-import {CopyTextCell} from '../../../../../../_metronic/partials/table/cell/CopyTextCell';
-import {TableHeader} from '../../../../../../_metronic/partials/table/header/TableHeader';
-import {SelectionHeader} from "../../../../../../_metronic/partials/table/header/SelectionHeader";
-import {SelectionCell} from "../../../../../../_metronic/partials/table/cell/SelectionCell";
-import {OrderActionsCell} from "../cell/OrderActionsCell";
-import {Order} from '../../../core/models';
+import { Column } from 'react-table';
+import { CopyTextCell } from '../../../../../../_metronic/partials/table/cell/CopyTextCell';
+import { TableHeader } from '../../../../../../_metronic/partials/table/header/TableHeader';
+import { SelectionHeader } from "../../../../../../_metronic/partials/table/header/SelectionHeader";
+import { SelectionCell } from "../../../../../../_metronic/partials/table/cell/SelectionCell";
+import { OrderActionsCell } from "../cell/OrderActionsCell";
+import { Order } from '../../../core/models';
 import React from "react";
-import {numberFormat} from "../../../../../utils/helpers/helpers";
+import { numberFormat } from "../../../../../utils/helpers/helpers";
 
 const orderColumns: ReadonlyArray<Column<Order>> = [
     {
-        Header: (props) => <SelectionHeader tableProps={props}/>,
+        Header: (props) => <SelectionHeader tableProps={props} />,
         id: 'selection',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const insurance = props.data[props.row.index] as Order;
-            return <SelectionCell id={insurance.id}/>;
+            return <SelectionCell id={insurance.id} />;
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='#ID'/>,
+        Header: (props) => <TableHeader tableProps={props} title='#ID' />,
         id: 'id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const insurance = props.data[props.row.index] as Order;
-            return <CopyTextCell className='text-dark' value={`${insurance.id}`}/>;
+            return <CopyTextCell className='text-dark' value={`${insurance.id}`} />;
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Customer'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Customer' />,
         id: 'customer_id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
                     <div className='d-flex flex-column'>
                         <div className='d-flex flex-column'>
-                            <CopyTextCell value={testDrive?.customer?.fullname}/>
+                            <CopyTextCell value={testDrive?.customer?.fullname} />
                         </div>
-                        <CopyTextCell value={testDrive?.customer?.phone_number}/>
+                        <CopyTextCell value={testDrive?.customer?.phone_number} />
                     </div>
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Car'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Car' />,
         id: 'car_id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
-                    <CopyTextCell value={testDrive?.car?.model}/>
+                    <CopyTextCell value={testDrive?.car?.model} />
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Total Price'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Total Price' />,
         id: 'total_price',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
                     <span className={`badge bg-success text-white`}>
-                        <CopyTextCell value={numberFormat(testDrive?.total_price)}/>
+                        <CopyTextCell value={numberFormat(testDrive?.total_price)} />
                     </span>
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Total Price'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Total Price' />,
         id: 'payment_price',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
                     <span className={`badge bg-success text-white`}>
-                        <CopyTextCell value={numberFormat(testDrive?.payment_price)}/>
+                        <CopyTextCell value={numberFormat(testDrive?.payment_price)} />
                     </span>
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Showroom'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Showroom' />,
         id: 'showroom_id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
                     <span className={`badge bg-primary text-white`}>
-                        <CopyTextCell value={(testDrive?.showroom?.name)}/>
+                        <CopyTextCell value={(testDrive?.showroom?.name)} />
                     </span>
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Technical Staff'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Technical Staff' />,
         id: 'technical_staff_id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
-                    <CopyTextCell value={testDrive?.technical_staff?.fullname}/>
+                    <CopyTextCell value={testDrive?.technical_staff?.fullname} />
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Insurance Staff'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Insurance Staff' />,
         id: 'insurance_staff_id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
-                    <CopyTextCell value={testDrive?.insurance_staff?.fullname}/>
+                    <CopyTextCell value={testDrive?.insurance_staff?.fullname} />
                 </>
             )
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Sale Staff'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Sale Staff' />,
         id: 'sales_staff_id',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             return (
                 <>
-                    <CopyTextCell value={testDrive?.sales_staff?.fullname}/>
+                    <CopyTextCell value={testDrive?.sales_staff?.fullname} />
                 </>
             )
         },
     },
 
     {
-        Header: (props) => <TableHeader tableProps={props} title='Status'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Status' />,
         id: 'status',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const testDrive = props.data[props.row.index] as Order
             let status = ''
             let label = ''
@@ -175,13 +175,13 @@ const orderColumns: ReadonlyArray<Column<Order>> = [
         },
     },
     {
-        Header: (props) => <TableHeader tableProps={props} title='Actions'/>,
+        Header: (props) => <TableHeader tableProps={props} title='Actions' />,
         id: 'actions',
-        Cell: ({...props}) => {
+        Cell: ({ ...props }) => {
             const insurance = props.data[props.row.index] as Order;
-            return <OrderActionsCell id={insurance.id}/>;
+            return <OrderActionsCell id={insurance.id} />;
         },
     },
 ];
 
-export {orderColumns};
+export { orderColumns };
